@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/heromeapp/heromeapp.iml" filepath="$PROJECT_DIR$/heromeapp/heromeapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/heromeserver/heromeserver.iml" filepath="$PROJECT_DIR$/heromeserver/heromeserver.iml" />
     </modules>
   </component>
