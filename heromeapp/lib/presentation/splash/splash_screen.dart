@@ -13,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return sp.SplashScreen(
       seconds: 5,
       title: Text("My SplashScreen"),
-      backgroundColor: Colors.purple,
+      backgroundColor: Theme.of(context).primaryColor,
       navigateAfterSeconds: DashboardScreen(),
     );
   }

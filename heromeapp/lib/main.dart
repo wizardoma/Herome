@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:heromeapp/commons/themes.dart';
 import 'package:heromeapp/presentation/splash/splash_screen.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Herome",
       home: SplashScreen(),
-
+      theme: kMainTheme,
     );
   }
 }
