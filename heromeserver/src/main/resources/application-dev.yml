@@ -1,0 +1,6 @@
+spring.jpa.show-sql=false
+spring.datasource.url=jdbc:postgresql://localhost:5432/herome
+spring.datasource.username=postgres
+spring.datasource.password=1234
+spring.jpa.hibernate.ddl-auto=update
+spring.datasource.initialization-mode=always
