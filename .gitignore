@@ -33,4 +33,4 @@ build/
 .vscode/
 
 #prod database
-/heromeserver/src/main/resources/application-prod.properties
+/heromeserver/src/main/resources/application-prod.yml
