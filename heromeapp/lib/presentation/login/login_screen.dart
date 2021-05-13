@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(child: LoginFormSection()),
+                   LoginFormSection(),
                     SignupSection(),
                   ],
                 ),
@@ -100,23 +100,25 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget LoginFormSection() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            child: Text(
-              "Log in to your account",
-              style:
-                  Theme.of(context).textTheme.headline1.copyWith(fontSize: 25),
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              child: Text(
+                "Log in to your account",
+                style:
+                    Theme.of(context).textTheme.headline1.copyWith(fontSize: 25),
+              ),
             ),
-          ),
-          emailField(),
-          passwordField(),
-          loginButton(),
-        ],
+            emailField(),
+            passwordField(),
+            loginButton(),
+          ],
+        ),
       ),
     );
   }
