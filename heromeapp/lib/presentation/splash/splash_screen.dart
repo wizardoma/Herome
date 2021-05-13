@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:heromeapp/presentation/dashboard/dashboard_screen.dart';
+import 'package:heromeapp/presentation/login/login_screen.dart';
 import 'package:splashscreen/splashscreen.dart' as sp;
 
 class SplashScreen extends StatefulWidget {
@@ -11,10 +11,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return sp.SplashScreen(
-      seconds: 5,
+      seconds: 1,
       title: Text("My SplashScreen"),
       backgroundColor: Theme.of(context).primaryColor,
-      navigateAfterSeconds: DashboardScreen(),
+      navigateAfterSeconds: LoginScreen(),
     );
   }
 }
