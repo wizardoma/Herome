@@ -12,3 +12,6 @@ const kDarkTextColor = const Color(0xff596981);
 const kGreyTextColor = const Color(0xff62738d);
 const kInputBorderColor = const Color(0xffcfd7e6);
 const kDarkGrey = const Color(0xff475366);
+const kerrorBgColor = const Color(0xfffdf6f6);
+const kerrorBorderColor = const Color(0xffde7575);
+const kerrorTextColor = const Color(0xffc20707);
