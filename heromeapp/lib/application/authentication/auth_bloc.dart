@@ -20,8 +20,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   }
 
   Future<AuthenticationState> login(LoginRequest loginRequest)async {
-//    var response =await authenticationService.authenticate(loginRequest);
-  var response = Response(true, null, ErrorResponse(message: "There was a problem with your login",id: "auth_error"));
+    var response =await authenticationService.authenticate(loginRequest);
     if (!response.isError){
       return Authenticated();
     }
