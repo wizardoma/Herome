@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:heromeapp/commons/style/colors.dart';
+import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/presentation/login/login_screen.dart';
 import 'package:splashscreen/splashscreen.dart' as sp;
 
 class SplashScreen extends StatefulWidget {
+  static const routeName = "/splash";
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
