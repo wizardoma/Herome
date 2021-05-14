@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
+import 'package:heromeapp/application/authentication/auth_event.dart';
 import 'package:heromeapp/commons/app/routes.dart';
 import 'package:heromeapp/commons/app/themes.dart';
 import 'package:heromeapp/domain/api/dio_config.dart';
@@ -21,11 +22,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AuthenticationBloc(
-          new HerokuAuthenticationService(AuthProvider(dio), AuthStore())),
+          new HerokuAuthenticationService(AuthProvider(dio), AuthStore()))..add(InitializeAuthEvent()),
       child: MaterialApp(
-        routes: {
-          DashboardScreen.routeName : (_) => DashboardScreen(),
-        },
+        routes: appRoutes,
         title: "Herome",
         home: SplashScreen(),
         theme: kMainTheme,
