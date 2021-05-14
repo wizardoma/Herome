@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:heromeapp/commons/utils/ApiResponseUtil.dart';
+import 'package:heromeapp/commons/utils/api_response_util.dart';
 import 'package:heromeapp/domain/api/heroku_api.dart';
 import 'package:heromeapp/domain/error_response.dart';
 import 'package:heromeapp/domain/response.dart';
