@@ -16,5 +16,15 @@ class HerokuAuthenticationService extends AuthenticationService {
     return response;
   }
 
+  @override
+  Future<bool> isAuthenticated() async{
+    var token = await _store.getToken();
+    print("token: $token");
+
+    var isAuthenticated =  token != null && token.isNotEmpty;
+    print("isAuth: $isAuthenticated");
+    return isAuthenticated;
+  }
+
 
 }

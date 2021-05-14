@@ -7,3 +7,5 @@ class LoginEvent extends AuthenticationEvent {
 
   LoginEvent(this.loginRequest);
 }
+
+class InitializeAuthEvent extends AuthenticationEvent {}

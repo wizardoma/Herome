@@ -7,3 +7,5 @@ class AuthenticationError extends AuthenticationState {
 
   AuthenticationError(this.errorMessage);
 }
+
+class AuthenticationUnInitialized extends AuthenticationState {}

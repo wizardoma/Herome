@@ -17,4 +17,9 @@ class AuthStore {
     print("credentials: $credentials, token: $token");
     this._token = token;
   }
+
+  Future<String> getToken() async {
+    var pref = await SharedPreferences.getInstance();
+    return pref.getString(prefName);
+  }
 }
