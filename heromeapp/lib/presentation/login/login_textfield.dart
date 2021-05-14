@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:heromeapp/commons/style/colors.dart';
+import 'package:heromeapp/commons/app/colors.dart';
 
 class LoginTextField extends StatelessWidget {
   final String title;
@@ -26,6 +26,7 @@ class LoginTextField extends StatelessWidget {
             height: 5,
           ),
           TextFormField(
+            controller: editingController,
             cursorColor: kPrimaryColor,
             style: Theme.of(context).textTheme.bodyText1,
             obscureText: isPassword,
