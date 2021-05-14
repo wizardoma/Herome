@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:heromeapp/commons/colors.dart';
+import 'package:heromeapp/commons/style/colors.dart';
 import 'package:heromeapp/presentation/login/login_screen.dart';
 import 'package:splashscreen/splashscreen.dart' as sp;
 

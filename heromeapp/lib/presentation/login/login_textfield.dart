@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:heromeapp/commons/colors.dart';
+import 'package:heromeapp/commons/style/colors.dart';
 
 class LoginTextField extends StatelessWidget {
   final String title;
   final IconData icon;
   final bool isPassword;
+  final Function(String) validator;
   final TextEditingController editingController;
 
   const LoginTextField(
-      {Key key, this.title, this.icon, this.isPassword, this.editingController})
+      {Key key, this.title, this.icon, this.validator, this.isPassword, this.editingController})
       : super(key: key);
 
   @override
@@ -21,12 +22,14 @@ class LoginTextField extends StatelessWidget {
             title,
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          SizedBox(height: 5,),
-          TextField(
-
+          SizedBox(
+            height: 5,
+          ),
+          TextFormField(
+            cursorColor: kPrimaryColor,
+            style: Theme.of(context).textTheme.bodyText1,
             obscureText: isPassword,
             decoration: InputDecoration(
-
               prefixIcon: Icon(
                 icon,
                 color: kPrimaryColor,
@@ -44,7 +47,12 @@ class LoginTextField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: kDarkTextColor),
               ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(color: kerrorBorderColor),
+              )
             ),
+            validator: validator,
           )
         ],
       ),

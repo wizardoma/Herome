@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:heromeapp/commons/colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heromeapp/application/authentication/auth_bloc.dart';
+import 'package:heromeapp/application/authentication/auth_event.dart';
+import 'package:heromeapp/application/authentication/auth_state.dart';
+import 'package:heromeapp/application/authentication/login_request.dart';
+import 'package:heromeapp/commons/style/colors.dart';
+import 'package:heromeapp/commons/utils/input_validator.dart';
 import 'package:heromeapp/presentation/login/login_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -8,10 +14,19 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController emailEditingController;
-  TextEditingController passwordEditingController;
+class _LoginScreenState extends State<LoginScreen> with InputValidator {
+  var _formkey = GlobalKey<FormState>();
+  TextEditingController _emailEditingController;
+  TextEditingController _passwordEditingController;
+  var isSubmitError = false;
+  var serverErrorMessage = "An error occurred";
 
+  @override
+  void initState() {
+    _emailEditingController = new TextEditingController();
+    _passwordEditingController = new TextEditingController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                   LoginFormSection(),
+                    LoginFormSection(),
                     SignupSection(),
                   ],
                 ),
@@ -101,23 +116,56 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget LoginFormSection() {
     return Expanded(
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              child: Text(
-                "Log in to your account",
-                style:
-                    Theme.of(context).textTheme.headline1.copyWith(fontSize: 25),
-              ),
+      child: BlocListener<AuthenticationBloc, AuthenticationState>(
+        listener: (BuildContext context, state) {
+          if (state is AuthenticationError) {
+            setState(() {
+              isSubmitError = true;
+              serverErrorMessage = state.errorMessage;
+            });
+          }
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          child: Form(
+            key: _formkey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  child: Text(
+                    "Log in to your account",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline1
+                        .copyWith(fontSize: 25),
+                  ),
+                ),
+                if (isSubmitError) errorAlert(),
+                emailField(),
+                passwordField(),
+                loginButton(),
+              ],
             ),
-            emailField(),
-            passwordField(),
-            loginButton(),
-          ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget errorAlert() {
+    return Container(
+      height: 40,
+      decoration: BoxDecoration(
+        color: kerrorBgColor,
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: kerrorBorderColor),
+      ),
+      child: Center(
+        child: Text(
+          serverErrorMessage,
+          style: Theme.of(context).textTheme.headline2,
         ),
       ),
     );
@@ -128,7 +176,8 @@ class _LoginScreenState extends State<LoginScreen> {
       title: "Email address",
       icon: Icons.person,
       isPassword: false,
-      editingController: emailEditingController,
+      validator: validateEmail,
+      editingController: _emailEditingController,
     );
   }
 
@@ -136,8 +185,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return LoginTextField(
       title: "Password",
       icon: Icons.lock,
+      validator: validatePassword,
       isPassword: true,
-      editingController: passwordEditingController,
+      editingController: _passwordEditingController,
     );
   }
 
@@ -149,14 +199,34 @@ class _LoginScreenState extends State<LoginScreen> {
         borderRadius: BorderRadius.circular(5),
       ),
       child: MaterialButton(
-        onPressed: () {},
+        onPressed: submit,
         color: kPrimaryColor,
         textColor: kWhiteColor,
-        child: Text(
-          "Log In",
-          style: TextStyle(fontSize: 20),
-        ),
+        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            builder: (context, state) {
+              print(state);
+          if (state is Authenticating) {
+            return CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(kWhiteColor),
+            );
+          }
+          return Text(
+            "Log In",
+            style: TextStyle(fontSize: 20),
+          );
+        }),
       ),
     );
+  }
+
+  void submit() {
+    setState(() {
+      isSubmitError = false;
+    });
+    if (_formkey.currentState.validate()) {
+      LoginRequest loginRequest = LoginRequest(
+          _emailEditingController.text, _passwordEditingController.text);
+      context.read<AuthenticationBloc>().add(LoginEvent(loginRequest));
+    }
   }
 }
