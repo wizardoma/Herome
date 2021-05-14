@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:heromeapp/commons/style/colors.dart';
+import 'package:heromeapp/commons/app/colors.dart';
 
 var kMainTheme = ThemeData(
     primaryColor: kPrimaryColor,

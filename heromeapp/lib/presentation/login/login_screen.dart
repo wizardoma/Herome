@@ -5,11 +5,13 @@ import 'package:heromeapp/application/authentication/auth_bloc.dart';
 import 'package:heromeapp/application/authentication/auth_event.dart';
 import 'package:heromeapp/application/authentication/auth_state.dart';
 import 'package:heromeapp/application/authentication/login_request.dart';
-import 'package:heromeapp/commons/style/colors.dart';
+import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/commons/utils/input_validator.dart';
+import 'package:heromeapp/presentation/dashboard/dashboard_screen.dart';
 import 'package:heromeapp/presentation/login/login_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const routeName = "/login";
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -33,44 +35,50 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
-          alignment: Alignment.center,
-          width: size.width,
-          height: size.height,
-          padding:
-              EdgeInsets.symmetric(horizontal: size.width * 0.1, vertical: 30),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [kDeepPurple1, kDeepPurple2],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: [0.6, 1])),
-          child: Column(
-            children: [
-              Container(
-                height: size.height * 0.3,
-                child: Image.asset(
-                  "assets/logos/logo.jpg",
-                  width: 100,
-                  height: 100,
+        child: BlocListener<AuthenticationBloc, AuthenticationState>(
+          listener: (ctx,state){
+            if (state is Authenticated)
+            Navigator.pushReplacementNamed(context, DashboardScreen.routeName);
+          },
+          child: Container(
+            alignment: Alignment.center,
+            width: size.width,
+            height: size.height,
+            padding:
+                EdgeInsets.symmetric(horizontal: size.width * 0.1, vertical: 30),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [kDeepPurple1, kDeepPurple2],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0.6, 1])),
+            child: Column(
+              children: [
+                Container(
+                  height: size.height * 0.3,
+                  child: Image.asset(
+                    "assets/logos/logo.jpg",
+                    width: 100,
+                    height: 100,
+                  ),
                 ),
-              ),
-              Container(
-                clipBehavior: Clip.hardEdge,
-                height: size.height * 0.6,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: kWhiteColor,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    LoginFormSection(),
-                    SignupSection(),
-                  ],
-                ),
-              )
-            ],
+                Container(
+                  clipBehavior: Clip.hardEdge,
+                  height: size.height * 0.6,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: kWhiteColor,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      LoginFormSection(),
+                      SignupSection(),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -224,8 +232,11 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
       isSubmitError = false;
     });
     if (_formkey.currentState.validate()) {
+      var email = _emailEditingController.text.toLowerCase();
+      var password = _passwordEditingController.text;
       LoginRequest loginRequest = LoginRequest(
-          _emailEditingController.text, _passwordEditingController.text);
+          email, password);
+      print("email: $email , password: $password");
       context.read<AuthenticationBloc>().add(LoginEvent(loginRequest));
     }
   }
