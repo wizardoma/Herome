@@ -11,7 +11,7 @@ class AuthProvider {
 
   Future<ResponseEntity> validateCredentials() async {
     try {
-      var response = await _dio.get(accountUrl);
+      var response = await _dio.get(AccountUrl);
       print("Success in validation: ${response.data}");
 
       return ResponseEntity(false, null, null);

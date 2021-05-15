@@ -36,16 +36,17 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
     return Scaffold(
       body: SingleChildScrollView(
         child: BlocListener<AuthenticationBloc, AuthenticationState>(
-          listener: (ctx,state){
+          listener: (ctx, state) {
             if (state is Authenticated)
-            Navigator.pushReplacementNamed(context, DashboardScreen.routeName);
+              Navigator.pushReplacementNamed(
+                  context, DashboardScreen.routeName);
           },
           child: Container(
             alignment: Alignment.center,
             width: size.width,
             height: size.height,
-            padding:
-                EdgeInsets.symmetric(horizontal: size.width * 0.1, vertical: 30),
+            padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.1, vertical: 30),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: [kDeepPurple1, kDeepPurple2],
@@ -212,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
         textColor: kWhiteColor,
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {
-              print(state);
+          print(state);
           if (state is Authenticating) {
             return CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(kWhiteColor),
@@ -232,10 +233,9 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
       isSubmitError = false;
     });
     if (_formkey.currentState.validate()) {
-      var email = _emailEditingController.text.toLowerCase();
+      var email = _emailEditingController.text.toLowerCase().trim();
       var password = _passwordEditingController.text;
-      LoginRequest loginRequest = LoginRequest(
-          email, password);
+      LoginRequest loginRequest = LoginRequest(email, password);
       print("email: $email , password: $password");
       context.read<AuthenticationBloc>().add(LoginEvent(loginRequest));
     }

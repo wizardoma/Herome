@@ -4,7 +4,7 @@ import 'package:heromeapp/domain/auth/auth_store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Dio dio = Dio(BaseOptions(
-  baseUrl: baseUrl,
+  baseUrl: BaseUrl,
 ))
   ..interceptors.add(InterceptorsWrapper(
     onRequest: (options, handler) => requestInterceptors(options, handler),

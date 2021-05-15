@@ -7,9 +7,9 @@ class ErrorResponse {
 
   ErrorResponse({ this.id, this.message, this.url = ""});
 
-  factory ErrorResponse.fromResponse(Response response){
+  factory ErrorResponse.fromResponse(dynamic data){
     return ErrorResponse(
-      id: response.data["id"],message: response.data["message"],url: response.data["url"]
+      id: data["id"],message: data["message"],url: data["url"]
     );
   }
 
