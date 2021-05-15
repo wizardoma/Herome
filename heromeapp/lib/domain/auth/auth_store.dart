@@ -21,4 +21,9 @@ class AuthStore {
     var pref = await SharedPreferences.getInstance();
     return pref.getString(prefName);
   }
+
+  void deleteToken() async {
+    var pref = await SharedPreferences.getInstance();
+    pref.remove(prefName);
+  }
 }

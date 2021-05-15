@@ -13,13 +13,15 @@ class HerokuAuthenticationService extends AuthenticationService {
   Future<ResponseEntity> authenticate(LoginRequest request) async{
     _store.setToken("${request.email}:${request.password}");
     var response = await _authProvider.validateCredentials();
+    if (response.isError){
+      _store.deleteToken();
+    }
     return response;
   }
 
   @override
   Future<bool> isAuthenticated() async{
     var token = await _store.getToken();
-
     var isAuthenticated =  token != null && token.isNotEmpty;
     return isAuthenticated;
   }

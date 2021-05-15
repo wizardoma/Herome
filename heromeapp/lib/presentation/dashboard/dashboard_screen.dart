@@ -198,7 +198,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             state.apps[index].name,
                             style: Theme.of(context).textTheme.bodyText1.copyWith(
                               fontSize: 17,
-                              fontWeight: FontWeight.w500
+                              fontWeight: FontWeight.w400
                             ),
                           )
                         ],

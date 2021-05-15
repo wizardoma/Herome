@@ -15,7 +15,7 @@ class AuthProvider {
 
       return ResponseEntity(false, null, null);
     } on DioError catch (e) {
-      var errorResponse = ErrorResponse.fromResponse(e.response);
+      var errorResponse = ErrorResponse.fromResponse(e.response.data);
       return ResponseEntity(true, null, errorResponse);
     }
   }

@@ -15,7 +15,7 @@ class AccountProvider {
 
       return ResponseEntity(false, Account.fromResponse(response.data), null);
     } on DioError catch (e) {
-      var errorResponse = ErrorResponse.fromResponse(e.response);
+      var errorResponse = ErrorResponse.fromResponse(e.response.data);
       return ResponseEntity(true, null, errorResponse);
     }
   }
