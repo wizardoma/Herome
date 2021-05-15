@@ -13,7 +13,7 @@ class AccountCubit extends Cubit<AccountState> {
   StreamSubscription _streamSubscription;
 
   AccountCubit({AuthenticationBloc authenticationBloc, this.accountService})
-      : super(AccountUnInitialized()) {
+      : super(AccountUnInitializedState()) {
     _streamSubscription = authenticationBloc.stream.listen((state) {
       if (state is Authenticated) {
         this.fetchAccount();
@@ -25,8 +25,7 @@ class AccountCubit extends Cubit<AccountState> {
     var response = await accountService.fetchAccount();
     if (!response.isError) {
       Account account = response.data;
-      print("account $account");
-      emit(AccountFetched(account));
+      emit(AccountFetchedState(account));
     }
     else {
       print("An error occurred fetching accounts");

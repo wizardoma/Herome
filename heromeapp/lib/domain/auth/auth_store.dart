@@ -14,7 +14,6 @@ class AuthStore {
     var pref = await SharedPreferences.getInstance();
     var token = base64.encode(utf8.encode(credentials));
     pref.setString(prefName, token);
-    print("credentials: $credentials, token: $token");
     this._token = token;
   }
 

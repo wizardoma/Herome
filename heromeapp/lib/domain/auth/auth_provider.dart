@@ -12,11 +12,9 @@ class AuthProvider {
   Future<ResponseEntity> validateCredentials() async {
     try {
       var response = await _dio.get(AccountUrl);
-      print("Success in validation: ${response.data}");
 
       return ResponseEntity(false, null, null);
     } on DioError catch (e) {
-      print("Error in validation: ${e.response}");
       var errorResponse = ErrorResponse.fromResponse(e.response);
       return ResponseEntity(true, null, errorResponse);
     }

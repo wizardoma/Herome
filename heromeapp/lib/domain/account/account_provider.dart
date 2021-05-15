@@ -12,11 +12,9 @@ class AccountProvider {
   Future<ResponseEntity> fetchAccounts() async{
     try {
       var response = await _dio.get(AccountUrl);
-      print("Success in account fetching: ${response.data}");
 
       return ResponseEntity(false, Account.fromResponse(response.data), null);
     } on DioError catch (e) {
-      print("Error in account fetching: ${e.response}");
       var errorResponse = ErrorResponse.fromResponse(e.response);
       return ResponseEntity(true, null, errorResponse);
     }
