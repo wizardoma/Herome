@@ -9,7 +9,6 @@ class AppsCubit extends Cubit<AppsState> {
 
   void fetchApps() async {
     emit(AppsFetchingState());
-    await Future.delayed(Duration(seconds: 2));
 
     var response = await appService.fetchApps();
     if (!response.isError) {

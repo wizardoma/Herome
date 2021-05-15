@@ -8,8 +8,14 @@ var kMainTheme = ThemeData(
         bodyText1: TextStyle(
           color: kDarkTextColor,
         ),
+
+        headline3:  TextStyle(
+          color: kLightGrey,
+        ),
         headline1: TextStyle(
           color: kPrimaryColor,
+          fontSize: 16,
+          fontWeight: FontWeight.w500
         ),
       // error text
       headline2: TextStyle(
