@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/accounts/account_cubit.dart';
+import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
 import 'package:heromeapp/application/authentication/auth_event.dart';
 import 'package:heromeapp/commons/app/routes.dart';
@@ -17,17 +18,20 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final IOC ioc;
+
   MyApp(this.ioc);
 
   @override
   Widget build(BuildContext context) {
-    print(ioc.getBloc(Blocs.Authentication));
-    print(ioc.getCubit(Cubits.Account));
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: (ioc.getBloc(Blocs.Authentication) as AuthenticationBloc)..add(InitializeAuthEvent())),
-        BlocProvider.value(value: (ioc.getCubit(Cubits.Account) as AccountCubit)),
+        BlocProvider.value(
+            value: (ioc.getBloc(Blocs.Authentication) as AuthenticationBloc)
+              ..add(InitializeAuthEvent())),
+        BlocProvider.value(
+            value: (ioc.getCubit(Cubits.Account) as AccountCubit)),
+        BlocProvider.value(value: (ioc.getCubit(Cubits.Apps) as AppsCubit)),
       ],
       child: MaterialApp(
         routes: appRoutes,

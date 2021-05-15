@@ -213,7 +213,6 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
         textColor: kWhiteColor,
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {
-          print(state);
           if (state is Authenticating) {
             return CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(kWhiteColor),
@@ -236,7 +235,6 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
       var email = _emailEditingController.text.toLowerCase().trim();
       var password = _passwordEditingController.text;
       LoginRequest loginRequest = LoginRequest(email, password);
-      print("email: $email , password: $password");
       context.read<AuthenticationBloc>().add(LoginEvent(loginRequest));
     }
   }

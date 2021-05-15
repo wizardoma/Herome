@@ -17,6 +17,5 @@ requestInterceptors(RequestOptions options, RequestInterceptorHandler handler) a
   var pref = await SharedPreferences.getInstance();
   var token = pref.getString(AuthStore.prefName);
   options.headers.putIfAbsent("Authorization", () => "Basic $token");
-  print("Request data ${options.headers}, token : $token");
   handler.next(options);
 }
