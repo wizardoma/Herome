@@ -47,8 +47,25 @@ flutter:
   uses-material-design: true
 
   assets:
+    #    images
     - assets/images/ninja-avatar.png
+    - assets/images/app_asleep.png
+    - assets/images/app_awake.png
+    - assets/images/app_crashed.png
+    - assets/images/app_down.png
+    - assets/images/app_maintenance.png
+    - assets/images/app_loading.png
+    
+    #logo
     - assets/logos/logo.jpg
+    # icons
+    - assets/icons/go.png
+    - assets/icons/java.png
+    - assets/icons/nodejs.png
+    - assets/icons/php.png
+    - assets/icons/ruby.png
+    - assets/icons/python.png
+    - assets/icons/scala.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
