@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/accounts/account_cubit.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
@@ -21,18 +20,11 @@ import 'package:heromeapp/domain/dyno/dyno_service_impl.dart';
 import 'package:heromeapp/domain/service.dart';
 
 // Custom inversion of control container
-enum Cubits {
-  Account, Apps, Dyno
-}
+enum Cubits { Account, Apps, Dyno }
 
-enum Blocs {
-  Authentication
-}
+enum Blocs { Authentication }
 
-enum Services {
-  Account, Authentication, Apps, Dyno
-}
-
+enum Services { Account, Authentication, Apps, Dyno }
 
 class IOC {
   //services
@@ -65,8 +57,7 @@ class IOC {
   Blocs blocsType;
   Cubits cubitsType;
 
-
-  IOC(){
+  IOC() {
     // stores
 
     _authStore = AuthStore();
@@ -78,45 +69,43 @@ class IOC {
     _appProvider = AppProvider(dio);
 
     // services
-    _authenticationService = HerokuAuthenticationService(_authProvider, _authStore);
+    _authenticationService =
+        HerokuAuthenticationService(_authProvider, _authStore);
     _accountService = HerokuAccountService(_accountProvider);
     _dynoService = DynoServiceImpl(_dynoProvider);
     _appService = AppServiceImpl(_appProvider);
 
     //blocs
     _authenticationBloc = AuthenticationBloc(_authenticationService);
-    _accountCubit = AccountCubit(authenticationBloc: _authenticationBloc,accountService: _accountService);
-_appsCubit = AppsCubit(_appService);
+    _accountCubit = AccountCubit(
+        authenticationBloc: _authenticationBloc,
+        accountService: _accountService);
+    _appsCubit = AppsCubit(_appService);
     _dynoCubit = DynoCubit(dynoService: _dynoService, appsCubit: _appsCubit);
-
 
     blocMap.putIfAbsent(Blocs.Authentication, () => _authenticationBloc);
     cubitMap.putIfAbsent(Cubits.Account, () => _accountCubit);
     cubitMap.putIfAbsent(Cubits.Apps, () => _appsCubit);
     cubitMap.putIfAbsent(Cubits.Dyno, () => _dynoCubit);
 
-
     serviceMap.putIfAbsent(Services.Account, () => _accountService);
 
-    serviceMap.putIfAbsent(Services.Authentication, () => _authenticationService);
+    serviceMap.putIfAbsent(
+        Services.Authentication, () => _authenticationService);
     serviceMap.putIfAbsent(Services.Apps, () => _appService);
     serviceMap.putIfAbsent(Services.Dyno, () => _dynoService);
-
-
   }
 
-  Service getService(Services service){
-   var serviceInstance = serviceMap[service];
-   return serviceInstance;
+  Service getService(Services service) {
+    var serviceInstance = serviceMap[service];
+    return serviceInstance;
   }
 
-  Bloc getBloc(Blocs bloc){
+  Bloc getBloc(Blocs bloc) {
     return blocMap[bloc];
   }
 
-  Cubit getCubit(Cubits cubit){
+  Cubit getCubit(Cubits cubit) {
     return cubitMap[cubit];
   }
-
-
 }

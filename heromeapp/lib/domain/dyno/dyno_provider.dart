@@ -48,6 +48,7 @@ class DynoProvider {
       }
     });
 
+    // wait until all dynos are fetched
     while (counter != appIds.length){
       await Future.delayed(Duration(seconds: 1));
     }
