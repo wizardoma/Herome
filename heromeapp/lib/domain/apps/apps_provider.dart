@@ -13,7 +13,6 @@ class AppProvider {
   Future<ResponseEntity> fetchApps() async{
     try {
       var response = await _dio.get(AppsUrl);
-      print("Success in apps fetching: ${response.data}");
 
       List<App> apps = [];
       response.data.forEach((e) {

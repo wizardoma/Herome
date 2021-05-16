@@ -9,6 +9,7 @@ import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/commons/utils/input_validator.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_screen.dart';
 import 'package:heromeapp/presentation/login/login_textfield.dart';
+import 'package:heromeapp/presentation/widgets/circular_progress_primary.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = "/login";
@@ -214,9 +215,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {
           if (state is Authenticating) {
-            return CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(kWhiteColor),
-            );
+            return CircularProgress(color: kWhiteColor,);
           }
           return Text(
             "Log In",

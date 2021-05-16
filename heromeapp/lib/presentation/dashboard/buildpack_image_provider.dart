@@ -35,7 +35,7 @@ mixin BuildpackImageProvider {
       asset,
       height: 30,
       width: 30,
-      color: kDarkTextColor,
+      color: kGreyTextColor,
     );
   }
 }

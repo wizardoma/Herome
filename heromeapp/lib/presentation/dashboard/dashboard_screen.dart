@@ -4,9 +4,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/apps/app_state.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
+import 'package:heromeapp/application/dyno/dyno_cubit.dart';
+import 'package:heromeapp/application/dyno/dyno_state.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/presentation/dashboard/app_status_image_provider.dart';
 import 'package:heromeapp/presentation/dashboard/buildpack_image_provider.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_appbar.dart';
+import 'package:heromeapp/presentation/widgets/circular_progress_primary.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const routeName = "/dashboard";
@@ -15,8 +19,8 @@ class DashboardScreen extends StatefulWidget {
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> with BuildpackImageProvider{
-
+class _DashboardScreenState extends State<DashboardScreen>
+    with BuildpackImageProvider, AppStatusImageProvider {
   @override
   void initState() {
     var cubit = BlocProvider.of<AppsCubit>(context);
@@ -166,16 +170,13 @@ class _DashboardScreenState extends State<DashboardScreen> with BuildpackImagePr
     return BlocBuilder<AppsCubit, AppsState>(builder: (context, state) {
       if (state is AppsFetchingState) {
         return Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
-          ),
+          child: CircularProgress(),
         );
       }
       if (state is AppsFetchedState) {
         return ListView.separated(
-          padding: EdgeInsets.only(bottom: 20),
-
-          physics: ScrollPhysics(),
+            padding: EdgeInsets.only(bottom: 20),
+            physics: ScrollPhysics(),
             separatorBuilder: (context, index) => Divider(
                   color: kInputBorderColor,
                 ),
@@ -183,6 +184,7 @@ class _DashboardScreenState extends State<DashboardScreen> with BuildpackImagePr
             itemCount: state.apps.length,
             itemBuilder: (context, index) {
               var app = state.apps[index];
+
               return Container(
                 height: 60,
                 padding: EdgeInsets.all(15),
@@ -194,25 +196,43 @@ class _DashboardScreenState extends State<DashboardScreen> with BuildpackImagePr
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.grid_on,
-                            color: kPrimaryColor,
+                          BlocBuilder<DynoCubit, DynoState>(
+                              // ignore: missing_return
+                              builder: (context, state) {
+                            if (state is DynosFetchingState) {
+                              return CircularProgress();
+                            }
+                            if (state is DynosFetchedState) {
+                              print("fetched dynos: ${state.dynos}");
+                              return getAppStatusImage(
+                                  state.dynos[app.id][0].state);
+                            }
+                          }),
+                          SizedBox(
+                            width: 10,
                           ),
-                          SizedBox(width: 10,),
                           Text(
                             app.name,
-                            style: Theme.of(context).textTheme.bodyText1.copyWith(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w400
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(
+                                    fontSize: 17, fontWeight: FontWeight.w400),
                           )
                         ],
                       ),
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        if (getBuildpackImage(app.language) != null) getBuildpackImage(app.language),
-                        IconButton(icon: Icon(Icons.star_border, color: kDarkTextColor,), onPressed: null),
+                        if (getBuildpackImage(app.language) != null)
+                          getBuildpackImage(app.language),
+                        IconButton(
+                            icon: Icon(
+                              Icons.star_border,
+                              color: kGreyTextColor,
+                            ),
+                            onPressed: null),
                       ],
                     ),
                   ],
