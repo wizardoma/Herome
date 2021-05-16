@@ -189,7 +189,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         );
       }
       if (state is AppsFetchedState) {
-        print("loaded apps ${apps.length}");
         var appsList = [];
         if (isSearching)
           appsList = appSearchResults;
@@ -259,12 +258,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                             children: [
                               if (getBuildpackImage(app.language) != null)
                                 getBuildpackImage(app.language),
-                              IconButton(
-                                  icon: Icon(
-                                    Icons.star_border,
-                                    color: kGreyTextColor,
-                                  ),
-                                  onPressed: null),
+
                             ],
                           ),
                         ],
@@ -289,7 +283,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         var searchResult = apps
             .where((element) => element.name.toLowerCase().contains(value))
             .toList();
-        print(searchResult);
         appSearchResults = searchResult;
         isSearching = true;
       });
