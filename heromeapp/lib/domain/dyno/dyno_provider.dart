@@ -38,7 +38,6 @@ class DynoProvider {
 
         response.data.forEach((e) {
           var dyno = Dyno.fromResponse(e);
-          print("A single dyno: $dyno");
           dynoList.add(dyno);
           ++counter;
         });

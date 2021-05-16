@@ -25,7 +25,6 @@ class DynoCubit extends Cubit<DynoState> {
     emit(DynosFetchingState());
     var response = await dynoService.fetchAllAppsDynos(appIds);
     if (!response.isError) {
-      print("Loading dyno has finished ${response.data}");
       emit(DynosFetchedState(response.data));
 
 

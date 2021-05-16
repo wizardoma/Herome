@@ -8,6 +8,7 @@ import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/application/dyno/dyno_cubit.dart';
 import 'package:heromeapp/application/dyno/dyno_state.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/presentation/dashboard/app_status_image_provider.dart';
 import 'package:heromeapp/presentation/dashboard/buildpack_image_provider.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_appbar.dart';
@@ -23,10 +24,11 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen>
     with BuildpackImageProvider, AppStatusImageProvider {
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
-
-
-
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+  List<App> apps = [];
+  List<App> appSearchResults = [];
+  bool isSearching = false;
 
   @override
   void initState() {
@@ -141,6 +143,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           Flexible(
             flex: 1,
             child: TextField(
+              onChanged: searchApp,
               decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
@@ -171,117 +174,129 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Widget listAppsSection() {
-    // ignore: missing_return
-    return BlocBuilder<AppsCubit, AppsState>(builder: (context, state) {
-        if (state is AppsFetchingState) {
-          return Center(
-            child: CircularProgress(),
-          );
-        }
-        if (state is AppsFetchedState) {
+    return BlocConsumer<AppsCubit, AppsState>(listener: (context, state) {
+      if (state is AppsFetchedState) {
+        setState(() {
+          apps = state.apps;
+        });
+      }
+    },
+        // ignore: missing_return
+        builder: (context, state) {
+      if (state is AppsFetchingState) {
+        return Center(
+          child: CircularProgress(),
+        );
+      }
+      if (state is AppsFetchedState) {
+        print("loaded apps ${apps.length}");
+        var appsList = [];
+        if (isSearching)
+          appsList = appSearchResults;
+        else
+          appsList = apps;
+        return SmartRefresher(
+          enablePullDown: true,
+          onRefresh: _onRefresh,
+          controller: _refreshController,
+          child: appsList.length == 0
+              ? Center(
+                  child: Text(
+                    "No Apps",
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                )
+              : ListView.separated(
+                  padding: EdgeInsets.only(bottom: 20),
+                  physics: ScrollPhysics(),
+                  separatorBuilder: (context, index) => Divider(
+                        color: kInputBorderColor,
+                      ),
+                  shrinkWrap: true,
+                  itemCount: appsList.length,
+                  itemBuilder: (context, index) {
+                    var app = appsList[index];
 
-          return SmartRefresher(
-            enablePullDown: true,
-            onRefresh: _onRefresh,
-            footer: CustomFooter(
-              builder: (BuildContext context,LoadStatus mode){
-                Widget body ;
-                if(mode==LoadStatus.idle){
-                  body =  Text("pull up load");
-                }
-                else if(mode==LoadStatus.loading){
-                  body =  CupertinoActivityIndicator();
-                }
-                else if(mode == LoadStatus.failed){
-                  body = Text("Load Failed!Click retry!");
-                }
-                else if(mode == LoadStatus.canLoading){
-                  body = Text("release to load more");
-                }
-                else{
-                  body = Text("No more Data");
-                }
-                return Container(
-                  height: 55.0,
-                  child: Center(child:body),
-                );
-              },
-            ),
-            controller: _refreshController,
-            child: ListView.separated(
-                padding: EdgeInsets.only(bottom: 20),
-                physics: ScrollPhysics(),
-                separatorBuilder: (context, index) => Divider(
-                      color: kInputBorderColor,
-                    ),
-                shrinkWrap: true,
-                itemCount: state.apps.length,
-
-                itemBuilder: (context, index) {
-                  var app = state.apps[index];
-
-                  return Container(
-                    height: 60,
-                    padding: EdgeInsets.all(15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                    return Container(
+                      height: 60,
+                      padding: EdgeInsets.all(15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                BlocBuilder<DynoCubit, DynoState>(
+                                    // ignore: missing_return
+                                    builder: (context, state) {
+                                  if (state is DynosFetchingState) {
+                                    return CircularProgress();
+                                  }
+                                  if (state is DynosFetchedState) {
+                                    return getAppStatusImage(
+                                        state.dynos[app.id][0].state);
+                                  }
+                                }),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  app.name,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      .copyWith(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w400),
+                                )
+                              ],
+                            ),
+                          ),
+                          Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              BlocBuilder<DynoCubit, DynoState>(
-                                  // ignore: missing_return
-                                  builder: (context, state) {
-                                if (state is DynosFetchingState) {
-                                  return CircularProgress();
-                                }
-                                if (state is DynosFetchedState) {
-                                  print("fetched dynos: ${state.dynos}");
-                                  return getAppStatusImage(
-                                      state.dynos[app.id][0].state);
-                                }
-                              }),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                app.name,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .copyWith(
-                                        fontSize: 17, fontWeight: FontWeight.w400),
-                              )
+                              if (getBuildpackImage(app.language) != null)
+                                getBuildpackImage(app.language),
+                              IconButton(
+                                  icon: Icon(
+                                    Icons.star_border,
+                                    color: kGreyTextColor,
+                                  ),
+                                  onPressed: null),
                             ],
                           ),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            if (getBuildpackImage(app.language) != null)
-                              getBuildpackImage(app.language),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.star_border,
-                                  color: kGreyTextColor,
-                                ),
-                                onPressed: null),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-          );
-        }
-      });
+                        ],
+                      ),
+                    );
+                  }),
+        );
+      }
+    });
   }
 
   void _onRefresh() async {
     context.read<AppsCubit>().fetchApps();
     await Future.delayed(Duration(seconds: 1));
     _refreshController.refreshCompleted();
+  }
+
+  void searchApp(String value) {
+    if (value.isNotEmpty) {
+      setState(() {
+        value = value.toLowerCase();
+        var searchResult = apps
+            .where((element) => element.name.toLowerCase().contains(value))
+            .toList();
+        print(searchResult);
+        appSearchResults = searchResult;
+        isSearching = true;
+      });
+    } else {
+      setState(() {
+        isSearching = false;
+      });
+    }
   }
 }
