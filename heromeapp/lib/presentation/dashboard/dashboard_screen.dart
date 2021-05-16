@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/apps/app_state.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/presentation/dashboard/buildpack_image_provider.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_appbar.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -14,7 +15,8 @@ class DashboardScreen extends StatefulWidget {
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenState extends State<DashboardScreen> with BuildpackImageProvider{
+
   @override
   void initState() {
     var cubit = BlocProvider.of<AppsCubit>(context);
@@ -171,6 +173,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       }
       if (state is AppsFetchedState) {
         return ListView.separated(
+          padding: EdgeInsets.only(bottom: 20),
+
           physics: ScrollPhysics(),
             separatorBuilder: (context, index) => Divider(
                   color: kInputBorderColor,
@@ -178,6 +182,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             shrinkWrap: true,
             itemCount: state.apps.length,
             itemBuilder: (context, index) {
+              var app = state.apps[index];
               return Container(
                 height: 60,
                 padding: EdgeInsets.all(15),
@@ -195,7 +200,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           SizedBox(width: 10,),
                           Text(
-                            state.apps[index].name,
+                            app.name,
                             style: Theme.of(context).textTheme.bodyText1.copyWith(
                               fontSize: 17,
                               fontWeight: FontWeight.w400
@@ -204,7 +209,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ],
                       ),
                     ),
-                    IconButton(icon: Icon(Icons.star_border, color: kDarkTextColor,), onPressed: null),
+                    Row(
+                      children: [
+                        if (getBuildpackImage(app.language) != null) getBuildpackImage(app.language),
+                        IconButton(icon: Icon(Icons.star_border, color: kDarkTextColor,), onPressed: null),
+                      ],
+                    ),
                   ],
                 ),
               );
