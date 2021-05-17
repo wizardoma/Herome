@@ -1,0 +1,151 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:heromeapp/commons/app/colors.dart';
+
+class DashboardProfileOverlay extends StatefulWidget {
+  @override
+  _DashboardProfileOverlayState createState() =>
+      _DashboardProfileOverlayState();
+}
+
+class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
+  GlobalKey _key = LabeledGlobalKey("avatar");
+  OverlayEntry _overlayEntry;
+  Size widgetSize;
+  Offset widgetPosition;
+  bool isMenuOpen = false;
+
+  findAvatarPosition() {
+    RenderBox renderBox = _key.currentContext.findRenderObject();
+    widgetSize = renderBox.size;
+    widgetPosition = renderBox.localToGlobal(Offset.zero);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        InkWell(
+          onTap: () => isMenuOpen ? closeMenu() : openMenu(),
+          child: Container(
+            key: _key,
+            padding: EdgeInsets.all(10),
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  "assets/images/ninja-avatar.png",
+                ),
+              ),
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 15,
+        ),
+      ],
+    );
+  }
+
+  OverlayEntry _overlayEntryBuilder() {
+    return OverlayEntry(
+      builder: (context) {
+        return Positioned(
+          top: widgetPosition.dy + widgetSize.height,
+          left: 50,
+          width: MediaQuery.of(context).size.width * 0.8,
+          child: Material(
+            elevation: 2.0,
+            color: kWhiteColor,
+            child: Container(
+//              width: 300,
+
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(top: BorderSide(color: kLightGrey)),
+                    ),
+                    padding: EdgeInsets.all(20),
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(
+                                  "assets/images/ninja-avatar.png",
+                                ),
+                              ),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Alexander Ibekason",
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Alibekason@gmail.com",
+                              style: TextStyle(color: kGreyTextColor),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      ListTile(
+                        leading: Icon(Icons.settings,color: kPrimaryColor,),
+                        title: Text("App Settings", style: Theme.of(context).textTheme.bodyText1,),
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.notifications,color: kPrimaryColor),
+                        title: Text("Notifications", style: Theme.of(context).textTheme.bodyText1,),
+                      ),
+                      Divider(),
+
+                      ListTile(
+                        leading: Icon(Icons.logout,color: kPrimaryColor),
+                        title: Text("Sign out", style: Theme.of(context).textTheme.bodyText1,),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void openMenu() {
+    findAvatarPosition();
+    _overlayEntry = _overlayEntryBuilder();
+    Overlay.of(context).insert(_overlayEntry);
+    setState(() {
+      isMenuOpen = !isMenuOpen;
+    });
+  }
+
+  void closeMenu() {
+    _overlayEntry.remove();
+    setState(() {
+      isMenuOpen = !isMenuOpen;
+    });
+  }
+}

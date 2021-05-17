@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/presentation/dashboard/dashboard_profile_overlay.dart';
 
 class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -63,23 +64,9 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       shadowColor: kPrimaryColor,
       actions: [
-        Container(
-          padding: EdgeInsets.all(10),
-          width: 35,
-          height: 35,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                "assets/images/ninja-avatar.png",
-              ),
-            ),
-            shape: BoxShape.circle,
-          ),
-        ),
-        SizedBox(
-          width: 15,
-        )
+        DashboardProfileOverlay(),
       ],
+
     );
   }
 
