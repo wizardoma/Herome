@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heromeapp/application/accounts/account_cubit.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/domain/account/account.dart';
+
+
 
 class DashboardProfileOverlay extends StatefulWidget {
   @override
@@ -50,6 +55,7 @@ class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
   }
 
   OverlayEntry _overlayEntryBuilder() {
+    Account account = context.read<AccountCubit>().getAccount();
     return OverlayEntry(
       builder: (context) {
         return Positioned(
@@ -90,14 +96,14 @@ class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              "Alexander Ibekason",
+                              account.name,
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              "Alibekason@gmail.com",
+                              account.email,
                               style: TextStyle(color: kGreyTextColor),
                             ),
                           ),
