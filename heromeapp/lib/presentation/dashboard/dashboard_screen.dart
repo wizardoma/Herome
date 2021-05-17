@@ -44,7 +44,6 @@ class _DashboardScreenState extends State<DashboardScreen>
       body: Container(
         child: Column(
           children: [
-            newAppSection(),
             filterAppSection(),
             Expanded(child: listAppsSection()),
 
@@ -55,84 +54,6 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget newAppSection() {
-    return Container(
-      decoration: BoxDecoration(
-          color: kFooterBackgroundColor,
-          border: Border(bottom: BorderSide(color: Colors.grey.shade300))),
-      height: 70,
-      padding: EdgeInsets.all(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 60,
-            padding: EdgeInsets.all(5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.person_pin,
-                  color: kPrimaryColor,
-                  size: 30,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  "Personal",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Icon(
-                  Icons.double_arrow,
-                  color: kPrimaryColor,
-                  size: 12,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 70,
-            height: 60,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: kWhiteColor,
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: kPrimaryColor),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Spacer(),
-                Text(
-                  "New",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline1
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-                Icon(
-                  Icons.double_arrow,
-                  color: kPrimaryColor,
-                  size: 12,
-                ),
-                Spacer(),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
 
   Widget filterAppSection() {
     return Container(

@@ -9,6 +9,7 @@ import 'package:splashscreen/splashscreen.dart' as sp;
 
 class SplashScreen extends StatefulWidget {
   static const routeName = "/splash";
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -22,39 +23,34 @@ class _SplashScreenState extends State<SplashScreen> {
         colors: [kPrimaryColor, kDeepPurple1],
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-
       ),
       backgroundColor: kDeepPurple1,
-      navigateAfterFuture:
-      checkAuth().then((value) {
-        String screenName ;
+      navigateAfterFuture: checkAuth().then((value) {
+        String screenName;
         if (value) {
-
-          screenName =  DashboardScreen.routeName;
-        }
-        else {
+          screenName = DashboardScreen.routeName;
+        } else {
           screenName = LoginScreen.routeName;
         }
         return screenName;
-      })
-      ,
+      }),
     );
   }
 
   Future<bool> checkAuth() async {
     var authBloc = context.read<AuthenticationBloc>();
 
-    if (authBloc.state is AuthenticationUnInitialized){
+    if (authBloc.state is AuthenticationUnInitialized) {
       // Wait for authbloc to initialize authentication
       await Future.delayed(Duration(seconds: 2));
-
     }
 
-    if (authBloc.state is Authenticated){
+    if (authBloc.state is Authenticated) {
       return true;
     }
 
-    if (authBloc.state is AuthenticationError || authBloc.state is NotAuthenticated) {
+    if (authBloc.state is AuthenticationError ||
+        authBloc.state is NotAuthenticated) {
       return false;
     }
   }

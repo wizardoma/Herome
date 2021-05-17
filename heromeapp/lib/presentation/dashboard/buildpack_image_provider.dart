@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:heromeapp/commons/app/colors.dart';
 
 mixin BuildpackImageProvider {
-  Image getBuildpackImage(String buildpack) {
+  Widget getBuildpackImage(String buildpack) {
     buildpack = buildpack.toLowerCase();
     if (buildpack.contains("java")) {
       return getImage("assets/icons/java.png");
@@ -30,12 +30,17 @@ mixin BuildpackImageProvider {
     }
   }
 
-  Image getImage(String asset) {
-    return Image.asset(
-      asset,
-      height: 30,
+  Widget getImage(String asset) {
+    return Container(
       width: 30,
-      color: kGreyTextColor,
+        height: 30,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            colorFilter: ColorFilter.mode(kDarkGrey, BlendMode.softLight),
+            image: AssetImage(asset,) ,),
+
+        ),
+
     );
   }
 }
