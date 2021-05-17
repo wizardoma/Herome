@@ -4,38 +4,45 @@ import 'package:heromeapp/application/authentication/auth_state.dart';
 import 'package:heromeapp/application/authentication/login_request.dart';
 import 'package:heromeapp/domain/auth/auth_service.dart';
 
-class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
+class AuthenticationBloc
+    extends Bloc<AuthenticationEvent, AuthenticationState> {
   final AuthenticationService authenticationService;
-  AuthenticationBloc(this.authenticationService) : super(AuthenticationUnInitialized());
+
+  AuthenticationBloc(this.authenticationService)
+      : super(AuthenticationUnInitialized());
 
   @override
-  Stream<AuthenticationState> mapEventToState(AuthenticationEvent event) async*{
-    if (event is InitializeAuthEvent){
+  Stream<AuthenticationState> mapEventToState(
+      AuthenticationEvent event) async* {
+    if (event is InitializeAuthEvent) {
       yield await tryAuthentication();
-
     }
     if (event is LoginEvent) {
       yield Authenticating();
       yield await login(event.loginRequest);
     }
+
+    if (event is LogoutEvent) {
+      yield logout();
+    }
   }
 
-  Future<AuthenticationState> tryAuthentication() async{
+  AuthenticationState logout() {
+    authenticationService.logout();
+    return NotAuthenticated();
+  }
 
-    var authenticated = await  authenticationService.isAuthenticated();
+  Future<AuthenticationState> tryAuthentication() async {
+    var authenticated = await authenticationService.isAuthenticated();
     return !authenticated ? AuthenticationError("") : Authenticated();
   }
 
   Future<AuthenticationState> login(LoginRequest loginRequest) async {
-    var response =await authenticationService.authenticate(loginRequest);
-    if (!response.isError){
+    var response = await authenticationService.authenticate(loginRequest);
+    if (!response.isError) {
       return Authenticated();
-    }
-
-    else {
+    } else {
       return AuthenticationError(response.errors.message);
-
     }
-
   }
 }

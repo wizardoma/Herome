@@ -26,5 +26,10 @@ class HerokuAuthenticationService extends AuthenticationService {
     return isAuthenticated;
   }
 
+  @override
+  void logout() {
+    _store.deleteToken();
+  }
+
 
 }

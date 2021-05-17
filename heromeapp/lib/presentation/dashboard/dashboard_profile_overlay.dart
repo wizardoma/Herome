@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/accounts/account_cubit.dart';
+import 'package:heromeapp/application/authentication/auth_bloc.dart';
+import 'package:heromeapp/application/authentication/auth_event.dart';
 import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/domain/account/account.dart';
+import 'package:heromeapp/presentation/splash/splash_screen.dart';
 
 
 
@@ -127,6 +130,11 @@ class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
                       ListTile(
                         leading: Icon(Icons.logout,color: kPrimaryColor),
                         title: Text("Sign out", style: Theme.of(context).textTheme.bodyText1,),
+                        onTap: () {
+                          _overlayEntry.remove();
+                          context.read<AuthenticationBloc>().add(LogoutEvent());
+                          Navigator.pushNamedAndRemoveUntil(context, SplashScreen.routeName, (route) => false);
+                        },
                       ),
                     ],
                   )

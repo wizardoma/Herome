@@ -5,6 +5,7 @@ import '../response.dart';
 
 abstract class AuthenticationService extends Service {
   Future<ResponseEntity> authenticate(LoginRequest request);
+  void logout();
   Future<bool> isAuthenticated();
 
 

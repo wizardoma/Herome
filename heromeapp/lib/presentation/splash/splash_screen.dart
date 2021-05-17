@@ -54,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
       return true;
     }
 
-    if (authBloc.state is AuthenticationError) {
+    if (authBloc.state is AuthenticationError || authBloc.state is NotAuthenticated) {
       return false;
     }
   }
