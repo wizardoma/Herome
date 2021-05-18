@@ -49,7 +49,7 @@ class DynoProvider {
 
     // wait until all dynos are fetched
     while (counter != appIds.length){
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(Duration(milliseconds: 500));
     }
 
     return ResponseEntity(false, dynos, null);
