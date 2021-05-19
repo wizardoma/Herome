@@ -76,39 +76,30 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Widget filterAppSection() {
     return Container(
-      height: 70,
-      padding: EdgeInsets.all(20),
-      child: Row(
-        children: [
-          Flexible(
-            flex: 1,
-            child: TextField(
-              onChanged: searchApp,
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: kDarkTextColor,
-                ),
-                contentPadding: EdgeInsets.all(10),
-                hintText: "Filter apps and pipelines",
-                hintStyle: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    .copyWith(fontSize: 14, fontWeight: FontWeight.w400),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide(color: kInputBorderColor)),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide(color: kPurpleColor)),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide(color: kInputBorderColor)),
-              ),
-            ),
+      height: 100,
+      child: TextField(
+        onChanged: searchApp,
+        decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.search,
+            color: kDarkTextColor,
           ),
-          Flexible(child: SizedBox()),
-        ],
+          contentPadding: EdgeInsets.all(10),
+          hintText: "Filter apps and pipelines",
+          hintStyle: Theme.of(context)
+              .textTheme
+              .bodyText1
+              .copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+          border: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(color: kInputBorderColor)),
+          focusedBorder: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(color: kPurpleColor)),
+          enabledBorder: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(color: kInputBorderColor)),
+        ),
       ),
     );
   }

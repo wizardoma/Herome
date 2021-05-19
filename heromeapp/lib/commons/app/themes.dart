@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:heromeapp/commons/app/colors.dart';
 
 var kMainTheme = ThemeData.light().copyWith(
+  scaffoldBackgroundColor: kWhiteColor,
   primaryTextTheme: TextTheme(
     headline6: TextStyle(
       fontWeight: FontWeight.w400,
