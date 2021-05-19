@@ -6,6 +6,9 @@ import 'package:heromeapp/presentation/dashboard/dashboard_profile_overlay.dart'
 import 'package:heromeapp/presentation/dashboard/dashboard_screen.dart';
 
 class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String appName;
+
+  const DashboardAppBar({Key key, this.appName}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -28,7 +31,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text("myjournserver", style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  Text(appName, style: Theme.of(context).textTheme.bodyText1.copyWith(
                     wordSpacing: 1.4
                   ),),
                   Icon(

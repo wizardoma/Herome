@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:heromeapp/application/apps/apps_cubit.dart';
+import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_appbar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppScreen extends StatefulWidget {
   static const routeName = "/app";
@@ -10,11 +13,18 @@ class AppScreen extends StatefulWidget {
 
 class _AppScreenState extends State<AppScreen> {
   int _currNavIndex = 0;
+  App _app;
+
+  @override
+  void initState() {
+    _app = context.read<AppsCubit>().getCurrentApp();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DashboardAppBar(),
+      appBar: DashboardAppBar(appName: _app.name),
       bottomNavigationBar: getNavBar(),
       body: Text("Hello"),
     );
