@@ -44,13 +44,13 @@ class _DashboardScreenState extends State<DashboardScreen>
         backgroundColor: kWhiteColor,
         leading: IconButton(
           onPressed: () {},
-          icon: Icon(Icons.close, ),
+          icon: Icon(Icons.close, color: Colors.black87, ),
         ),
         elevation: 0,
         title: Text("Select a project"),
         actions: [
           PopupMenuButton(
-            icon: Icon(Icons.more_vert),
+            icon: Icon(Icons.more_vert, color: Colors.black87,),
             padding: EdgeInsets.all(0),
             itemBuilder: (context) => [
               PopupMenuItem(
@@ -76,6 +76,9 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Widget filterAppSection() {
     return Container(
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: kInputBorderColor, width: 0.5),)
+      ),
       height: 100,
       child: TextField(
         onChanged: searchApp,
@@ -84,12 +87,9 @@ class _DashboardScreenState extends State<DashboardScreen>
             Icons.search,
             color: kDarkTextColor,
           ),
-          contentPadding: EdgeInsets.all(10),
-          hintText: "Filter apps and pipelines",
-          hintStyle: Theme.of(context)
-              .textTheme
-              .bodyText1
-              .copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+//          contentPadding: EdgeInsets.all(20),
+          hintText: "Filter apps",
+          hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
           border: UnderlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(color: kInputBorderColor)),
