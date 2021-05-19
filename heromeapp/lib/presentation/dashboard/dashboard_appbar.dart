@@ -3,70 +3,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_profile_overlay.dart';
+import 'package:heromeapp/presentation/dashboard/dashboard_screen.dart';
 
 class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      systemOverlayStyle: SystemUiOverlayStyle.light,
       leadingWidth: 0,
+      elevation: 0,
       backgroundColor: kWhiteColor,
-      title: Row(
-        children: [
-          Row(
+      automaticallyImplyLeading: false,
+      title: Container(
+        child: InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, DashboardScreen.routeName);
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
-                "assets/logos/logo.jpg",
-                width: 40,
-                height: 40,
-              ),
-              SizedBox(
-                width: 4,
-              ),
               Text(
-                "HEROME",
-                style: Theme.of(context).textTheme.headline1.copyWith(
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 1.1,
-                    fontSize: 17),
+                "App",
+                style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
               ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text("myjournserver", style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    wordSpacing: 1.4
+                  ),),
+                  Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.black87,
+                  ),
+                ],
+              )
             ],
           ),
-          Spacer(),
-          Container(
-            width: 150,
-            height: 35,
-            child: TextField(
-              style: Theme.of(context).textTheme.bodyText1,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(7),
-                hintText: "Jump to Favorites, Apps, Pipelines...",
-                hintStyle: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    .copyWith(fontSize: 17, fontWeight: FontWeight.w400),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(3),
-                    borderSide: BorderSide(color: kDarkGrey)),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(3),
-                    borderSide: BorderSide(color: kPurpleColor)),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(3),
-                    borderSide: BorderSide(color: kDarkGrey)),
-              ),
-            ),
-          ),
-          Spacer(
-            flex: 2,
-          )
-        ],
+        ),
       ),
-      shadowColor: kPurpleColor,
       actions: [
         DashboardProfileOverlay(),
       ],
-
     );
   }
 

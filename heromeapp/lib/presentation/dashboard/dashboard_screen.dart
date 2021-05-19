@@ -9,6 +9,7 @@ import 'package:heromeapp/application/dyno/dyno_cubit.dart';
 import 'package:heromeapp/application/dyno/dyno_state.dart';
 import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/domain/apps/app.dart';
+import 'package:heromeapp/presentation/app/app_screen.dart';
 import 'package:heromeapp/presentation/dashboard/app_status_image_provider.dart';
 import 'package:heromeapp/presentation/dashboard/buildpack_image_provider.dart';
 import 'package:heromeapp/presentation/widgets/circular_progress_primary.dart';
@@ -157,8 +158,14 @@ class _DashboardScreenState extends State<DashboardScreen>
                   shrinkWrap: true,
                   itemCount: appsList.length,
                   itemBuilder: (context, index) {
-                    var app = appsList[index];
+                    App app = appsList[index];
                     return ListTile(
+                      onTap: () => {
+                        Navigator.pushNamed(context, AppScreen.routeName,
+                            arguments: {
+                              "appId": app.id,
+                            })
+                      },
                       leading: Icon(
                         Icons.done,
                         color: kPurpleColor,

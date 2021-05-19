@@ -28,6 +28,12 @@ var kMainTheme = ThemeData(
     headline3: TextStyle(
       color: kLightGrey,
     ),
+    bodyText1: TextStyle(
+        color: Colors.black87, fontSize: 15
+    ),
+    bodyText2: TextStyle(
+      color: kGreyTextColor, fontSize: 15
+    ),
     headline4: TextStyle(
       color: kPurpleColor,
       fontSize: 16,
