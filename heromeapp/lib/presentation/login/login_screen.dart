@@ -1,18 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
 import 'package:heromeapp/application/authentication/auth_event.dart';
 import 'package:heromeapp/application/authentication/auth_state.dart';
 import 'package:heromeapp/application/authentication/login_request.dart';
 import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/commons/utils/input_validator.dart';
+import 'package:heromeapp/presentation/app/app_screen.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_screen.dart';
 import 'package:heromeapp/presentation/login/login_textfield.dart';
 import 'package:heromeapp/presentation/widgets/circular_progress_primary.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = "/login";
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -37,10 +40,12 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
     return Scaffold(
       body: SingleChildScrollView(
         child: BlocListener<AuthenticationBloc, AuthenticationState>(
-          listener: (ctx, state) {
+          listener: (ctx, state) async {
+            var list = await context.read<AppsCubit>().fetchApps();
+            var screenName =
+                list.isEmpty ? DashboardScreen.routeName : AppScreen.routeName;
             if (state is Authenticated)
-              Navigator.pushReplacementNamed(
-                  context, DashboardScreen.routeName);
+              Navigator.pushReplacementNamed(context, screenName);
           },
           child: Container(
             alignment: Alignment.center,
@@ -146,10 +151,10 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
                 Container(
                   child: Text(
                     "Log in to your account",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4
-                        .copyWith(fontSize: 25, color: kPurpleColor, ),
+                    style: Theme.of(context).textTheme.headline4.copyWith(
+                          fontSize: 25,
+                          color: kPurpleColor,
+                        ),
                   ),
                 ),
                 if (isSubmitError) errorAlert(),
@@ -215,7 +220,9 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {
           if (state is Authenticating) {
-            return CircularProgress(color: kWhiteColor,);
+            return CircularProgress(
+              color: kWhiteColor,
+            );
           }
           return Text(
             "Log In",
