@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return sp.SplashScreen(
       image: Image.asset("assets/logos/logo.jpg"),
       gradientBackground: LinearGradient(
-        colors: [kPrimaryColor, kDeepPurple1],
+        colors: [kPurpleColor, kDeepPurple1],
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
       ),

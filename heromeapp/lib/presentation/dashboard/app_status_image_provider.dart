@@ -23,6 +23,6 @@ mixin AppStatusImageProvider {
   }
 
   Image getImage(String file){
-    return Image.asset(file, height: 35, width: 35, color: kPrimaryColor,);
+    return Image.asset(file, height: 35, width: 35, color: kPurpleColor,);
   }
 }

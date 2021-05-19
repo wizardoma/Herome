@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
       ),
       child: MaterialButton(
         onPressed: submit,
-        color: kPrimaryColor,
+        color: kPurpleColor,
         textColor: kWhiteColor,
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {

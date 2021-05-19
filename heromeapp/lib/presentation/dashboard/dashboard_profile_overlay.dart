@@ -117,18 +117,18 @@ class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
                   Column(
                     children: [
                       ListTile(
-                        leading: Icon(Icons.settings,color: kPrimaryColor,),
+                        leading: Icon(Icons.settings,color: kPurpleColor,),
                         title: Text("App Settings", style: Theme.of(context).textTheme.bodyText1,),
                       ),
                       Divider(),
                       ListTile(
-                        leading: Icon(Icons.notifications,color: kPrimaryColor),
+                        leading: Icon(Icons.notifications,color: kPurpleColor),
                         title: Text("Notifications", style: Theme.of(context).textTheme.bodyText1,),
                       ),
                       Divider(),
 
                       ListTile(
-                        leading: Icon(Icons.logout,color: kPrimaryColor),
+                        leading: Icon(Icons.logout,color: kPurpleColor),
                         title: Text("Sign out", style: Theme.of(context).textTheme.bodyText1,),
                         onTap: () {
                           _overlayEntry.remove();

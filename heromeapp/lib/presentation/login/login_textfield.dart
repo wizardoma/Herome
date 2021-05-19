@@ -27,18 +27,18 @@ class LoginTextField extends StatelessWidget {
           ),
           TextFormField(
             controller: editingController,
-            cursorColor: kPrimaryColor,
+            cursorColor: kPurpleColor,
             style: Theme.of(context).textTheme.bodyText1,
             obscureText: isPassword,
             decoration: InputDecoration(
               prefixIcon: Icon(
                 icon,
-                color: kPrimaryColor,
+                color: kPurpleColor,
               ),
               hintText: title,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
-                borderSide: BorderSide(color: kPrimaryColor),
+                borderSide: BorderSide(color: kPurpleColor),
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),

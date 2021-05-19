@@ -50,7 +50,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
                     borderSide: BorderSide(color: kDarkGrey)),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(3),
-                    borderSide: BorderSide(color: kPrimaryColor)),
+                    borderSide: BorderSide(color: kPurpleColor)),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(3),
                     borderSide: BorderSide(color: kDarkGrey)),
@@ -62,7 +62,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
           )
         ],
       ),
-      shadowColor: kPrimaryColor,
+      shadowColor: kPurpleColor,
       actions: [
         DashboardProfileOverlay(),
       ],

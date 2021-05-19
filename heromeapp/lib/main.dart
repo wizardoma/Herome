@@ -36,10 +36,12 @@ class MyApp extends StatelessWidget {
         BlocProvider.value(value: (ioc.getCubit(Cubits.Dyno) as DynoCubit)),
       ],
       child: MaterialApp(
+
         routes: appRoutes,
         title: "Herome",
         home: SplashScreen(),
         theme: kMainTheme,
+
       ),
     );
   }
