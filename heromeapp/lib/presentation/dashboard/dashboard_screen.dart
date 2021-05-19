@@ -9,6 +9,7 @@ import 'package:heromeapp/application/dyno/dyno_cubit.dart';
 import 'package:heromeapp/application/dyno/dyno_state.dart';
 import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/domain/apps/app.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/presentation/app/app_screen.dart';
 import 'package:heromeapp/presentation/dashboard/app_status_image_provider.dart';
 import 'package:heromeapp/presentation/dashboard/buildpack_image_provider.dart';
@@ -32,8 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   @override
   void initState() {
-    var cubit = BlocProvider.of<AppsCubit>(context);
-    cubit.fetchApps();
+    apps = context.read<AppsCubit>().getApps();
     super.initState();
   }
 
@@ -43,7 +43,11 @@ class _DashboardScreenState extends State<DashboardScreen>
       appBar: AppBar(
         backgroundColor: kWhiteColor,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          },
           icon: Icon(
             Icons.close,
             color: Colors.black87,
@@ -119,7 +123,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     return BlocConsumer<AppsCubit, AppsState>(listener: (context, state) {
       if (state is AppsFetchedState) {
         setState(() {
-          apps = state.apps;
+          apps = context.read<AppsCubit>().getApps();
         });
       }
     },
@@ -132,19 +136,22 @@ class _DashboardScreenState extends State<DashboardScreen>
       }
       if (state is AppsFetchedState) {
         var appsList = [];
-        if (isSearching)
+        if (isSearching) {
           appsList = appSearchResults;
-        else
+        } else {
+
           appsList = apps;
+        }
         return SmartRefresher(
           enablePullDown: true,
           onRefresh: _onRefresh,
           controller: _refreshController,
           child: appsList.length == 0
-              ? Center(
+              ? Container(
+                  alignment: Alignment.topCenter,
                   child: Text(
-                    "No Apps",
-                    style: Theme.of(context).textTheme.bodyText1,
+                    "You have no apps",
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 )
               : ListView.separated(
@@ -159,17 +166,16 @@ class _DashboardScreenState extends State<DashboardScreen>
                   itemCount: appsList.length,
                   itemBuilder: (context, index) {
                     App app = appsList[index];
+                    var appsCubit = context.read<AppsCubit>();
                     return ListTile(
-                      onTap: () => {
-                        Navigator.pushNamed(context, AppScreen.routeName,
-                            arguments: {
-                              "appId": app.id,
-                            })
-                      },
-                      leading: Icon(
-                        Icons.done,
-                        color: kPurpleColor,
-                        size: 35,
+                      onTap: () => _openAppScreen(app.id),
+                      leading:  Visibility(
+                        visible: isSelectedApp(appsCubit.getCurrentApp(), app.id),
+                        child: Icon(
+                          Icons.done,
+                          color: kPurpleColor,
+                          size: 35,
+                        ),
                       ),
                       title: Text(
                         app.name,
@@ -238,5 +244,16 @@ class _DashboardScreenState extends State<DashboardScreen>
         isSearching = false;
       });
     }
+  }
+
+  void _openAppScreen(String id) {
+    context.read<AppsCubit>().storeCurrentAppId(id);
+    Navigator.pushNamed(context, AppScreen.routeName, arguments: {
+      "appId": id,
+    });
+  }
+
+  bool isSelectedApp(App currentApp, String appId){
+    return currentApp != null && (currentApp.id == appId);
   }
 }
