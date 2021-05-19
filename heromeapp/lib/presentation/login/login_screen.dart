@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
             onPressed: () {},
             child: Text(
               "Sign Up",
-              style: Theme.of(context).textTheme.headline1.copyWith(
+              style: Theme.of(context).textTheme.headline4.copyWith(
                     decoration: TextDecoration.underline,
                     fontSize: 17,
                   ),
@@ -148,8 +148,8 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
                     "Log in to your account",
                     style: Theme.of(context)
                         .textTheme
-                        .headline1
-                        .copyWith(fontSize: 25),
+                        .headline4
+                        .copyWith(fontSize: 25, color: kPurpleColor, ),
                   ),
                 ),
                 if (isSubmitError) errorAlert(),

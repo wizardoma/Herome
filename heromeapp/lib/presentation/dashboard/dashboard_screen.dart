@@ -11,7 +11,6 @@ import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/presentation/dashboard/app_status_image_provider.dart';
 import 'package:heromeapp/presentation/dashboard/buildpack_image_provider.dart';
-import 'package:heromeapp/presentation/dashboard/dashboard_appbar.dart';
 import 'package:heromeapp/presentation/widgets/circular_progress_primary.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -44,13 +43,19 @@ class _DashboardScreenState extends State<DashboardScreen>
         backgroundColor: kWhiteColor,
         leading: IconButton(
           onPressed: () {},
-          icon: Icon(Icons.close, color: Colors.black87, ),
+          icon: Icon(
+            Icons.close,
+            color: Colors.black87,
+          ),
         ),
         elevation: 0,
         title: Text("Select a project"),
         actions: [
           PopupMenuButton(
-            icon: Icon(Icons.more_vert, color: Colors.black87,),
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.black87,
+            ),
             padding: EdgeInsets.all(0),
             itemBuilder: (context) => [
               PopupMenuItem(
@@ -77,9 +82,10 @@ class _DashboardScreenState extends State<DashboardScreen>
   Widget filterAppSection() {
     return Container(
       decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: kInputBorderColor, width: 0.5),)
-      ),
-      height: 100,
+          border: Border(
+        top: BorderSide(color: kInputBorderColor, width: 0.5),
+      )),
+      height: 70,
       child: TextField(
         onChanged: searchApp,
         decoration: InputDecoration(
@@ -140,57 +146,57 @@ class _DashboardScreenState extends State<DashboardScreen>
                   padding: EdgeInsets.only(bottom: 20),
                   physics: ScrollPhysics(),
                   separatorBuilder: (context, index) => Divider(
+                        height: 0.5,
+                        thickness: 0.5,
                         color: kInputBorderColor,
                       ),
                   shrinkWrap: true,
                   itemCount: appsList.length,
                   itemBuilder: (context, index) {
                     var app = appsList[index];
-
-                    return Container(
-                      height: 60,
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    return ListTile(
+                      leading: Icon(
+                        Icons.done,
+                        color: kPurpleColor,
+                        size: 35,
+                      ),
+                      title: Text(
+                        app.name,
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w400),
+                      ),
+                      subtitle: Row(
                         children: [
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                BlocBuilder<DynoCubit, DynoState>(
-                                    // ignore: missing_return
-                                    builder: (context, state) {
-                                  if (state is DynosFetchingState) {
-                                    return CircularProgress();
-                                  }
-                                  if (state is DynosFetchedState) {
-                                    return getAppStatusImage(
-                                        state.dynos[app.id][0].state);
-                                  }
-                                }),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  app.name,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1
-                                      .copyWith(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w400),
-                                )
-                              ],
-                            ),
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              if (getBuildpackImage(app.language) != null)
-                                getBuildpackImage(app.language),
-                            ],
-                          ),
+                          BlocBuilder<DynoCubit, DynoState>(
+                              // ignore: missing_return
+                              builder: (context, state) {
+                            if (state is DynosFetchingState) {
+                              return Text("Loading...");
+                            }
+                            if (state is DynosFetchedState) {
+                              return Row(
+                                children: [
+                                  Text(app.language),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text("-"),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(state.dynos[app.id][0].type),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text("-"),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(state.dynos[app.id][0].name),
+                                ],
+                              );
+                            }
+                          })
                         ],
                       ),
                     );
