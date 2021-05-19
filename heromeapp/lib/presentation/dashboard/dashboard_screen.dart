@@ -40,7 +40,27 @@ class _DashboardScreenState extends State<DashboardScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DashboardAppBar(),
+      appBar: AppBar(
+        backgroundColor: kWhiteColor,
+        leading: IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.close, ),
+        ),
+        elevation: 0,
+        title: Text("Select a project"),
+        actions: [
+          PopupMenuButton(
+            icon: Icon(Icons.more_vert),
+            padding: EdgeInsets.all(0),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: Text("Refresh"),
+                height: 10,
+              )
+            ],
+          )
+        ],
+      ),
       body: Container(
         child: Column(
           children: [
@@ -53,7 +73,6 @@ class _DashboardScreenState extends State<DashboardScreen>
       ),
     );
   }
-
 
   Widget filterAppSection() {
     return Container(
@@ -81,7 +100,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     borderSide: BorderSide(color: kInputBorderColor)),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide(color: kPrimaryColor)),
+                    borderSide: BorderSide(color: kPurpleColor)),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide(color: kInputBorderColor)),
@@ -179,7 +198,6 @@ class _DashboardScreenState extends State<DashboardScreen>
                             children: [
                               if (getBuildpackImage(app.language) != null)
                                 getBuildpackImage(app.language),
-
                             ],
                           ),
                         ],
