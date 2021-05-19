@@ -52,6 +52,9 @@ class _DashboardScreenState extends State<DashboardScreen>
         title: Text("Select a project"),
         actions: [
           PopupMenuButton(
+            onSelected: (val) {
+              context.read<AppsCubit>().fetchApps();
+            },
             icon: Icon(
               Icons.more_vert,
               color: Colors.black87,
@@ -61,6 +64,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               PopupMenuItem(
                 child: Text("Refresh"),
                 height: 10,
+                value: "refresh",
               )
             ],
           )
