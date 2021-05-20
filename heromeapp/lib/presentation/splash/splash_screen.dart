@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:heromeapp/application/apps/app_state.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
 import 'package:heromeapp/application/authentication/auth_state.dart';
@@ -9,7 +8,6 @@ import 'package:heromeapp/presentation/app/app_screen.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_screen.dart';
 import 'package:heromeapp/presentation/login/login_screen.dart';
 import 'package:splashscreen/splashscreen.dart' as sp;
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = "/splash";
@@ -33,14 +31,20 @@ class _SplashScreenState extends State<SplashScreen> {
         String screenName;
         if (value) {
           var appsCubit = context.read<AppsCubit>();
-          var appList = appsCubit.getApps();
-          if (appList == null) {
-            appList = await appsCubit.fetchApps();
-          }
-          if (appList.length == 0){
-          screenName = DashboardScreen.routeName; }
-          else {
+          bool isStored = await appsCubit.areAppsCached();
+          // if apps are already cached, navigate directly to appscreen
+          if (isStored) {
             screenName = AppScreen.routeName;
+          } else {
+            var appList = appsCubit.getApps();
+            if (appList == null) {
+              appList = await appsCubit.fetchApps();
+            }
+            if (appList.length == 0) {
+              screenName = DashboardScreen.routeName;
+            } else {
+              screenName = AppScreen.routeName;
+            }
           }
         } else {
           screenName = LoginScreen.routeName;
@@ -52,18 +56,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<bool> checkAuth() async {
     var authBloc = context.read<AuthenticationBloc>();
-
-    if (authBloc.state is AuthenticationUnInitialized) {
-      // Wait for authbloc to initialize authentication
-      await Future.delayed(Duration(seconds: 2));
-    }
-
-    if (authBloc.state is Authenticated) {
+    var isAuth = await authBloc.tryAuthentication();
+    if (isAuth is Authenticated) {
       return true;
     }
-
-    if (authBloc.state is AuthenticationError ||
-        authBloc.state is NotAuthenticated) {
+    else if (isAuth is NotAuthenticated) {
       return false;
     }
   }
