@@ -7,6 +7,8 @@ import 'package:heromeapp/domain/account/account_provider.dart';
 import 'package:heromeapp/domain/account/account_service.dart';
 import 'package:heromeapp/domain/account/account_service_impl.dart';
 import 'package:heromeapp/domain/api/dio_config.dart';
+import 'package:heromeapp/domain/apps/app_repository.dart';
+import 'package:heromeapp/domain/apps/app_repository_impl.dart';
 import 'package:heromeapp/domain/apps/app_service.dart';
 import 'package:heromeapp/domain/apps/app_service_impl.dart';
 import 'package:heromeapp/domain/apps/apps_provider.dart';
@@ -33,6 +35,9 @@ class IOC {
   AccountService _accountService;
   AppService _appService;
 
+  // repos
+
+  AppRepository _appRepository;
   // providers
   AuthProvider _authProvider;
   DynoProvider _dynoProvider;
@@ -68,12 +73,15 @@ class IOC {
     _accountProvider = AccountProvider(dio);
     _appProvider = AppProvider(dio);
 
+    // repos
+    _appRepository = AppRepositoryImpl();
+
     // services
     _authenticationService =
         HerokuAuthenticationService(_authProvider, _authStore);
     _accountService = HerokuAccountService(_accountProvider);
     _dynoService = DynoServiceImpl(_dynoProvider);
-    _appService = AppServiceImpl(_appProvider);
+    _appService = AppServiceImpl(_appProvider,_appRepository);
 
     //blocs
     _authenticationBloc = AuthenticationBloc(_authenticationService);

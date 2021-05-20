@@ -1,3 +1,5 @@
+import 'package:heromeapp/domain/apps/app.dart';
+import 'package:heromeapp/domain/apps/app_repository.dart';
 import 'package:heromeapp/domain/apps/app_service.dart';
 import 'package:heromeapp/domain/apps/apps_provider.dart';
 import 'package:heromeapp/domain/response.dart';
@@ -7,12 +9,16 @@ class AppServiceImpl extends AppService {
   final String prefName = "currentAppId";
 
   final AppProvider appProvider;
+  final AppRepository appRepository;
 
-  AppServiceImpl(this.appProvider);
+  AppServiceImpl(this.appProvider, this.appRepository);
 
   @override
   Future<ResponseEntity> fetchApps() async {
     var response = await appProvider.fetchApps();
+    if (!response.isError) {
+      appRepository.addAllApps(response.data);
+    }
     return response;
 //    return Future.value(ResponseEntity(false, [], null));
   }
@@ -27,5 +33,10 @@ class AppServiceImpl extends AppService {
   void storeCurrentAppId(String id) async {
     var pref = await SharedPreferences.getInstance();
     pref.setString(prefName, id);
+  }
+
+  @override
+  Future<List<App>> fetchStoredApps() async {
+    return await appRepository.fetchAllApps();
   }
 }
