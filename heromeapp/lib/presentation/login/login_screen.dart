@@ -41,11 +41,13 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
       body: SingleChildScrollView(
         child: BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (ctx, state) async {
-            var list = await context.read<AppsCubit>().fetchApps();
-            var screenName =
-                list.isEmpty ? DashboardScreen.routeName : AppScreen.routeName;
-            if (state is Authenticated)
+
+            if (state is Authenticated) {
+              var list = await context.read<AppsCubit>().fetchApps();
+              var screenName =
+              list.isEmpty ? DashboardScreen.routeName : AppScreen.routeName;
               Navigator.pushReplacementNamed(context, screenName);
+            }
           },
           child: Container(
             alignment: Alignment.center,
