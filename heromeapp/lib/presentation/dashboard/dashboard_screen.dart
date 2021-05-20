@@ -223,8 +223,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   void _onRefresh() async {
-    context.read<AppsCubit>().fetchApps();
-    await Future.delayed(Duration(seconds: 1));
+    await context.read<AppsCubit>().fetchApps();
     _refreshController.refreshCompleted();
   }
 

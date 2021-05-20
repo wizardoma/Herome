@@ -14,6 +14,7 @@ class AppsCubit extends Cubit<AppsState> {
     var apps = await appService.fetchStoredApps();
     if (apps != null && apps.length > 0) {
       _apps = apps;
+      emit(AppsFetchedState(_apps));
       var id = await _getCurrentAppId();
       _currentApp = apps.firstWhere((element) => element.id == id);
       return true;
