@@ -27,6 +27,8 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
   var isSubmitError = false;
   var serverErrorMessage = "An error occurred";
 
+  bool isObscure = true;
+
   @override
   void initState() {
     _emailEditingController = new TextEditingController();
@@ -200,6 +202,9 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
 
   Widget passwordField() {
     return LoginTextField(
+      isObscure: isObscure,
+      toggleObscurity: toggleObscurity,
+
       title: "Password",
       icon: Icons.lock,
       validator: validatePassword,
@@ -245,5 +250,12 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
       LoginRequest loginRequest = LoginRequest(email, password);
       context.read<AuthenticationBloc>().add(LoginEvent(loginRequest));
     }
+  }
+
+  void toggleObscurity(){
+    print("clicked obscure");
+    setState(() {
+      isObscure = !isObscure;
+    });
   }
 }

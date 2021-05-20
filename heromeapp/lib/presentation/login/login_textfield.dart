@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:heromeapp/commons/app/colors.dart';
 
+import '../../commons/app/colors.dart';
+
 class LoginTextField extends StatelessWidget {
   final String title;
   final IconData icon;
   final bool isPassword;
+  final bool isObscure;
   final Function(String) validator;
   final TextEditingController editingController;
+  final Function toggleObscurity;
 
   const LoginTextField(
-      {Key key, this.title, this.icon, this.validator, this.isPassword, this.editingController})
+      {Key key, this.title, this.icon, this.validator, this.isObscure, this.isPassword, this.editingController, this.toggleObscurity})
       : super(key: key);
 
   @override
@@ -29,8 +33,9 @@ class LoginTextField extends StatelessWidget {
             controller: editingController,
             cursorColor: kPurpleColor,
             style: Theme.of(context).textTheme.bodyText1,
-            obscureText: isPassword,
+            obscureText: isPassword && isObscure,
             decoration: InputDecoration(
+              suffixIcon: isPassword ? IconButton(icon: Icon(Icons.remove_red_eye, color: isObscure ? Colors.black87: kPurpleColor,), onPressed: toggleObscurity,): null,
               prefixIcon: Icon(
                 icon,
                 color: kPurpleColor,
