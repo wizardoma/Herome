@@ -1,9 +1,16 @@
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
+part 'app.g.dart';
 
+@HiveType(typeId: 0)
 class App {
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final String name;
+  @HiveField(2)
   final String webUrl;
+  @HiveField(3)
   final String language;
 
   const App({
@@ -13,7 +20,7 @@ class App {
     this.language = "",
   });
 
-  factory App.fromResponse(dynamic data){
+  factory App.fromResponse(dynamic data) {
     return App(
       id: data["id"],
       name: data["name"],
