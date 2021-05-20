@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:heromeapp/application/access/collaborator_cubit.dart';
 import 'package:heromeapp/application/access/collaborator_state.dart';
+import 'package:heromeapp/domain/access/collaborator.dart';
 import 'package:heromeapp/domain/apps/app.dart';
+import 'package:heromeapp/presentation/app_access/change_role_dialog.dart';
+import 'package:heromeapp/presentation/app_access/remove_collab_dialog.dart';
 import 'package:heromeapp/presentation/widgets/app_bottomnav_items_scaffolds.dart';
 import 'package:heromeapp/presentation/widgets/circular_progress_primary.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -74,6 +77,7 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
                       title: Text(collabs[index].userEmail),
                       subtitle: Text(collabs[index].role),
                       trailing: PopupMenuButton(
+                        onSelected: (value) => _selectRoleOptions(value, collabs[index]),
                         icon: Icon(Icons.more_vert, color: Colors.black87),
                         itemBuilder: (context) => [
                           PopupMenuItem(child: Text("Change Role"), value: "role",),
@@ -88,5 +92,20 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
       ),
       appBarTitle: 'Collaborators',
     );
+  }
+
+  void _selectRoleOptions(dynamic value, Collaborator collab){
+    switch (value) {
+      case "role":
+        showDialog(context: context, builder: (context) {
+        return ChangeRoleDialog(
+        );
+      });
+        break;
+
+      case "remove":
+        showDialog(context: context, builder: (context) => RemoveCollabDialog(userEmail: collab.userEmail, appName: widget.app.name,));
+    }
+
   }
 }
