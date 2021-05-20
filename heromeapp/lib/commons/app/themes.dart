@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:heromeapp/commons/app/colors.dart';
 
+import 'colors.dart';
+
 var kMainTheme = ThemeData(
+  appBarTheme: AppBarTheme(
+
+    color: kWhiteColor,
+    titleTextStyle: TextStyle(color: Colors.black87, ),
+    elevation: 0,
+
+
+  ),
   iconTheme: IconThemeData(color: Colors.black87),
   scaffoldBackgroundColor: kWhiteColor,
   primaryTextTheme: TextTheme(

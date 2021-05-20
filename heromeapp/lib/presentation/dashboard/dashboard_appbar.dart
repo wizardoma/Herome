@@ -12,8 +12,6 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leadingWidth: 0,
-      elevation: 0,
-      backgroundColor: kWhiteColor,
       automaticallyImplyLeading: false,
       title: Container(
         child: InkWell(

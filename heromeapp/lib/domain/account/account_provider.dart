@@ -4,6 +4,8 @@ import 'package:heromeapp/domain/api/heroku_api.dart';
 import 'package:heromeapp/domain/error_response.dart';
 import 'package:heromeapp/domain/response.dart';
 
+import '../error_response.dart';
+
 class AccountProvider {
   final Dio _dio;
 
@@ -15,7 +17,7 @@ class AccountProvider {
 
       return ResponseEntity(false, Account.fromResponse(response.data), null);
     } on DioError catch (e) {
-      var errorResponse = ErrorResponse.fromResponse(e.response.data);
+      var errorResponse = e.response != null ? ErrorResponse.fromResponse(e.response.data): ErrorResponse(id: "", message: "");
       return ResponseEntity(true, null, errorResponse);
     }
   }

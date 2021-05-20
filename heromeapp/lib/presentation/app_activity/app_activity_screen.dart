@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heromeapp/domain/apps/app.dart';
+import 'package:heromeapp/presentation/widgets/app_bottomnav_items_scaffolds.dart';
 
 class AppActivityScreen extends StatelessWidget {
 
@@ -8,9 +9,12 @@ class AppActivityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AppItemsScaffold(body: Center(
       child: Text("Activity"),
+    ), appBarTitle: 'Activity',
+
     );
   }
+
 
 }
