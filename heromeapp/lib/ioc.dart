@@ -1,8 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heromeapp/application/access/collaborator_cubit.dart';
 import 'package:heromeapp/application/accounts/account_cubit.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
 import 'package:heromeapp/application/dyno/dyno_cubit.dart';
+import 'package:heromeapp/domain/access/collaborator_provider.dart';
+import 'package:heromeapp/domain/access/collaborator_service.dart';
+import 'package:heromeapp/domain/access/collaborator_service_impl.dart';
 import 'package:heromeapp/domain/account/account_provider.dart';
 import 'package:heromeapp/domain/account/account_service.dart';
 import 'package:heromeapp/domain/account/account_service_impl.dart';
@@ -22,11 +26,11 @@ import 'package:heromeapp/domain/dyno/dyno_service_impl.dart';
 import 'package:heromeapp/domain/service.dart';
 
 // Custom inversion of control container
-enum Cubits { Account, Apps, Dyno }
+enum Cubits { Account, Apps, Dyno , Collab}
 
 enum Blocs { Authentication }
 
-enum Services { Account, Authentication, Apps, Dyno }
+enum Services { Account, Authentication, Apps, Dyno , Collab}
 
 class IOC {
   //services
@@ -34,11 +38,14 @@ class IOC {
   DynoService _dynoService;
   AccountService _accountService;
   AppService _appService;
+  CollaboratorService _collaboratorService;
 
   // repos
 
   AppRepository _appRepository;
   // providers
+
+  CollaboratorProvider _collaboratorProvider;
   AuthProvider _authProvider;
   DynoProvider _dynoProvider;
   AccountProvider _accountProvider;
@@ -50,6 +57,7 @@ class IOC {
   // blocs and cubit
   AuthenticationBloc _authenticationBloc;
   AccountCubit _accountCubit;
+  CollaboratorCubit _collaboratorCubit;
   DynoCubit _dynoCubit;
   AppsCubit _appsCubit;
 
@@ -72,6 +80,7 @@ class IOC {
     _dynoProvider = DynoProvider(dio);
     _accountProvider = AccountProvider(dio);
     _appProvider = AppProvider(dio);
+    _collaboratorProvider = CollaboratorProvider(dio);
 
     // repos
     _appRepository = AppRepositoryImpl();
@@ -82,6 +91,7 @@ class IOC {
     _accountService = HerokuAccountService(_accountProvider);
     _dynoService = DynoServiceImpl(_dynoProvider);
     _appService = AppServiceImpl(_appProvider,_appRepository);
+    _collaboratorService = CollaboratorServiceImpl(_collaboratorProvider);
 
     //blocs
     _authenticationBloc = AuthenticationBloc(_authenticationService);
@@ -90,10 +100,12 @@ class IOC {
         accountService: _accountService);
     _appsCubit = AppsCubit(_appService);
     _dynoCubit = DynoCubit(dynoService: _dynoService, appsCubit: _appsCubit);
+    _collaboratorCubit = CollaboratorCubit(_collaboratorService);
 
     blocMap.putIfAbsent(Blocs.Authentication, () => _authenticationBloc);
     cubitMap.putIfAbsent(Cubits.Account, () => _accountCubit);
     cubitMap.putIfAbsent(Cubits.Apps, () => _appsCubit);
+    cubitMap.putIfAbsent(Cubits.Collab, () => _collaboratorCubit);
     cubitMap.putIfAbsent(Cubits.Dyno, () => _dynoCubit);
 
     serviceMap.putIfAbsent(Services.Account, () => _accountService);
@@ -101,6 +113,7 @@ class IOC {
     serviceMap.putIfAbsent(
         Services.Authentication, () => _authenticationService);
     serviceMap.putIfAbsent(Services.Apps, () => _appService);
+    serviceMap.putIfAbsent(Services.Collab, () => _collaboratorService);
     serviceMap.putIfAbsent(Services.Dyno, () => _dynoService);
   }
 
