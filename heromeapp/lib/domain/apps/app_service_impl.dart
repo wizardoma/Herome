@@ -37,6 +37,7 @@ class AppServiceImpl extends AppService {
 
   @override
   Future<List<App>> fetchStoredApps() async {
-    return await appRepository.fetchAllApps();
+    var apps = await appRepository.fetchAllApps();
+    return apps;
   }
 }

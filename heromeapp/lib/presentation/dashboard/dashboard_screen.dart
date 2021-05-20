@@ -247,7 +247,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   void _openAppScreen(String id) {
     context.read<AppsCubit>().storeCurrentAppId(id);
-    Navigator.pushNamed(context, AppScreen.routeName, arguments: {
+    Navigator.pushNamedAndRemoveUntil(context, AppScreen.routeName, (route)=> false, arguments: {
       "appId": id,
     });
   }

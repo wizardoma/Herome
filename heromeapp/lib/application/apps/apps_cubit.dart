@@ -10,6 +10,18 @@ class AppsCubit extends Cubit<AppsState> {
 
   AppsCubit(this.appService) : super(AppsNotInitialized());
 
+  Future<bool> areAppsCached() async {
+    var apps = await appService.fetchStoredApps();
+    if (apps != null && apps.length > 0) {
+      _apps = apps;
+      var id = await _getCurrentAppId();
+      _currentApp = apps.firstWhere((element) => element.id == id);
+      return true;
+    }
+
+    return false;
+  }
+
   Future<List<App>> fetchApps() async {
     print("fetching apps");
     emit(AppsFetchingState());
@@ -22,7 +34,7 @@ class AppsCubit extends Cubit<AppsState> {
         emit(AppsFetchedState([]));
       } else {
         _apps = response.data;
-        fetchCurrentAppId();
+        fetchCurrentApp();
         emit(AppsFetchedState(data));
       }
 
@@ -37,9 +49,9 @@ class AppsCubit extends Cubit<AppsState> {
     _currentApp = _apps.firstWhere((element) => element.id == id);
   }
 
-  Future<App> fetchCurrentAppId() async {
+  Future<App> fetchCurrentApp() async {
     if (_currentApp == null) {
-      var appId = await _getAppId();
+      var appId = await _getCurrentAppId();
       if (appId == null) {
         appId = _apps[0].id;
       }
@@ -56,11 +68,12 @@ class AppsCubit extends Cubit<AppsState> {
     return _currentApp;
   }
 
-  List<App> getApps(){
+  List<App> getApps() {
+    print("getter for apps: $_apps");
     return _apps;
   }
 
-  Future<String> _getAppId() async {
+  Future<String> _getCurrentAppId() async {
     var appId = await appService.fetchCurrentAppId();
     return appId;
   }
