@@ -1,12 +1,13 @@
 class Build {
   final String id;
+  final String appId;
   final String date;
   final bool isDeploy;
   final String status;
   final String userEmail;
   final String version;
 
-  Build({this.id, this.date, this.isDeploy, this.status, this.userEmail, this.version});
+  Build({this.id, this.date, this.isDeploy, this.status, this.appId, this.userEmail, this.version});
 
   @override
   String toString() {

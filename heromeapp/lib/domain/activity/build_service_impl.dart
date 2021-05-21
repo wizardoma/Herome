@@ -21,6 +21,8 @@ class BuildServiceImpl extends BuildService {
             id: e["id"],
             date: e["updated_at"],
             isDeploy: true,
+            appId: e["app"]["id"],
+
             status: e["status"],
             userEmail: e["user"]["email"],
             version: e["source_blob"]["version"],
@@ -30,6 +32,7 @@ class BuildServiceImpl extends BuildService {
             id: e["id"],
             date: e["created_at"],
             isDeploy: false,
+            appId: e["app"]["id"],
             status: e["status"],
             userEmail: e["user"]["email"],
             version: e["source_blob"]["version"],
@@ -40,6 +43,8 @@ class BuildServiceImpl extends BuildService {
           builds.add(Build(
             id: e["id"],
             date: e["created_at"],
+            appId: e["app"]["id"],
+
             isDeploy: false,
             status: e["status"],
             userEmail: e["user"]["email"],

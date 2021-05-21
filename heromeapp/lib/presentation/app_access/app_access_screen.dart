@@ -21,22 +21,22 @@ class AppAccessScreen extends StatefulWidget {
 
 class _AppAccessScreenState extends State<AppAccessScreen> {
   RefreshController _refreshController;
-  CollaboratorCubit collaboratorCubit;
+  CollaboratorCubit _collaboratorCubit;
 
   void onRefresh() async {
-    await collaboratorCubit.fetchCollaborators(widget.app.id);
+    await _collaboratorCubit.fetchCollaborators(widget.app.id);
     _refreshController.refreshCompleted();
   }
 
   @override
   void initState() {
-    collaboratorCubit = context.read<CollaboratorCubit>();
-    print("init access ${collaboratorCubit.collabs}");
-    var hasFetched = collaboratorCubit.collabs.length > 0;
+    _collaboratorCubit = context.read<CollaboratorCubit>();
+    print("init access ${_collaboratorCubit.collabs}");
+    var hasFetched = _collaboratorCubit.collabs.length > 0;
     _refreshController = RefreshController(initialRefresh: false);
 
-    if (!hasFetched) {
-      collaboratorCubit.fetchCollaborators(widget.app.id);
+    if (!hasFetched || _collaboratorCubit.collabs[0].appId != widget.app.id) {
+      _collaboratorCubit.fetchCollaborators(widget.app.id);
     }
 
     super.initState();
@@ -73,15 +73,25 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
                   itemCount: collabs.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      leading: Icon(Icons.person, size: 30,),
+                      leading: Icon(
+                        Icons.person,
+                        size: 30,
+                      ),
                       title: Text(collabs[index].userEmail),
                       subtitle: Text(collabs[index].role),
                       trailing: PopupMenuButton(
-                        onSelected: (value) => _selectRoleOptions(value, collabs[index]),
+                        onSelected: (value) =>
+                            _selectRoleOptions(value, collabs[index]),
                         icon: Icon(Icons.more_vert, color: Colors.black87),
                         itemBuilder: (context) => [
-                          PopupMenuItem(child: Text("Change Role"), value: "role",),
-                          PopupMenuItem(child: Text("Remove"), value: "remove",),
+                          PopupMenuItem(
+                            child: Text("Change Role"),
+                            value: "role",
+                          ),
+                          PopupMenuItem(
+                            child: Text("Remove"),
+                            value: "remove",
+                          ),
                         ],
                       ),
                     );
@@ -94,18 +104,23 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
     );
   }
 
-  void _selectRoleOptions(dynamic value, Collaborator collab){
+  void _selectRoleOptions(dynamic value, Collaborator collab) {
     switch (value) {
       case "role":
-        showDialog(context: context, builder: (context) {
-        return ChangeRoleDialog(
-        );
-      });
+        showDialog(
+            context: context,
+            builder: (context) {
+              return ChangeRoleDialog();
+            });
         break;
 
       case "remove":
-        showDialog(context: context, builder: (context) => RemoveCollabDialog(userEmail: collab.userEmail, appName: widget.app.name,));
+        showDialog(
+            context: context,
+            builder: (context) => RemoveCollabDialog(
+                  userEmail: collab.userEmail,
+                  appName: widget.app.name,
+                ));
     }
-
   }
 }
