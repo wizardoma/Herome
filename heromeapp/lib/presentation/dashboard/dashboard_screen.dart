@@ -167,6 +167,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                     App app = appsList[index];
                     var appsCubit = context.read<AppsCubit>();
                     return ListTile(
+                      key: ValueKey(app.id),
+
                       onTap: () => _openAppScreen(app.id),
                       leading:  Visibility(
                         visible: isSelectedApp(appsCubit.getCurrentApp(), app.id),

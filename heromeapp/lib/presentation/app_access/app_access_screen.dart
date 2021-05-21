@@ -73,6 +73,7 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
                   itemCount: collabs.length,
                   itemBuilder: (context, index) {
                     return ListTile(
+                      key: ValueKey(collabs[index].id),
                       leading: Icon(
                         Icons.person,
                         size: 30,

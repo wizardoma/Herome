@@ -84,18 +84,21 @@ class _AppActivityScreenState extends State<AppActivityScreen> {
                         itemBuilder: (context, index) {
                           var build = builds[index];
                           return ListTile(
+                            key: ValueKey(build.id),
                             leading: getLeadingIcon(build),
-                            title: Row(
-                              children: [
-                                Text(
-                                  "${builds[index].userEmail}:",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                getBuildStatus(build),
-                              ],
+                            title: FittedBox(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "${builds[index].userEmail}:",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  getBuildStatus(build),
+                                ],
+                              ),
                             ),
                             subtitle: getBuildDate(build),
                           );
