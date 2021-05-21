@@ -4,8 +4,8 @@ import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/presentation/app_access/app_access_screen.dart';
 import 'package:heromeapp/presentation/app_activity/app_activity_screen.dart';
 import 'package:heromeapp/presentation/app_dashboard/app_dashboard_screen.dart';
-import 'package:heromeapp/presentation/app_metrics/app_metrics_screen.dart';
-import 'package:heromeapp/presentation/app_settings/app_settings_screen.dart';
+import 'package:heromeapp/presentation/app_monitoring/app_monitoring_screen.dart';
+import 'package:heromeapp/presentation/app_resources/app_resources_screen.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_appbar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,17 +19,17 @@ class AppScreen extends StatefulWidget {
 class _AppScreenState extends State<AppScreen> {
   int _currNavIndex = 0;
   App _app;
-  List<Widget> _children ;
+  List<Widget> _children;
 
   @override
   void initState() {
     _app = context.read<AppsCubit>().getCurrentApp();
     _children = [
       AppDashboardScreen(_app),
+      AppResourcesScreen(_app),
+      AppMonitoringScreen(_app),
       AppActivityScreen(_app),
-      AppMetricScreen(_app),
       AppAccessScreen(_app),
-      AppSettingsScreen(_app),
     ];
     super.initState();
   }
@@ -54,14 +54,13 @@ class _AppScreenState extends State<AppScreen> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard), label: "Dashboard"),
+              icon: Icon(Icons.dashboard_outlined), label: "Dashboard"),
+          BottomNavigationBarItem(icon: Icon(Icons.cloud_outlined), label: "Resources"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.insert_chart_outlined), label: "Monitoring"),
           BottomNavigationBarItem(
               icon: Icon(Icons.multiline_chart), label: "Activity"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart), label: "Metrics"),
           BottomNavigationBarItem(icon: Icon(Icons.security), label: "Access"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: "Settings"),
         ]);
   }
 }

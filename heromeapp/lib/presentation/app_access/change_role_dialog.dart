@@ -9,7 +9,7 @@ class ChangeRoleDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CollaboratorType type = CollaboratorType.collaborator;
+    CollaboratorType type;
     return StatefulBuilder(builder: (context, setState) {
       return AlertDialog(
         actions: [
