@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/access/collaborator_cubit.dart';
 import 'package:heromeapp/application/accounts/account_cubit.dart';
+import 'package:heromeapp/application/activity/build_cubit.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
 import 'package:heromeapp/application/dyno/dyno_cubit.dart';
@@ -10,6 +11,9 @@ import 'package:heromeapp/domain/access/collaborator_service_impl.dart';
 import 'package:heromeapp/domain/account/account_provider.dart';
 import 'package:heromeapp/domain/account/account_service.dart';
 import 'package:heromeapp/domain/account/account_service_impl.dart';
+import 'package:heromeapp/domain/activity/build_provider.dart';
+import 'package:heromeapp/domain/activity/build_service.dart';
+import 'package:heromeapp/domain/activity/build_service_impl.dart';
 import 'package:heromeapp/domain/api/dio_config.dart';
 import 'package:heromeapp/domain/apps/app_repository.dart';
 import 'package:heromeapp/domain/apps/app_repository_impl.dart';
@@ -26,17 +30,18 @@ import 'package:heromeapp/domain/dyno/dyno_service_impl.dart';
 import 'package:heromeapp/domain/service.dart';
 
 // Custom inversion of control container
-enum Cubits { Account, Apps, Dyno , Collab}
+enum Cubits { Account, Apps, Dyno , Collab, Build}
 
 enum Blocs { Authentication }
 
-enum Services { Account, Authentication, Apps, Dyno , Collab}
+enum Services { Account, Authentication, Apps, Dyno , Collab, Build}
 
 class IOC {
   //services
   AuthenticationService _authenticationService;
   DynoService _dynoService;
   AccountService _accountService;
+  BuildService _buildService;
   AppService _appService;
   CollaboratorService _collaboratorService;
 
@@ -48,6 +53,7 @@ class IOC {
   CollaboratorProvider _collaboratorProvider;
   AuthProvider _authProvider;
   DynoProvider _dynoProvider;
+  BuildProvider _buildProvider;
   AccountProvider _accountProvider;
   AppProvider _appProvider;
 
@@ -59,6 +65,7 @@ class IOC {
   AccountCubit _accountCubit;
   CollaboratorCubit _collaboratorCubit;
   DynoCubit _dynoCubit;
+  BuildCubit _buildCubit;
   AppsCubit _appsCubit;
 
   Map<Blocs, Bloc> blocMap = {};
@@ -79,6 +86,7 @@ class IOC {
     _authProvider = AuthProvider(dio);
     _dynoProvider = DynoProvider(dio);
     _accountProvider = AccountProvider(dio);
+    _buildProvider = BuildProvider(dio);
     _appProvider = AppProvider(dio);
     _collaboratorProvider = CollaboratorProvider(dio);
 
@@ -92,6 +100,7 @@ class IOC {
     _dynoService = DynoServiceImpl(_dynoProvider);
     _appService = AppServiceImpl(_appProvider,_appRepository);
     _collaboratorService = CollaboratorServiceImpl(_collaboratorProvider);
+    _buildService = BuildServiceImpl(_buildProvider);
 
     //blocs
     _authenticationBloc = AuthenticationBloc(_authenticationService);
@@ -101,12 +110,14 @@ class IOC {
     _appsCubit = AppsCubit(_appService);
     _dynoCubit = DynoCubit(dynoService: _dynoService, appsCubit: _appsCubit);
     _collaboratorCubit = CollaboratorCubit(_collaboratorService);
+    _buildCubit = BuildCubit(_buildService);
 
     blocMap.putIfAbsent(Blocs.Authentication, () => _authenticationBloc);
     cubitMap.putIfAbsent(Cubits.Account, () => _accountCubit);
     cubitMap.putIfAbsent(Cubits.Apps, () => _appsCubit);
     cubitMap.putIfAbsent(Cubits.Collab, () => _collaboratorCubit);
     cubitMap.putIfAbsent(Cubits.Dyno, () => _dynoCubit);
+    cubitMap.putIfAbsent(Cubits.Build, () => _buildCubit);
 
     serviceMap.putIfAbsent(Services.Account, () => _accountService);
 
