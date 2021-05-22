@@ -44,6 +44,7 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
         }
         if (state is DynosFetchedState) {
           var dynos = context.read<DynoCubit>().appDynos;
+          print("dyno $dynos");
           var account = context.read<AccountCubit>().getAccount();
 
           return Container(
@@ -79,15 +80,15 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
     var isAnyDynoDown = listOfDownDynos.length > 0;
     if (!isAnyDynoDown) {
       return getDynoStatusText(
-        icon: Icon(Icons.done_rounded, color: Colors.green,),
-        status: "${dynos.length}/${dynos.length} dynos report normal status",
+        icon: Icon(Icons.check_circle, color: Colors.green,),
+        status: "${dynos.length} of ${dynos.length} dynos report normal status",
       );
     }
 
     else {
       return getDynoStatusText(
         icon: Icon(Icons.cancel, color: kerrorTextColor,),
-        status: "${listOfDownDynos.length}/${dynos.length} dynos report down status",
+        status: "${listOfDownDynos.length} of ${dynos.length} dynos report down status",
       );
     }
   }
@@ -102,7 +103,7 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
         ),
         Text(status
           ,
-          style: TextStyle(decoration: TextDecoration.underline),
+          style: TextStyle(decoration: TextDecoration.underline, color: kPurpleColor),
         ),
       ],
     );

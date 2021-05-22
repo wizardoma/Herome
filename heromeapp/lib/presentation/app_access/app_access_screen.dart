@@ -60,7 +60,7 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
           }
           if (state is CollaboratorFetchError) {
             return Center(
-              child: Text(state.error),
+              child: Text(state.error == null ? "An Error Occurred. Please try again" : state.error),
             );
           }
           if (state is CollaboratorFetchedState) {
