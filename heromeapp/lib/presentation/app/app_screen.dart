@@ -56,6 +56,8 @@ class _AppScreenState extends State<AppScreen> {
           });
         },
         type: BottomNavigationBarType.fixed,
+        selectedFontSize: 11,
+        unselectedFontSize: 11,
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.dashboard_outlined), label: "Dashboard"),
@@ -70,6 +72,7 @@ class _AppScreenState extends State<AppScreen> {
   }
 
   void _openApp() async {
+
     if (await canLaunch(_app.webUrl)) {
       await launch(
         _app.webUrl,
