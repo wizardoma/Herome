@@ -28,6 +28,10 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
   @override
   void initState() {
     _dynoCubit = context.read<DynoCubit>();
+    var hasFetched = _dynoCubit.appDynos.length > 0;
+    if (!hasFetched || _dynoCubit.appDynos[0].appId != widget.app.id) {
+      _dynoCubit.fetchAppDynos(widget.app.id);
+    }
     _refreshController = RefreshController(initialRefresh: false);
     super.initState();
   }
