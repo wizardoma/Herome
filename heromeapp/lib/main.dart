@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/access/collaborator_cubit.dart';
 import 'package:heromeapp/application/accounts/account_cubit.dart';
 import 'package:heromeapp/application/activity/build_cubit.dart';
+import 'package:heromeapp/application/addon/addon_cubit.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
 import 'package:heromeapp/application/authentication/auth_event.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         BlocProvider.value(value: (ioc.getCubit(Cubits.Dyno) as DynoCubit)),
         BlocProvider.value(value: (ioc.getCubit(Cubits.Collab) as CollaboratorCubit)),
         BlocProvider.value(value: (ioc.getCubit(Cubits.Build) as BuildCubit)),
+        BlocProvider.value(value: (ioc.getCubit(Cubits.Addon) as AddonCubit))
 
       ],
       child: RefreshConfiguration(
