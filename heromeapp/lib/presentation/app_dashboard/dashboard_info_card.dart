@@ -13,7 +13,7 @@ class DashboardInfoCard extends StatelessWidget {
       padding: EdgeInsets.only(left: 15, right: 5,bottom: 15, top: 5),
       margin: EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(color: kInputBorderColor, width: 0.5)
       ),
       child: Column(
@@ -26,10 +26,11 @@ class DashboardInfoCard extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.bodyText1.copyWith(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 18
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16
                 ),
               ),
+
               Container(
                 child: IconButton(
                   icon: Icon(Icons.more_vert, color: kGreyTextColor,),

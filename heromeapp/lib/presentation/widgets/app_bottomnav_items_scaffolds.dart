@@ -7,22 +7,23 @@ class AppItemsScaffold extends StatelessWidget {
   final String appBarTitle;
   final Function onRefresh;
   final Widget body;
-
+  final Widget additionalActions;
 
   const AppItemsScaffold({
     @required this.appBarTitle,
     this.onRefresh,
     @required this.body,
+    this.additionalActions,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppScreenAppbar(
-        title: appBarTitle,
-        onRefresh: onRefresh
-      ),
-      body: body
-    );
+        appBar: AppScreenAppbar(
+          title: appBarTitle,
+          onRefresh: onRefresh,
+          additionalActions: additionalActions,
+        ),
+        body: body);
   }
 }

@@ -35,6 +35,7 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return AppItemsScaffold(
+      additionalActions: getAdditionalAction(),
       appBarTitle: 'Dashboard',
       body: BlocBuilder<DynoCubit, DynoState>(
           // ignore: missing_return
@@ -55,7 +56,7 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
               enablePullDown: true,
               child: ListView(children: [
                 DashboardInfoCard(
-                  title: "Heroku App Status",
+                  title: "Heroku App status",
                   child: getDynoStatus(dynos),
                 ),
                 DashboardInfoCard(
@@ -112,5 +113,9 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
   void onRefresh() async {
     await _dynoCubit.fetchAppDynos(widget.app.id);
     _refreshController.refreshCompleted();
+  }
+
+  Widget getAdditionalAction() {
+    return IconButton(icon: Icon(Icons.swap_vert, color: Colors.black87,), onPressed: (){});
   }
 }

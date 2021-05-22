@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class AppScreenAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Function onRefresh;
+  final Widget additionalActions;
 
-  const AppScreenAppbar({@required this.title, this.onRefresh});
+  const AppScreenAppbar({@required this.title, this.additionalActions, this.onRefresh});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,7 @@ class AppScreenAppbar extends StatelessWidget implements PreferredSizeWidget {
       ),
       automaticallyImplyLeading: false,
       actions: [
+        if (additionalActions!=null) additionalActions,
         PopupMenuButton(
           onSelected: (_) {
             onRefresh();
@@ -31,7 +33,7 @@ class AppScreenAppbar extends StatelessWidget implements PreferredSizeWidget {
                   ))
               .toList(),
           icon: Icon(Icons.more_vert, color: Colors.black87,),
-        )
+        ),
       ],
     );
   }
