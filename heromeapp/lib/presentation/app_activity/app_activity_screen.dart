@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/activity/build_cubit.dart';
 import 'package:heromeapp/application/activity/build_state.dart';
-import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/domain/activity/build.dart';
 import 'package:heromeapp/domain/apps/app.dart';

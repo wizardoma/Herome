@@ -46,12 +46,13 @@ class MyApp extends StatelessWidget {
         BlocProvider.value(value: (ioc.getCubit(Cubits.Apps) as AppsCubit)),
         BlocProvider.value(value: (ioc.getCubit(Cubits.Dyno) as DynoCubit)),
         BlocProvider.value(value: (ioc.getCubit(Cubits.Collab) as CollaboratorCubit)),
-        BlocProvider.value(value: (ioc.getCubit(Cubits.Build) as BuildCubit))
+        BlocProvider.value(value: (ioc.getCubit(Cubits.Build) as BuildCubit)),
 
       ],
       child: RefreshConfiguration(
 
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           routes: appRoutes,
           title: "Herome",
           home: SplashScreen(),

@@ -15,7 +15,7 @@ class AppScreenAppbar extends StatelessWidget implements PreferredSizeWidget {
         style: Theme.of(context)
             .textTheme
             .bodyText1
-            .copyWith(fontSize: 24, fontWeight: FontWeight.w500),
+            .copyWith(fontSize: 24, fontWeight: FontWeight.w400),
       ),
       automaticallyImplyLeading: false,
       actions: [
@@ -37,5 +37,5 @@ class AppScreenAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(35);
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -155,7 +157,6 @@ class _DashboardScreenState extends State<DashboardScreen>
                 )
               : ListView.separated(
                   padding: EdgeInsets.only(bottom: 20),
-                  physics: ScrollPhysics(),
                   separatorBuilder: (context, index) => Divider(
                         height: 0.5,
                         thickness: 0.5,
@@ -167,8 +168,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     App app = appsList[index];
                     var appsCubit = context.read<AppsCubit>();
                     return ListTile(
-                      key: ValueKey(app.id),
-
+                      key: Key(Random().nextDouble().toString()),
                       onTap: () => _openAppScreen(app.id),
                       leading:  Visibility(
                         visible: isSelectedApp(appsCubit.getCurrentApp(), app.id),
@@ -192,6 +192,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                               return Text("Loading...");
                             }
                             if (state is DynosFetchedState) {
+                              var dynos = context.read<DynoCubit>().allAppDynos;
                               return Row(
                                 children: [
                                   Text(app.language),
@@ -202,7 +203,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Text(state.dynos[app.id][0].type),
+                                  Text(dynos[app.id][0].type),
                                   SizedBox(
                                     width: 10,
                                   ),
@@ -210,7 +211,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Text(state.dynos[app.id][0].name),
+                                  Text(dynos[app.id][0].name),
                                 ],
                               );
                             }
