@@ -11,3 +11,8 @@ class DynosFetchedState extends DynoState{
 class DynosFetchingState extends DynoState {}
 
 class DynosUninitializedState extends DynoState {}
+class DynosFetchErrorState extends DynoState {
+  final String message;
+
+  DynosFetchErrorState(this.message);
+}
