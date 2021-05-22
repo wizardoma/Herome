@@ -38,7 +38,7 @@ class DashboardInfoCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 20,),
+          SizedBox(height: 15,),
           child
         ],
       ),
