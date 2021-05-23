@@ -12,7 +12,14 @@ class AddonProvider {
   Future<ResponseEntity> fetchAppAddons(String appId)async {
     try {
       var response = await dio.get("$AppsUrl/$appId/addons",);
-      List<Addon> addons = response.data.map((e) => Addon.fromResponse(e));
+      List<Addon> addons = [];
+      response.data.forEach((e) {
+        print("from response  ${e}");
+
+        var addon = Addon.fromResponse(e);
+        addons.add(addon);
+      });
+
       return ResponseEntity(false, addons, null);
     } on DioError catch (e) {
       print("Error in addons fetching: ${e.response}");

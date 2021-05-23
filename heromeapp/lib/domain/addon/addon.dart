@@ -1,10 +1,10 @@
-import 'package:heromeapp/domain/addon/dyno_action.dart';
-import 'package:heromeapp/domain/addon/dyno_billing.dart';
+import 'package:heromeapp/domain/addon/addon_action.dart';
+import 'package:heromeapp/domain/addon/addon_billing.dart';
 
 class Addon {
   final String id;
   final String appId;
-  final List<DynoAction> actions;
+  final List<AddonAction> actions;
   final List<String> configVars;
   final String createdAt;
   final String name;
@@ -12,41 +12,53 @@ class Addon {
   final String planName;
   final String state;
   final String webUrl;
-  final DynoBilling billing;
+  final AddonBilling billing;
 
-  Addon({this.id, this.appId, this.actions, this.configVars, this.createdAt, this.name, this.addonServiceName, this.planName, this.state, this.webUrl, this.billing});
+  const Addon(
+      {this.id,
+      this.appId,
+      this.actions,
+      this.configVars,
+      this.createdAt,
+      this.name,
+      this.addonServiceName,
+      this.planName,
+      this.state,
+      this.webUrl,
+      this.billing});
 
   factory Addon.fromResponse(dynamic data) {
-    List<DynoAction> actions;
-    DynoBilling billing;
-
-    if (data["actions"]!=null){
-      actions = _getActions(data["actions"]);
+    List<AddonAction> actions = [];
+    AddonBilling billing;
+    List<String> configVars = [];
+    if (data["config_vars"]!=null){
+      data["config_vars"].forEach((e) => configVars.add(e.toString()));
     }
 
-    if (data["billed_price"]){
-      billing = DynoBilling.fromData(data["billed_price"]);
+    if (data["actions"] != null) {
+      data["actions"].forEach((e) {
+        var addonAction = AddonAction.fromData(e);
+       actions.add(addonAction);
+      });
     }
-    return Addon(
-      id: data["id"],
-      appId: data["app"]["id"],
-      configVars: data["config_vars"].map((e) => e.toString()).toList(),
-      createdAt: data["created_at"],
-      name: data["name"],
-      addonServiceName: data["addon_service"]["name"],
-      planName: data["plan"]["name"],
-      state: data["state"],
-      webUrl: data["webUrl"],
-      billing: billing,
-      actions: actions
-    );
-  }
 
-  static List<DynoAction> _getActions(data) {
-    return data.map((e) {
-      return DynoAction.fromData(e);
-    }).toList();
+    if (data["billed_price"]!=null) {
+      billing = AddonBilling.fromData(data["billed_price"]);
+    }
+    var addon = Addon(
+        id: data["id"],
+        appId: data["app"]["id"],
+        configVars: configVars,
+        createdAt: data["created_at"],
+        name: data["name"],
+        addonServiceName: data["addon_service"]["name"],
+        planName: data["plan"]["name"],
+        state: data["state"],
+        webUrl: data["webUrl"],
+        billing: billing,
+        actions: actions);
+    print("addon class: $addon");
+    return addon;
   }
-
 
 }

@@ -38,6 +38,7 @@ class _AppActivityScreenState extends State<AppActivityScreen> {
       _buildCubit.fetchBuilds(widget.app.id);
     }
 
+
     super.initState();
   }
 

@@ -2,9 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/accounts/account_cubit.dart';
+import 'package:heromeapp/application/addon/addon_cubit.dart';
+import 'package:heromeapp/application/addon/addon_state.dart';
 import 'package:heromeapp/application/dyno/dyno_cubit.dart';
 import 'package:heromeapp/application/dyno/dyno_state.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/domain/addon/addon.dart';
 import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/domain/dyno/dyno.dart';
 import 'package:heromeapp/presentation/app_dashboard/dashboard_info_card.dart';
@@ -24,13 +27,20 @@ class AppDashboardScreen extends StatefulWidget {
 class _AppDashboardScreenState extends State<AppDashboardScreen> {
   RefreshController _refreshController;
   DynoCubit _dynoCubit;
+  AddonCubit _addonCubit;
 
   @override
   void initState() {
     _dynoCubit = context.read<DynoCubit>();
-    var hasFetched = _dynoCubit.appDynos.length > 0;
-    if (!hasFetched || _dynoCubit.appDynos[0].appId != widget.app.id) {
+    _addonCubit = context.read<AddonCubit>();
+
+    var hasFetchedDynos = _dynoCubit.appDynos.length > 0;
+    if (!hasFetchedDynos || _dynoCubit.appDynos[0].appId != widget.app.id) {
       _dynoCubit.fetchAppDynos(widget.app.id);
+    }
+    var hasFetchedAddons = _addonCubit.addons.length > 0;
+    if (!hasFetchedAddons || _addonCubit.addons[0].appId != widget.app.id) {
+      _addonCubit.fetchAppAddons(widget.app.id);
     }
     _refreshController = RefreshController(initialRefresh: false);
     super.initState();
@@ -65,9 +75,29 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
                 ),
                 DashboardInfoCard(
                   title: "Billing",
-                  child: !account.verified
-                      ? Text("Billing is not enabled")
-                      : Text("Billing is enabled"),
+                  child: BlocBuilder<AddonCubit, AddonState>(
+                      // ignore: missing_return
+                      builder: (context, state) {
+                        if (state is AddonFetchingState) {
+                          return CircularProgress();
+                        }
+                        if (state is AddonFetchErrorState){
+                          return Text(state.error == null ? "An error occurred, try again" : state.error);
+                        }
+                        if (state is AddonFetchedStated) {
+                          if (!account.verified) {
+                            return Text("Billing is not enabled");
+                          } else {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Approximate charges so far for this month"),
+                                SizedBox(height: 10,),
+                                Text("\$${calculateBill(state.addons)}",style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 20),)
+                              ],
+                            );
+                          }
+                        }}),
                 ),
               ]),
             ),
@@ -85,20 +115,25 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
     var isAnyDynoDown = listOfDownDynos.length > 0;
     if (!isAnyDynoDown) {
       return getDynoStatusText(
-        icon: Icon(Icons.check_circle, color: Colors.green,),
+        icon: Icon(
+          Icons.check_circle,
+          color: Colors.green,
+        ),
         status: "${dynos.length} of ${dynos.length} dynos report normal status",
       );
-    }
-
-    else {
+    } else {
       return getDynoStatusText(
-        icon: Icon(Icons.cancel, color: kerrorTextColor,),
-        status: "${listOfDownDynos.length} of ${dynos.length} dynos report down status",
+        icon: Icon(
+          Icons.cancel,
+          color: kerrorTextColor,
+        ),
+        status:
+            "${listOfDownDynos.length} of ${dynos.length} dynos report down status",
       );
     }
   }
 
-  Widget getDynoStatusText({Icon icon, String status}){
+  Widget getDynoStatusText({Icon icon, String status}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -106,9 +141,10 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
         SizedBox(
           width: 5,
         ),
-        Text(status
-          ,
-          style: TextStyle(decoration: TextDecoration.underline, color: kPurpleColor),
+        Text(
+          status,
+          style: TextStyle(
+              decoration: TextDecoration.underline, color: kPurpleColor),
         ),
       ],
     );
@@ -120,6 +156,20 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
   }
 
   Widget getAdditionalAction() {
-    return IconButton(icon: Icon(Icons.swap_vert, color: Colors.black87,), onPressed: (){});
+    return IconButton(
+        icon: Icon(
+          Icons.swap_vert,
+          color: Colors.black87,
+        ),
+        onPressed: () {});
+  }
+
+  String calculateBill(List<Addon> addons) {
+    print(addons);
+    String amount = (addons.map((e) => e.billing.cents)
+        .reduce((value, element) => value + element)
+        .toDouble() / 100)
+        .toString();
+    return amount;
   }
 }
