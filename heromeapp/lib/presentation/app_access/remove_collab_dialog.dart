@@ -25,7 +25,7 @@ class RemoveCollabDialog extends StatelessWidget {
             onPressed: () {
               Navigator.pop(context);
             }),
-        actionTextButton(text: "Cancel", onPressed: onRemoveCollab),
+        actionTextButton(text: "Remove", onPressed: onRemoveCollab),
       ],
     );
   }

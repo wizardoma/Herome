@@ -9,6 +9,32 @@ class CollaboratorProvider {
 
   CollaboratorProvider(this._dio);
 
+  Future<ResponseEntity> addCollaborator(String appId, String userId, dynamic data) async{
+    try {
+      var response  = await _dio.post("$AppsUrl/$appId/collaborators", data: data);
+      return ResponseEntity(false, null, null);
+    }
+
+    on DioError catch (e) {
+      print("Error in collabs adding: ${e.response}");
+      var errorResponse = e.response == null ? ErrorResponse() :ErrorResponse.fromResponse(e.response.data);
+      return ResponseEntity(true, null, errorResponse);
+    }
+  }
+
+  Future<ResponseEntity> deleteCollaborator(String appId, String userId) async {
+    try {
+      var response = await _dio.delete("$AppsUrl/$appId/collaborators");
+      return ResponseEntity(false, null, null);
+    }
+
+    on DioError catch (e) {
+      print("Error in collabs deleting: ${e.response}");
+      var errorResponse = e.response == null ? ErrorResponse() :ErrorResponse.fromResponse(e.response.data);
+      return ResponseEntity(true, null, errorResponse);
+    }
+  }
+
 Future<ResponseEntity> fetchCollaborators(String appId) async{
   try {
     var response = await _dio.get("$AppsUrl/$appId/collaborators");

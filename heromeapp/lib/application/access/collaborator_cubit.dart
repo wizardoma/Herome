@@ -7,17 +7,17 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
   final CollaboratorService collaboratorService;
   List<Collaborator> _collabs = [];
 
-  CollaboratorCubit(this.collaboratorService) : super(CollaboratorUninitialized());
+  CollaboratorCubit(this.collaboratorService)
+      : super(CollaboratorUninitialized());
 
-  Future<List<Collaborator>> fetchCollaborators(String appId) async{
+  Future<List<Collaborator>> fetchCollaborators(String appId) async {
     print("fetching collabs");
     emit(CollaboratorFetchingState());
     var response = await collaboratorService.fetchCollaborators(appId);
-    if (response.isError){
+    if (response.isError) {
       emit(CollaboratorFetchError(response.errors.message));
       return null;
-    }
-    else {
+    } else {
       _collabs = response.data;
       print("fetched collabs $_collabs");
       emit(CollaboratorFetchedState(_collabs));
@@ -27,5 +27,29 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
 
   List<Collaborator> get collabs {
     return _collabs;
+  }
+
+  void addCollaborator(String appId, String userId) async {
+    emit(CollaboratorAddingState());
+    var response = await collaboratorService.addCollaborator(appId, userId);
+    if (response.isError) {
+      emit(CollaboratorAddFailureState(response.errors.message == null
+          ? "An error occurred adding collaborator"
+          : response.errors.message));
+    } else {
+      emit(CollaboratorAddSuccessState());
+    }
+  }
+
+  void deleteCollaborator(String appId, String userId) async {
+    emit(CollaboratorDeletingState());
+    var response = await collaboratorService.deleteCollaborator(appId, userId);
+    if (response.isError) {
+      emit(CollaboratorDeleteFailureState(response.errors.message == null
+          ? "An error occurred deleting collaborator"
+          : response.errors.message));
+    } else {
+      emit(CollaboratorDeleteSuccessState());
+    }
   }
 }

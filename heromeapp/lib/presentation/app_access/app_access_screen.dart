@@ -3,6 +3,7 @@ import 'package:heromeapp/application/access/collaborator_cubit.dart';
 import 'package:heromeapp/application/access/collaborator_state.dart';
 import 'package:heromeapp/domain/access/collaborator.dart';
 import 'package:heromeapp/domain/apps/app.dart';
+import 'package:heromeapp/presentation/app_access/add_collaborator_dialog.dart';
 import 'package:heromeapp/presentation/app_access/change_role_dialog.dart';
 import 'package:heromeapp/presentation/app_access/remove_collab_dialog.dart';
 import 'package:heromeapp/presentation/widgets/app_bottomnav_items_scaffolds.dart';
@@ -51,8 +52,26 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
   @override
   Widget build(BuildContext context) {
     return AppItemsScaffold(
+      additionalActions: getAdditionalAction(),
       onRefresh: onRefresh,
-      body: BlocBuilder<CollaboratorCubit, CollaboratorState>(
+      body: BlocConsumer<CollaboratorCubit, CollaboratorState>(
+        listener: (context, state) {
+          if (state is CollaboratorAddFailureState) {
+            showErrorSnackbar(state.error);
+          }
+
+          if (state is CollaboratorDeleteFailureState) {
+            showErrorSnackbar(state.error);
+          }
+
+          if (state is CollaboratorAddSuccessState) {
+            showSuccessSnackbar(
+                "Your collaborator invitation was sent to the user");
+          }
+          if (state is CollaboratorDeleteSuccessState) {
+            showSuccessSnackbar("The user was successfully removed");
+          }
+        },
         // ignore: missing_return
         builder: (BuildContext context, state) {
           if (state is CollaboratorFetchingState) {
@@ -60,7 +79,9 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
           }
           if (state is CollaboratorFetchError) {
             return Center(
-              child: Text(state.error == null ? "An Error Occurred. Please try again" : state.error),
+              child: Text(state.error == null
+                  ? "An Error Occurred. Please try again"
+                  : state.error),
             );
           }
           if (state is CollaboratorFetchedState) {
@@ -123,5 +144,39 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
                   appName: widget.app.name,
                 ));
     }
+  }
+
+  Widget getAdditionalAction() {
+    return TextButton(
+        onPressed: _addCollaborator,
+        child: Text(
+          "Add",
+          style: Theme.of(context).textTheme.headline4,
+        ));
+  }
+
+  void _addCollaborator() {
+    showDialog(
+        context: context,
+        builder: (cont) => AddCollaboratorDialog(
+          accessContext: context,
+              onAdd: _onAddCollaborator,
+            ));
+  }
+
+  void _onAddCollaborator(String userId) {
+    context.read<CollaboratorCubit>().addCollaborator(widget.app.id, userId);
+  }
+
+  void showSuccessSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(_snackBar(message));
+  }
+
+  void showErrorSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(_snackBar(message));
+  }
+
+  SnackBar _snackBar(String message) {
+    return SnackBar(content: Text(message));
   }
 }
