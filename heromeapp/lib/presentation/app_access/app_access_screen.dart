@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heromeapp/application/access/collaborator_cubit.dart';
 import 'package:heromeapp/application/access/collaborator_state.dart';
+import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/domain/access/collaborator.dart';
 import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/presentation/app_access/add_collaborator_dialog.dart';
@@ -95,7 +96,12 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
               controller: _refreshController,
               onRefresh: onRefresh,
               enablePullDown: true,
-              child: ListView.builder(
+              child: ListView.separated(
+                separatorBuilder:  (context, index) => Divider(
+                  color: kLightGrey,
+                  height: 0.5,
+                  thickness: 0.5,
+                ),
                   itemCount: collabs.length,
                   itemBuilder: (context, index) {
                     return ListTile(

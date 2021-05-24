@@ -37,11 +37,11 @@ class AccountCubit extends Cubit<AccountState> {
   Account getAccount(){
     if (_account == null) {
       fetchAccount();
-      return Account(id: "", email: "", name: "");
-
+      return Account(id: "", email: "", name: "",verified: false);
     }
     return _account;
   }
+
 
   @override
   Future<void> close() {

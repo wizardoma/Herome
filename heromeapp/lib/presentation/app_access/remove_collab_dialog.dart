@@ -19,20 +19,28 @@ class RemoveCollabDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text("Remove Collaborator"),
-      content:
-          Text("Are you sure you want to remove $userEmail from $appName?"),
-      actions: [
-        actionTextButton(
-            text: "Cancel",
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        BlocBuilder<CollaboratorCubit, CollaboratorState>(
-            builder: (context, state) => state is CollaboratorDeletingState ? CircularProgress() :
-                actionTextButton(text: "Remove", onPressed: () =>  onRemoveCollab(userEmail))),
-      ],
+    return BlocListener<CollaboratorCubit, CollaboratorState>(
+      listener: (c,s) {
+        if (s is CollaboratorDeleteSuccessState){
+          Navigator.pop(context);
+
+        }
+      },
+      child: AlertDialog(
+        title: Text("Remove Collaborator"),
+        content:
+            Text("Are you sure you want to remove $userEmail from $appName?"),
+        actions: [
+          actionTextButton(
+              text: "Cancel",
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          BlocBuilder<CollaboratorCubit, CollaboratorState>(
+              builder: (context, state) => state is CollaboratorDeletingState ? CircularProgress() :
+                  actionTextButton(text: "Remove", onPressed: () =>  onRemoveCollab(userEmail))),
+        ],
+      ),
     );
   }
 }

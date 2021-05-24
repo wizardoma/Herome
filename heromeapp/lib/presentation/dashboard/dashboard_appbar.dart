@@ -26,17 +26,19 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
                 "App",
                 style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(appName, style: Theme.of(context).textTheme.bodyText1.copyWith(
-                    wordSpacing: 1.4
-                  ),),
-                  Icon(
-                    Icons.arrow_drop_down,
-                    color: Colors.black87,
-                  ),
-                ],
+              FittedBox(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(appName, style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      wordSpacing: 1.4
+                    ),),
+                    Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black87,
+                    ),
+                  ],
+                ),
               )
             ],
           ),

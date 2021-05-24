@@ -38,77 +38,80 @@ class _AppActivityScreenState extends State<AppActivityScreen> {
       _buildCubit.fetchBuilds(widget.app.id);
     }
 
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return AppItemsScaffold(
-        appBarTitle: 'Activity',
-        onRefresh: onRefresh,
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.all(10),
-            color: kFooterBackgroundColor,
-            child: Text("Activity Feed"),
-          ),
-          Expanded(
-            child: BlocBuilder<BuildCubit, BuildState>(
-              // ignore: missing_return
-              builder: (BuildContext context, state) {
-                if (state is BuildFetchingState) {
-                  return Center(child: CircularProgress());
-                }
-                if (state is BuildFetchErrorState) {
-                  return Center(
-                    child: Text(state.error),
-                  );
-                }
-                if (state is BuildFetchedState) {
-                  var builds = state.builds;
-                  return SmartRefresher(
-                    controller: _refreshController,
-                    onRefresh: onRefresh,
-                    enablePullDown: true,
-                    child: ListView.separated(
-                        separatorBuilder: (context, index) => Divider(
-                              color: kLightGrey,
-                              height: 0.5,
-                              thickness: 0.5,
-                            ),
-                        shrinkWrap: true,
-                        physics: ScrollPhysics(),
-                        itemCount: builds.length,
-                        itemBuilder: (context, index) {
-                          var build = builds[index];
-                          return ListTile(
-                            key: ValueKey(build.id),
-                            leading: getLeadingIcon(build),
-                            title: FittedBox(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "${builds[index].userEmail}:",
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  getBuildStatus(build),
-                                ],
+      appBarTitle: 'Activity',
+      onRefresh: onRefresh,
+      body: BlocBuilder<BuildCubit, BuildState>(
+        // ignore: missing_return
+        builder: (BuildContext context, state) {
+          if (state is BuildFetchingState) {
+            return Center(child: CircularProgress());
+          }
+          if (state is BuildFetchErrorState) {
+            return Center(
+              child: Text(state.error),
+            );
+          }
+          if (state is BuildFetchedState) {
+            var builds = state.builds;
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.all(10),
+                    color: kFooterBackgroundColor,
+                    child: Text("Activity Feed"),
+                  ),
+                  Expanded(
+                    child: SmartRefresher(
+                      controller: _refreshController,
+                      onRefresh: onRefresh,
+                      enablePullDown: true,
+                      child: ListView.separated(
+                          separatorBuilder: (context, index) => Divider(
+                                color: kLightGrey,
+                                height: 0.5,
+                                thickness: 0.5,
                               ),
-                            ),
-                            subtitle: getBuildDate(build),
-                          );
-                        }),
-                  );
-                }
-              },
-            ),
-          )
-        ]));
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          itemCount: builds.length,
+                          itemBuilder: (context, index) {
+                            var build = builds[index];
+                            return ListTile(
+                              key: ValueKey(build.id),
+                              leading: getLeadingIcon(build),
+                              title: FittedBox(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "${builds[index].userEmail}:",
+                                      style:
+                                          TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    getBuildStatus(build),
+                                  ],
+                                ),
+                              ),
+                              subtitle: getBuildDate(build),
+                            );
+                          }),
+                    ),
+                  ),
+                ]);
+          }
+        },
+      ),
+    );
   }
 
   Widget getLeadingIcon(Build build) {
