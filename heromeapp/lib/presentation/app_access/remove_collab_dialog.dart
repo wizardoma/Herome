@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heromeapp/application/access/collaborator_cubit.dart';
+import 'package:heromeapp/application/access/collaborator_state.dart';
 import 'package:heromeapp/presentation/app_access/dialog_actions.dart';
+import 'package:heromeapp/presentation/widgets/circular_progress_primary.dart';
 
 class RemoveCollabDialog extends StatelessWidget {
   final Function onRemoveCollab;
@@ -25,7 +29,9 @@ class RemoveCollabDialog extends StatelessWidget {
             onPressed: () {
               Navigator.pop(context);
             }),
-        actionTextButton(text: "Remove", onPressed: onRemoveCollab),
+        BlocBuilder<CollaboratorCubit, CollaboratorState>(
+            builder: (context, state) => state is CollaboratorDeletingState ? CircularProgress() :
+                actionTextButton(text: "Remove", onPressed: () =>  onRemoveCollab(userEmail))),
       ],
     );
   }

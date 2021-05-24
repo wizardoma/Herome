@@ -16,16 +16,16 @@ class CollaboratorServiceImpl extends CollaboratorService {
   }
 
   @override
-  Future<ResponseEntity> addCollaborator(String appId, String userId) async{
+  Future<ResponseEntity> addCollaborator(String appId, String userId) async {
     // use silent to send an email to the user
-    Map<String, dynamic> data  = {"user": "$userId", "silent" : "false"};
-    var response = await collaboratorProvider.addCollaborator(appId, userId, jsonEncode(data));
+    Map<String, dynamic> data = {"user": "$userId", "silent": "false"};
+    var response =
+        await collaboratorProvider.addCollaborator(appId, jsonEncode(data));
     return response;
-
   }
 
   @override
-  Future<ResponseEntity> deleteCollaborator(String appId, String userId)async {
+  Future<ResponseEntity> deleteCollaborator(String appId, String userId) async {
     var response = await collaboratorProvider.deleteCollaborator(appId, userId);
     return response;
   }

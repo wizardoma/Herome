@@ -54,25 +54,25 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
   @override
   Widget build(BuildContext context) {
     return AppItemsScaffold(
-      additionalActions: getAdditionalAction(),
+      additionalActions: _getAdditionalAction(),
       onRefresh: onRefresh,
       body: BlocConsumer<CollaboratorCubit, CollaboratorState>(
         listener: (context, state) {
 
           if (state is CollaboratorAddFailureState) {
-            showErrorSnackbar(state.error);
+            _showErrorSnackbar(state.error);
           }
 
           if (state is CollaboratorDeleteFailureState) {
-            showErrorSnackbar(state.error);
+            _showErrorSnackbar(state.error);
           }
 
           if (state is CollaboratorAddSuccessState) {
-            showSuccessSnackbar(
+            _showSuccessSnackbar(
                 "Your collaborator invitation was sent to the user");
           }
           if (state is CollaboratorDeleteSuccessState) {
-            showSuccessSnackbar("The user was successfully removed");
+            _showSuccessSnackbar("The user was successfully removed");
           }
         },
         // ignore: missing_return
@@ -145,13 +145,14 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
         showDialog(
             context: context,
             builder: (context) => RemoveCollabDialog(
+              onRemoveCollab: _onRemoveCollaborator,
                   userEmail: collab.userEmail,
                   appName: widget.app.name,
                 ));
     }
   }
 
-  Widget getAdditionalAction() {
+  Widget _getAdditionalAction() {
     return TextButton(
         onPressed: _addCollaborator,
         child: Text(
@@ -173,15 +174,19 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
     context.read<CollaboratorCubit>().addCollaborator(widget.app.id, userId);
   }
 
-  void showSuccessSnackbar(String message) {
+  void _showSuccessSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(_snackBar(message));
   }
 
-  void showErrorSnackbar(String message) {
+  void _showErrorSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(_snackBar(message));
   }
 
   SnackBar _snackBar(String message) {
     return SnackBar(content: Text(message));
+  }
+
+  void _onRemoveCollaborator(String userId) {
+    context.read<CollaboratorCubit>().deleteCollaborator(widget.app.id, userId);
   }
 }

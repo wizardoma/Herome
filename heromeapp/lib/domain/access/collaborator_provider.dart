@@ -9,7 +9,7 @@ class CollaboratorProvider {
 
   CollaboratorProvider(this._dio);
 
-  Future<ResponseEntity> addCollaborator(String appId, String userId, dynamic data) async{
+  Future<ResponseEntity> addCollaborator(String appId, dynamic data) async{
     try {
       var response  = await _dio.post("$AppsUrl/$appId/collaborators", data: data);
       return ResponseEntity(false, null, null);
@@ -24,7 +24,7 @@ class CollaboratorProvider {
 
   Future<ResponseEntity> deleteCollaborator(String appId, String userId) async {
     try {
-      var response = await _dio.delete("$AppsUrl/$appId/collaborators");
+      var response = await _dio.delete("$AppsUrl/$appId/collaborators/$userId");
       return ResponseEntity(false, null, null);
     }
 
