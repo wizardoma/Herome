@@ -22,6 +22,7 @@ class AppAccessScreen extends StatefulWidget {
 
 class _AppAccessScreenState extends State<AppAccessScreen> {
   RefreshController _refreshController;
+  bool hasFetchedCollabs;
   CollaboratorCubit _collaboratorCubit;
 
   void onRefresh() async {
@@ -31,6 +32,7 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
 
   @override
   void initState() {
+    hasFetchedCollabs = false;
     _collaboratorCubit = context.read<CollaboratorCubit>();
     print("init access ${_collaboratorCubit.collabs}");
     var hasFetched = _collaboratorCubit.collabs.length > 0;
@@ -56,6 +58,7 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
       onRefresh: onRefresh,
       body: BlocConsumer<CollaboratorCubit, CollaboratorState>(
         listener: (context, state) {
+
           if (state is CollaboratorAddFailureState) {
             showErrorSnackbar(state.error);
           }
@@ -77,15 +80,17 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
           if (state is CollaboratorFetchingState) {
             return Center(child: CircularProgress());
           }
-          if (state is CollaboratorFetchError) {
+          else if (state is CollaboratorFetchError) {
             return Center(
               child: Text(state.error == null
                   ? "An Error Occurred. Please try again"
                   : state.error),
             );
           }
-          if (state is CollaboratorFetchedState) {
-            var collabs = state.collabs;
+          else {
+            var collabs = context.read<CollaboratorCubit>().collabs;
+            print("else collabs : $collabs");
+
             return SmartRefresher(
               controller: _refreshController,
               onRefresh: onRefresh,
@@ -100,7 +105,7 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
                         size: 30,
                       ),
                       title: Text(collabs[index].userEmail),
-                      subtitle: Text(collabs[index].role),
+                      subtitle: Text(collabs[index].role ?? "collaborator"),
                       trailing: PopupMenuButton(
                         onSelected: (value) =>
                             _selectRoleOptions(value, collabs[index]),
