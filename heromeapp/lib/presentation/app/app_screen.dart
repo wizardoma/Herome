@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:heromeapp/application/accounts/account_cubit.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
+import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/presentation/app_access/app_access_screen.dart';
 import 'package:heromeapp/presentation/app_activity/app_activity_screen.dart';
@@ -39,6 +41,7 @@ class _AppScreenState extends State<AppScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: DashboardAppBar(
+        onOpenProfile: openMenu,
         appName: _app.name,
         openApp: _openApp,
       ),
@@ -72,7 +75,6 @@ class _AppScreenState extends State<AppScreen> {
   }
 
   void _openApp() async {
-
     if (await canLaunch(_app.webUrl)) {
       await launch(
         _app.webUrl,
@@ -87,5 +89,158 @@ class _AppScreenState extends State<AppScreen> {
         ),
       );
     }
+  }
+
+  void openMenu() {
+    var account = context.read<AccountCubit>().getAccount();
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            child: Container(
+//              padding: EdgeInsets.all(10),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                                child: IconButton(
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: Colors.black87,
+                                    ),
+                                    onPressed: () => Navigator.pop(context))),
+                            Flexible(
+                                child: Text(
+                              "Herome",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(fontSize: 20),
+                            )),
+                            Flexible(
+                                child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ListTile(
+                          leading: Container(
+                            padding: EdgeInsets.all(10),
+                            width: 45,
+                            height: 45,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(
+                                  "assets/images/ninja-avatar.png",
+                                ),
+                              ),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          title: Text(
+                            account.name,
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          subtitle: Text(account.email),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Divider(
+                          color: kInputBorderColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: Icon(
+                            Icons.settings_outlined,
+                            color: kDarkTextColor,
+                          ),
+                          title: Text("App Settings"),
+                        ),
+                        ListTile(
+                          leading: Icon(
+                            Icons.feedback_outlined,
+                            color: kDarkTextColor,
+                          ),
+                          title: Text("Feedback"),
+                        ),
+                        ListTile(
+                          leading: Icon(
+                            Icons.help_outline,
+                            color: kDarkTextColor,
+                          ),
+                          title: Text("Help"),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    color: kInputBorderColor,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Spacer(),
+                          TextButton(
+                              onPressed: _buyMeACoffee,
+                              child: Text(
+                                "Buy me a coffee",
+                                style: TextStyle(color: kDarkTextColor),
+                              )),
+                          Text(
+                            "|",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                                fontSize: 18),
+                          ),
+                          TextButton(
+                              onPressed: _openAbout,
+                              child: Text("About Herome",
+                                  style: TextStyle(color: kDarkTextColor))),
+                          Spacer(),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void _buyMeACoffee() {}
+
+  void _openAbout() {
+    showAboutDialog(
+      context: context,
+      applicationName: "Herome for Heroku",
+      applicationVersion: "0.0.1",
+    );
   }
 }

@@ -9,8 +9,10 @@ import 'package:heromeapp/domain/account/account.dart';
 import 'package:heromeapp/presentation/splash/splash_screen.dart';
 
 
-
 class DashboardProfileOverlay extends StatefulWidget {
+  final Function onOpenProfile;
+
+  const DashboardProfileOverlay({Key key, this.onOpenProfile}) : super(key: key);
   @override
   _DashboardProfileOverlayState createState() =>
       _DashboardProfileOverlayState();
@@ -34,7 +36,7 @@ class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
     return Row(
       children: [
         InkWell(
-          onTap: () => isMenuOpen ? closeMenu() : openMenu(),
+          onTap: widget.onOpenProfile,
           child: Container(
             key: _key,
             padding: EdgeInsets.all(10),
@@ -64,7 +66,10 @@ class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
         return Positioned(
           top: widgetPosition.dy + widgetSize.height,
           left: 50,
-          width: MediaQuery.of(context).size.width * 0.8,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width * 0.8,
           child: Material(
             elevation: 2.0,
             color: kWhiteColor,
@@ -100,7 +105,10 @@ class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               account.name,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText1,
                             ),
                           ),
                           Padding(
@@ -117,23 +125,34 @@ class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
                   Column(
                     children: [
                       ListTile(
-                        leading: Icon(Icons.settings,color: kPurpleColor,),
-                        title: Text("App Settings", style: Theme.of(context).textTheme.bodyText1,),
+                        leading: Icon(Icons.settings, color: kPurpleColor,),
+                        title: Text("App Settings", style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText1,),
                       ),
                       Divider(),
                       ListTile(
-                        leading: Icon(Icons.notifications,color: kPurpleColor),
-                        title: Text("Notifications", style: Theme.of(context).textTheme.bodyText1,),
+                        leading: Icon(Icons.notifications, color: kPurpleColor),
+                        title: Text("Notifications", style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText1,),
                       ),
                       Divider(),
 
                       ListTile(
-                        leading: Icon(Icons.logout,color: kPurpleColor),
-                        title: Text("Sign out", style: Theme.of(context).textTheme.bodyText1,),
+                        leading: Icon(Icons.logout, color: kPurpleColor),
+                        title: Text("Sign out", style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText1,),
                         onTap: () {
                           _overlayEntry.remove();
                           context.read<AuthenticationBloc>().add(LogoutEvent());
-                          Navigator.pushNamedAndRemoveUntil(context, SplashScreen.routeName, (route) => false);
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, SplashScreen.routeName, (
+                              route) => false);
                         },
                       ),
                     ],
@@ -147,19 +166,19 @@ class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
     );
   }
 
-  void openMenu() {
-    findAvatarPosition();
-    _overlayEntry = _overlayEntryBuilder();
-    Overlay.of(context).insert(_overlayEntry);
-    setState(() {
-      isMenuOpen = !isMenuOpen;
-    });
-  }
+
+//    findAvatarPosition();
+//    _overlayEntry = _overlayEntryBuilder();
+//    Overlay.of(context).insert(_overlayEntry);
+//    setState(() {
+//      isMenuOpen = !isMenuOpen;
+//    });
+
 
   void closeMenu() {
-    _overlayEntry.remove();
-    setState(() {
-      isMenuOpen = !isMenuOpen;
-    });
+//    _overlayEntry.remove();
+//    setState(() {
+//      isMenuOpen = !isMenuOpen;
+//    });
   }
 }

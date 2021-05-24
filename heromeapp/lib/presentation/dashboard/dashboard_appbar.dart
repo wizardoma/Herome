@@ -7,8 +7,9 @@ import 'package:heromeapp/presentation/dashboard/dashboard_screen.dart';
 class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String appName;
   final Function openApp;
+  final Function onOpenProfile;
 
-  const DashboardAppBar({Key key, this.appName, this.openApp}) : super(key: key);
+  const DashboardAppBar({Key key, this.appName, this.openApp, this.onOpenProfile}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -53,7 +54,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
         SizedBox(width: 20,),
-        DashboardProfileOverlay(),
+        DashboardProfileOverlay(onOpenProfile: onOpenProfile,),
       ],
     );
   }
