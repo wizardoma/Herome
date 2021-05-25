@@ -9,6 +9,7 @@ class HerokuAuthenticationService extends AuthenticationService {
   final AuthClient _authClient;
 
   HerokuAuthenticationService(this._authClient, this._store);
+
   @override
   Future<ResponseEntity> authenticate(LoginRequest request) async {
     _store.setToken("${request.email}:${request.password}");
@@ -30,6 +31,4 @@ class HerokuAuthenticationService extends AuthenticationService {
   void logout() {
     _store.deleteToken();
   }
-
-
 }

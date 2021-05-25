@@ -12,6 +12,7 @@ import 'package:heromeapp/presentation/app_monitoring/app_monitoring_screen.dart
 import 'package:heromeapp/presentation/app_resources/app_resources_screen.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_appbar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heromeapp/presentation/settings/settings_screen.dart';
 import 'package:heromeapp/presentation/splash/splash_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -173,6 +174,7 @@ class _AppScreenState extends State<AppScreen> {
                     child: Column(
                       children: [
                         ListTile(
+                          onTap: _openSettings,
                           leading: Icon(
                             Icons.settings_outlined,
                             color: kDarkTextColor,
@@ -253,5 +255,9 @@ class _AppScreenState extends State<AppScreen> {
       applicationName: "Herome for Heroku",
       applicationVersion: "0.0.1",
     );
+  }
+
+  void _openSettings() {
+    Navigator.pushNamed(context, SettingsScreen.routeName);
   }
 }
