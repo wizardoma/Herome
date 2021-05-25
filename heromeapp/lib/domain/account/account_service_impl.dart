@@ -1,9 +1,9 @@
-import 'package:heromeapp/domain/account/account_provider.dart';
+import 'package:heromeapp/domain/account/account_client.dart';
 import 'package:heromeapp/domain/account/account_service.dart';
 import 'package:heromeapp/domain/response.dart';
 
 class HerokuAccountService extends AccountService {
-  final AccountProvider _accountProvider;
+  final AccountClient _accountProvider;
 
   HerokuAccountService(this._accountProvider);
 

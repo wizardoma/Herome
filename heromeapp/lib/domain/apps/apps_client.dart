@@ -4,11 +4,11 @@ import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/domain/error_response.dart';
 import 'package:heromeapp/domain/response.dart';
 
-class AppProvider {
+class AppClient {
 
   final Dio _dio;
 
-  AppProvider(this._dio);
+  AppClient(this._dio);
 
   Future<ResponseEntity> fetchApps() async{
     try {

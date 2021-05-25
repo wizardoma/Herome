@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:heromeapp/application/accounts/account_cubit.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
+import 'package:heromeapp/application/authentication/auth_bloc.dart';
+import 'package:heromeapp/application/authentication/auth_event.dart';
 import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/presentation/app_access/app_access_screen.dart';
@@ -10,6 +12,7 @@ import 'package:heromeapp/presentation/app_monitoring/app_monitoring_screen.dart
 import 'package:heromeapp/presentation/app_resources/app_resources_screen.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_appbar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heromeapp/presentation/splash/splash_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppScreen extends StatefulWidget {
@@ -184,11 +187,18 @@ class _AppScreenState extends State<AppScreen> {
                           title: Text("Feedback"),
                         ),
                         ListTile(
+                          onTap: () {
+                            context
+                                .read<AuthenticationBloc>()
+                                .add(LogoutEvent());
+                            Navigator.pushNamedAndRemoveUntil(context,
+                                SplashScreen.routeName, (route) => false);
+                          },
                           leading: Icon(
-                            Icons.help_outline,
+                            Icons.logout,
                             color: kDarkTextColor,
                           ),
-                          title: Text("Help"),
+                          title: Text("Sign out"),
                         ),
                       ],
                     ),
@@ -206,11 +216,12 @@ class _AppScreenState extends State<AppScreen> {
                         children: [
                           Spacer(),
                           TextButton(
-                              onPressed: _buyMeACoffee,
-                              child: Text(
-                                "Buy me a coffee",
-                                style: TextStyle(color: kDarkTextColor),
-                              )),
+                            onPressed: _buyMeACoffee,
+                            child: Text(
+                              "Buy me a coffee",
+                              style: TextStyle(color: kDarkTextColor),
+                            ),
+                          ),
                           Text(
                             "|",
                             style: TextStyle(

@@ -1,18 +1,18 @@
 import 'package:heromeapp/application/authentication/login_request.dart';
-import 'package:heromeapp/domain/auth/auth_provider.dart';
+import 'package:heromeapp/domain/auth/auth_client.dart';
 import 'package:heromeapp/domain/auth/auth_store.dart';
 import 'package:heromeapp/domain/auth/auth_service.dart';
 import 'package:heromeapp/domain/response.dart';
 
 class HerokuAuthenticationService extends AuthenticationService {
   final AuthStore _store;
-  final AuthProvider _authProvider;
+  final AuthClient _authClient;
 
-  HerokuAuthenticationService(this._authProvider, this._store);
+  HerokuAuthenticationService(this._authClient, this._store);
   @override
   Future<ResponseEntity> authenticate(LoginRequest request) async {
     _store.setToken("${request.email}:${request.password}");
-    var response = await _authProvider.validateCredentials();
+    var response = await _authClient.validateCredentials();
     if (response.isError) {
       _store.deleteToken();
     }

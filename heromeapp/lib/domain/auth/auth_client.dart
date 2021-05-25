@@ -4,10 +4,10 @@ import 'package:heromeapp/domain/api/heroku_api.dart';
 import 'package:heromeapp/domain/error_response.dart';
 import 'package:heromeapp/domain/response.dart';
 
-class AuthProvider {
+class AuthClient {
   final Dio _dio;
 
-  AuthProvider(this._dio);
+  AuthClient(this._dio);
 
   Future<ResponseEntity> validateCredentials() async {
     try {

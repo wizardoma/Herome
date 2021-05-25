@@ -4,10 +4,10 @@ import 'package:heromeapp/domain/api/heroku_api.dart';
 import 'package:heromeapp/domain/error_response.dart';
 import 'package:heromeapp/domain/response.dart';
 
-class CollaboratorProvider {
+class CollaboratorClient {
   final Dio _dio;
 
-  CollaboratorProvider(this._dio);
+  CollaboratorClient(this._dio);
 
   Future<ResponseEntity> addCollaborator(String appId, dynamic data) async{
     try {

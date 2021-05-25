@@ -4,10 +4,10 @@ import 'package:heromeapp/domain/api/heroku_api.dart';
 import 'package:heromeapp/domain/error_response.dart';
 import 'package:heromeapp/domain/response.dart';
 
-class AddonProvider {
+class AddonClient {
   final Dio dio;
 
-  AddonProvider(this.dio);
+  AddonClient(this.dio);
 
   Future<ResponseEntity> fetchAppAddons(String appId)async {
     try {

@@ -1,17 +1,17 @@
 import 'package:heromeapp/domain/activity/build.dart';
-import 'package:heromeapp/domain/activity/build_provider.dart';
+import 'package:heromeapp/domain/activity/build_client.dart';
 import 'package:heromeapp/domain/activity/build_service.dart';
 import 'package:heromeapp/domain/response.dart';
 
 class BuildServiceImpl extends BuildService {
-  final BuildProvider buildProvider;
+  final BuildClient buildClient;
 
-  BuildServiceImpl(this.buildProvider);
+  BuildServiceImpl(this.buildClient);
 
   @override
   Future<ResponseEntity> fetchBuilds(String appId) async {
     print("fetching builds");
-    var response = await buildProvider.fetchBuilds(appId);
+    var response = await buildClient.fetchBuilds(appId);
     if (!response.isError) {
       List<Build> builds = [];
       response.data.forEach((e) {

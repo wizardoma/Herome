@@ -4,10 +4,10 @@ import 'package:heromeapp/domain/api/heroku_api.dart';
 import 'package:heromeapp/domain/error_response.dart';
 import 'package:heromeapp/domain/response.dart';
 
-class BuildProvider {
+class BuildClient {
   final Dio dio;
 
-  BuildProvider(this.dio);
+  BuildClient(this.dio);
 
   Future<ResponseEntity> fetchBuilds(String appId) async {
     try {

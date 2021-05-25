@@ -6,16 +6,16 @@ import 'package:heromeapp/application/addon/addon_cubit.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
 import 'package:heromeapp/application/dyno/dyno_cubit.dart';
-import 'package:heromeapp/domain/access/collaborator_provider.dart';
+import 'package:heromeapp/domain/access/collaborator_client.dart';
 import 'package:heromeapp/domain/access/collaborator_service.dart';
 import 'package:heromeapp/domain/access/collaborator_service_impl.dart';
-import 'package:heromeapp/domain/account/account_provider.dart';
+import 'package:heromeapp/domain/account/account_client.dart';
 import 'package:heromeapp/domain/account/account_service.dart';
 import 'package:heromeapp/domain/account/account_service_impl.dart';
-import 'package:heromeapp/domain/activity/build_provider.dart';
+import 'package:heromeapp/domain/activity/build_client.dart';
 import 'package:heromeapp/domain/activity/build_service.dart';
 import 'package:heromeapp/domain/activity/build_service_impl.dart';
-import 'package:heromeapp/domain/addon/addon_provider.dart';
+import 'package:heromeapp/domain/addon/addon_client.dart';
 import 'package:heromeapp/domain/addon/addon_service.dart';
 import 'package:heromeapp/domain/addon/addon_service_impl.dart';
 import 'package:heromeapp/domain/api/dio_config.dart';
@@ -23,12 +23,12 @@ import 'package:heromeapp/domain/apps/app_repository.dart';
 import 'package:heromeapp/domain/apps/app_repository_impl.dart';
 import 'package:heromeapp/domain/apps/app_service.dart';
 import 'package:heromeapp/domain/apps/app_service_impl.dart';
-import 'package:heromeapp/domain/apps/apps_provider.dart';
-import 'package:heromeapp/domain/auth/auth_provider.dart';
+import 'package:heromeapp/domain/apps/apps_client.dart';
+import 'package:heromeapp/domain/auth/auth_client.dart';
 import 'package:heromeapp/domain/auth/auth_service.dart';
 import 'package:heromeapp/domain/auth/auth_service_impl.dart';
 import 'package:heromeapp/domain/auth/auth_store.dart';
-import 'package:heromeapp/domain/dyno/dyno_provider.dart';
+import 'package:heromeapp/domain/dyno/dyno_client.dart';
 import 'package:heromeapp/domain/dyno/dyno_service.dart';
 import 'package:heromeapp/domain/dyno/dyno_service_impl.dart';
 import 'package:heromeapp/domain/service.dart';
@@ -53,15 +53,15 @@ class IOC {
   // repos
 
   AppRepository _appRepository;
-  // providers
+  // clients
 
-  CollaboratorProvider _collaboratorProvider;
-  AuthProvider _authProvider;
-  AddonProvider _addonProvider;
-  DynoProvider _dynoProvider;
-  BuildProvider _buildProvider;
-  AccountProvider _accountProvider;
-  AppProvider _appProvider;
+  CollaboratorClient _collaboratorClient;
+  AuthClient _authClient;
+  AddonClient _addonClient;
+  DynoClient _dynoClient;
+  BuildClient _buildClient;
+  AccountClient _accountClient;
+  AppClient _appClient;
 
   // stores
   AuthStore _authStore;
@@ -88,28 +88,28 @@ class IOC {
     // stores
 
     _authStore = AuthStore();
-    // providers
+    // Clients
 
-    _authProvider = AuthProvider(dio);
-    _addonProvider = AddonProvider(dio);
-    _dynoProvider = DynoProvider(dio);
-    _accountProvider = AccountProvider(dio);
-    _buildProvider = BuildProvider(dio);
-    _appProvider = AppProvider(dio);
-    _collaboratorProvider = CollaboratorProvider(dio);
+    _authClient = AuthClient(dio);
+    _addonClient = AddonClient(dio);
+    _dynoClient = DynoClient(dio);
+    _accountClient = AccountClient(dio);
+    _buildClient = BuildClient(dio);
+    _appClient = AppClient(dio);
+    _collaboratorClient = CollaboratorClient(dio);
 
     // repos
     _appRepository = AppRepositoryImpl();
 
     // services
     _authenticationService =
-        HerokuAuthenticationService(_authProvider, _authStore);
-    _accountService = HerokuAccountService(_accountProvider);
-    _dynoService = DynoServiceImpl(_dynoProvider);
-    _appService = AppServiceImpl(_appProvider,_appRepository);
-    _collaboratorService = CollaboratorServiceImpl(_collaboratorProvider);
-    _buildService = BuildServiceImpl(_buildProvider);
-    _addonService = AddonServiceImpl(_addonProvider);
+        HerokuAuthenticationService(_authClient, _authStore);
+    _accountService = HerokuAccountService(_accountClient);
+    _dynoService = DynoServiceImpl(_dynoClient);
+    _appService = AppServiceImpl(_appClient,_appRepository);
+    _collaboratorService = CollaboratorServiceImpl(_collaboratorClient);
+    _buildService = BuildServiceImpl(_buildClient);
+    _addonService = AddonServiceImpl(_addonClient);
 
     //blocs
     _authenticationBloc = AuthenticationBloc(_authenticationService);

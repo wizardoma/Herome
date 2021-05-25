@@ -4,10 +4,10 @@ import 'package:heromeapp/domain/dyno/dyno.dart';
 import 'package:heromeapp/domain/error_response.dart';
 import 'package:heromeapp/domain/response.dart';
 
-class DynoProvider {
+class DynoClient {
   final Dio dio;
 
-  DynoProvider(this.dio);
+  DynoClient(this.dio);
 
   Future<ResponseEntity> fetchAppDyno(String id) async {
     try {

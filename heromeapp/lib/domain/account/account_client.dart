@@ -6,10 +6,10 @@ import 'package:heromeapp/domain/response.dart';
 
 import '../error_response.dart';
 
-class AccountProvider {
+class AccountClient {
   final Dio _dio;
 
-  AccountProvider(this._dio);
+  AccountClient(this._dio);
 
   Future<ResponseEntity> fetchAccounts() async{
     try {

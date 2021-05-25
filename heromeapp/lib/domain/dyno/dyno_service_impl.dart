@@ -1,21 +1,21 @@
-import 'package:heromeapp/domain/dyno/dyno_provider.dart';
+import 'package:heromeapp/domain/dyno/dyno_client.dart';
 import 'package:heromeapp/domain/dyno/dyno_service.dart';
 import 'package:heromeapp/domain/response.dart';
 
 class DynoServiceImpl extends DynoService {
-  final DynoProvider dynoProvider;
+  final DynoClient dynoClient;
 
-  DynoServiceImpl(this.dynoProvider);
+  DynoServiceImpl(this.dynoClient);
 
   @override
   Future<ResponseEntity> fetchAllAppsDynos(List<String> appIds) async {
-    var response = await dynoProvider.fetchAllAppsDyno(appIds);
+    var response = await dynoClient.fetchAllAppsDyno(appIds);
     return response;
   }
 
   @override
   Future<ResponseEntity> fetchAppDyno(String id) async {
-    var response = await dynoProvider.fetchAppDyno(id);
+    var response = await dynoClient.fetchAppDyno(id);
     return response;
   }
 }
