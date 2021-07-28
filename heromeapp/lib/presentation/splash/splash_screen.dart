@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
 import 'package:heromeapp/application/authentication/auth_state.dart';
+import 'package:heromeapp/application/settings/biometrics_sharedpref.dart';
 import 'package:heromeapp/commons/app/colors.dart';
 import 'package:heromeapp/presentation/app/app_screen.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_screen.dart';
 import 'package:heromeapp/presentation/login/login_screen.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:splashscreen/splashscreen.dart' as sp;
 
 class SplashScreen extends StatefulWidget {
@@ -17,6 +19,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  var localAuth = LocalAuthentication();
+
   @override
   Widget build(BuildContext context) {
     return sp.SplashScreen(
@@ -27,29 +31,27 @@ class _SplashScreenState extends State<SplashScreen> {
         end: Alignment.bottomCenter,
       ),
       backgroundColor: kDeepPurple1,
-      navigateAfterFuture: checkAuth().then((value) async {
-        String screenName;
-        if (value) {
-          var appsCubit = context.read<AppsCubit>();
-          bool isStored = await appsCubit.areAppsCached();
-          // if apps are already cached, navigate directly to appscreen
-          if (isStored) {
-            screenName = AppScreen.routeName;
+      navigateAfterFuture: checkAuth().then((userIsAuthenticated) async {
+        String destinationScreenName;
+
+        if (userIsAuthenticated) {
+          print("user is authenticated $userIsAuthenticated");
+
+          // Check if user has biometric check before loading resources
+          var isCheckBiometrics = await BiometricsSharedPref.getState();
+          print("isCheckBiometrics $isCheckBiometrics");
+          if (isCheckBiometrics) {
+            var isBiometricsAuthenticated = await authenticateWithBiometrics();
+            if (isBiometricsAuthenticated) {
+              destinationScreenName = await bootStrapApp();
+            }
           } else {
-            var appList = appsCubit.getApps();
-            if (appList == null) {
-              appList = await appsCubit.fetchApps();
-            }
-            if (appList.length == 0) {
-              screenName = DashboardScreen.routeName;
-            } else {
-              screenName = AppScreen.routeName;
-            }
+            destinationScreenName = await bootStrapApp();
           }
         } else {
-          screenName = LoginScreen.routeName;
+          destinationScreenName = LoginScreen.routeName;
         }
-        return screenName;
+        return destinationScreenName;
       }),
     );
   }
@@ -59,9 +61,34 @@ class _SplashScreenState extends State<SplashScreen> {
     var isAuth = await authBloc.tryAuthentication();
     if (isAuth is AuthenticatedState) {
       return true;
-    }
-    else if (isAuth is NotAuthenticatedState) {
+    } else if (isAuth is NotAuthenticatedState) {
       return false;
+    }
+  }
+
+  Future<bool> authenticateWithBiometrics() async {
+    var authenticated = await localAuth.authenticate(
+        localizedReason: 'Unlock Screen with Biometrics', biometricOnly: true);
+    return authenticated ? authenticated : authenticateWithBiometrics();
+  }
+
+  Future<String> bootStrapApp() async {
+    var appsCubit = context.read<AppsCubit>();
+    bool appsWereStoredOnLastLogin = await appsCubit.areAppsCached();
+
+    // if apps are already cached, navigate directly to appScreen
+    if (appsWereStoredOnLastLogin) {
+      return AppScreen.routeName;
+    } else {
+      var appList = appsCubit.getApps();
+      if (appList == null) {
+        appList = await appsCubit.fetchApps();
+      }
+      if (appList.length == 0) {
+        return DashboardScreen.routeName;
+      } else {
+        return AppScreen.routeName;
+      }
     }
   }
 }
