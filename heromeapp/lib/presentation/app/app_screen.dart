@@ -79,13 +79,9 @@ class _AppScreenState extends State<AppScreen> {
   }
 
   void _openApp() async {
-    // Todo: delete and commit
     if (await canLaunch(_app.webUrl)) {
       await launch(
         _app.webUrl,
-        forceSafariVC: true,
-        forceWebView: true,
-        enableDomStorage: true,
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -3,7 +3,8 @@ import 'package:heromeapp/commons/app/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SignUpSection extends StatelessWidget {
-  final String herokuSignupUrl  = "https://signup.heroku.com/";
+  final String herokuSignupUrl = "https://signup.heroku.com/";
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,11 +43,14 @@ class SignUpSection extends StatelessWidget {
     );
   }
 
-  void _launchUrl()async {
-    if (await canLaunch(herokuSignupUrl)){
-      await launch(herokuSignupUrl, forceWebView: true,webOnlyWindowName: "Herome");
-    }
-    else {
+  void _launchUrl() async {
+    if (await canLaunch(herokuSignupUrl)) {
+      await launch(
+        herokuSignupUrl,
+        forceWebView: true,
+        webOnlyWindowName: "Herome",
+      );
+    } else {
       print("cannot launch");
     }
   }

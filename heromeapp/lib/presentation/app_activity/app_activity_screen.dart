@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/activity/build_cubit.dart';
 import 'package:heromeapp/application/activity/build_state.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/commons/app/ui_helpers.dart';
 import 'package:heromeapp/domain/activity/build.dart';
 import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/presentation/widgets/app_bottomnav_items_scaffolds.dart';
+import 'package:heromeapp/presentation/widgets/centered_content_widget.dart';
 import 'package:heromeapp/presentation/widgets/circular_progress_primary.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -53,8 +55,11 @@ class _AppActivityScreenState extends State<AppActivityScreen> {
             return Center(child: CircularProgress());
           }
           if (state is BuildFetchErrorState) {
-            return Center(
-              child: Text(state.error),
+            return Container(
+              padding: EdgeInsets.all(defaultSpacing),
+              child: CenteredWidget(
+                child: Text(state.error),
+              ),
             );
           }
           if (state is BuildFetchedState) {
@@ -64,7 +69,7 @@ class _AppActivityScreenState extends State<AppActivityScreen> {
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.symmetric(horizontal: defaultSpacing, vertical: defaultSpacing * 0.75),
                     color: kFooterBackgroundColor,
                     child: Text("Activity Feed"),
                   ),
@@ -161,7 +166,7 @@ class _AppActivityScreenState extends State<AppActivityScreen> {
             width: 5,
           ),
           Container(
-              padding: EdgeInsets.all(2),
+              padding: EdgeInsets.all(defaultSpacing * 0.2),
               decoration: BoxDecoration(
                 color: kFooterBackgroundColor,
                 border: Border.all(color: kLightGrey),
