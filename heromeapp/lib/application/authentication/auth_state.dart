@@ -1,12 +1,15 @@
 abstract class AuthenticationState {}
 
-class Authenticating extends AuthenticationState{}
-class NotAuthenticated extends AuthenticationState {}
-class Authenticated extends AuthenticationState {}
-class AuthenticationError extends AuthenticationState {
+class AuthenticatingState extends AuthenticationState{}
+class NotAuthenticatedState extends AuthenticationState {}
+class AuthenticatedState extends AuthenticationState {}
+class AuthenticationErrorState extends AuthenticationState {
   final String errorMessage;
 
-  AuthenticationError(this.errorMessage);
+  AuthenticationErrorState(this.errorMessage);
 }
 
-class AuthenticationUnInitialized extends AuthenticationState {}
+class SignOutState extends NotAuthenticatedState {}
+
+class AuthenticationUnInitializedState extends AuthenticationState {}
+
