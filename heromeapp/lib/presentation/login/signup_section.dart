@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignUpSection extends StatelessWidget {
+  final String herokuSignupUrl  = "https://signup.heroku.com/";
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +28,7 @@ class SignUpSection extends StatelessWidget {
             width: 10,
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: _launchUrl,
             child: Text(
               "Sign Up",
               style: Theme.of(context).textTheme.headline4.copyWith(
@@ -38,5 +40,14 @@ class SignUpSection extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _launchUrl()async {
+    if (await canLaunch(herokuSignupUrl)){
+      await launch(herokuSignupUrl, forceWebView: true,webOnlyWindowName: "Herome");
+    }
+    else {
+      print("cannot launch");
+    }
   }
 }
