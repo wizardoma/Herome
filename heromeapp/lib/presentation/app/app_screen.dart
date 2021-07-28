@@ -5,6 +5,7 @@ import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
 import 'package:heromeapp/application/authentication/auth_event.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/commons/app/ui_helpers.dart';
 import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/presentation/app_access/app_access_screen.dart';
 import 'package:heromeapp/presentation/app_activity/app_activity_screen.dart';
@@ -105,7 +106,7 @@ class _AppScreenState extends State<AppScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(defaultSpacing * 0.5),
                     child: Column(
                       children: [
                         Row(
@@ -140,7 +141,7 @@ class _AppScreenState extends State<AppScreen> {
                         ),
                         ListTile(
                           leading: Container(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(defaultSpacing * 0.5),
                             width: 45,
                             height: 45,
                             decoration: BoxDecoration(
@@ -208,7 +209,7 @@ class _AppScreenState extends State<AppScreen> {
                     color: kInputBorderColor,
                   ),
                   Container(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(defaultSpacing * 0.5),
                     width: MediaQuery.of(context).size.width,
                     child: Center(
                       child: Row(

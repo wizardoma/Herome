@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/commons/app/ui_helpers.dart';
 
 class DashboardInfoCard extends StatelessWidget {
   final String title;
@@ -10,8 +11,8 @@ class DashboardInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 15, right: 5,bottom: 15, top: 5),
-      margin: EdgeInsets.symmetric(vertical: 5),
+      padding: EdgeInsets.only(left: defaultSpacing, right: defaultSpacing * 0.3,bottom: defaultSpacing, top: defaultSpacing * 0.3),
+      margin: EdgeInsets.symmetric(vertical: defaultSpacing * 0.3),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: kInputBorderColor, width: 0.5)

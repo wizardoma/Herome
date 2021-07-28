@@ -7,6 +7,7 @@ import 'package:heromeapp/application/addon/addon_state.dart';
 import 'package:heromeapp/application/dyno/dyno_cubit.dart';
 import 'package:heromeapp/application/dyno/dyno_state.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/commons/app/ui_helpers.dart';
 import 'package:heromeapp/domain/addon/addon.dart';
 import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/domain/dyno/dyno.dart';
@@ -62,7 +63,7 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
           var account = context.read<AccountCubit>().getAccount();
 
           return Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
+            margin: EdgeInsets.symmetric(horizontal: defaultSpacing),
             child: SmartRefresher(
               controller: _refreshController,
               onRefresh: onRefresh,
@@ -77,26 +78,37 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
                   child: BlocBuilder<AddonCubit, AddonState>(
                       // ignore: missing_return
                       builder: (context, state) {
-                        if (state is AddonFetchingState) {
-                          return CircularProgress();
-                        }
-                        if (state is AddonFetchErrorState){
-                          return Text(state.error == null ? "An error occurred, try again" : state.error);
-                        }
-                        if (state is AddonFetchedStated) {
-                          if (!account.verified) {
-                            return Text("Billing is not enabled");
-                          } else {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Approximate charges so far for this month"),
-                                SizedBox(height: 10,),
-                                Text("\$${calculateBill(state.addons)}",style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 20),)
-                              ],
-                            );
-                          }
-                        }}),
+                    if (state is AddonFetchingState) {
+                      return CircularProgress();
+                    }
+                    if (state is AddonFetchErrorState) {
+                      return Text(state.error == null
+                          ? "An error occurred, try again"
+                          : state.error);
+                    }
+                    if (state is AddonFetchedStated) {
+                      if (!account.verified) {
+                        return Text("Billing is not enabled");
+                      } else {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Approximate charges so far for this month"),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "\$${getCalculatedBill(state.addons)}",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(fontSize: 20),
+                            )
+                          ],
+                        );
+                      }
+                    }
+                  }),
                 ),
               ]),
             ),
@@ -163,10 +175,12 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
         onPressed: () {});
   }
 
-  String calculateBill(List<Addon> addons) {
-    String amount = (addons.map((e) => e.billing.cents)
-        .reduce((value, element) => value + element)
-        .toDouble() / 100)
+  String getCalculatedBill(List<Addon> addons) {
+    String amount = (addons
+                .map((e) => e.billing.cents)
+                .reduce((value, element) => value + element)
+                .toDouble() /
+            100)
         .toString();
     return amount;
   }

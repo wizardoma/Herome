@@ -5,6 +5,7 @@ import 'package:heromeapp/application/accounts/account_cubit.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
 import 'package:heromeapp/application/authentication/auth_event.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/commons/app/ui_helpers.dart';
 import 'package:heromeapp/domain/account/account.dart';
 import 'package:heromeapp/presentation/splash/splash_screen.dart';
 
@@ -39,7 +40,7 @@ class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
           onTap: widget.onOpenProfile,
           child: Container(
             key: _key,
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(defaultSpacing * 0.5),
             width: 35,
             height: 35,
             decoration: BoxDecoration(
@@ -82,14 +83,14 @@ class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
                     decoration: BoxDecoration(
                       border: Border(top: BorderSide(color: kLightGrey)),
                     ),
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(defaultSpacing),
                     child: Center(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(defaultSpacing * 0.5),
                             width: 50,
                             height: 50,
                             decoration: BoxDecoration(
@@ -102,7 +103,7 @@ class _DashboardProfileOverlayState extends State<DashboardProfileOverlay> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(defaultSpacing * 0.5),
                             child: Text(
                               account.name,
                               style: Theme

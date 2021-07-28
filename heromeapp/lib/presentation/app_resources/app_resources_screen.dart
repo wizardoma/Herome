@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/addon/addon_cubit.dart';
 import 'package:heromeapp/application/addon/addon_state.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/commons/app/ui_helpers.dart';
 import 'package:heromeapp/domain/addon/addon.dart';
 import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/presentation/widgets/app_bottomnav_items_scaffolds.dart';
@@ -58,7 +59,7 @@ class _AppResourcesScreenState extends State<AppResourcesScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(defaultSpacing),
                     decoration: BoxDecoration(
                       border: Border(bottom: BorderSide(color: kLightGrey, width: 0.5))
                     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/settings/biometrics_cubit.dart';
+import 'package:heromeapp/commons/app/ui_helpers.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const String routeName = "/settings";
@@ -28,7 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: ListTile(
           leading: Icon(Icons.lock),
           title: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.symmetric(vertical: defaultSpacing * 0.5,),
             child: Text(
               "Biometrics Lock",
               style: Theme.of(context).textTheme.headline4,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/apps/app_state.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/commons/app/ui_helpers.dart';
 import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/presentation/widgets/circular_progress_primary.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -58,7 +59,7 @@ class ListAppsSection extends StatelessWidget {
                 ),
               )
                   : ListView.separated(
-                  padding: EdgeInsets.only(bottom: 20),
+                  padding: EdgeInsets.only(bottom: defaultSpacing),
                   separatorBuilder: (context, index) => Divider(
                     height: 0.5,
                     thickness: 0.5,
