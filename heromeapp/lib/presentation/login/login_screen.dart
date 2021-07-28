@@ -7,11 +7,14 @@ import 'package:heromeapp/application/authentication/auth_event.dart';
 import 'package:heromeapp/application/authentication/auth_state.dart';
 import 'package:heromeapp/application/authentication/login_request.dart';
 import 'package:heromeapp/commons/app/colors.dart';
+import 'package:heromeapp/commons/app/ui_helpers.dart';
 import 'package:heromeapp/commons/utils/input_validator.dart';
 import 'package:heromeapp/presentation/app/app_screen.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_screen.dart';
 import 'package:heromeapp/presentation/login/login_textfield.dart';
-import 'package:heromeapp/presentation/widgets/circular_progress_primary.dart';
+import 'package:heromeapp/presentation/login/signup_section.dart';
+import 'package:heromeapp/presentation/widgets/error_alert_widget.dart';
+import 'package:heromeapp/presentation/widgets/login_button.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = "/login";
@@ -43,11 +46,11 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
       body: SingleChildScrollView(
         child: BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (ctx, state) async {
-
             if (state is Authenticated) {
               var list = await context.read<AppsCubit>().fetchApps();
-              var screenName =
-              list.isEmpty ? DashboardScreen.routeName : AppScreen.routeName;
+              var screenName = list.isEmpty
+                  ? DashboardScreen.routeName
+                  : AppScreen.routeName;
               Navigator.pushReplacementNamed(context, screenName);
             }
           },
@@ -56,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
             width: size.width,
             height: size.height,
             padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.1, vertical: 30),
+                horizontal: size.width * 0.1, vertical: defaultSpacing * 2),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: [kDeepPurple1, kDeepPurple2],
@@ -83,8 +86,10 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      LoginFormSection(),
-                      SignupSection(),
+                      Expanded(
+                        child: LoginFormSection(),
+                      ),
+                      SignUpSection(),
                     ],
                   ),
                 )
@@ -96,146 +101,57 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
     );
   }
 
-  Widget SignupSection() {
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(
-          color: kFooterBackgroundColor,
-          border: Border(
-              top: BorderSide(
-            color: Color(0xffdddddd),
-          ))),
-      alignment: Alignment.center,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "New to Heroku?",
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
-                  fontSize: 17,
-                ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          TextButton(
-            onPressed: () {},
-            child: Text(
-              "Sign Up",
-              style: Theme.of(context).textTheme.headline4.copyWith(
-                    decoration: TextDecoration.underline,
-                    fontSize: 17,
-                  ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
   Widget LoginFormSection() {
-    return Expanded(
-      child: BlocListener<AuthenticationBloc, AuthenticationState>(
-        listener: (BuildContext context, state) {
-          if (state is AuthenticationError) {
-            setState(() {
-              isSubmitError = true;
-              serverErrorMessage = state.errorMessage;
-            });
-          }
-        },
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: Form(
-            key: _formkey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  child: Text(
-                    "Log in to your account",
-                    style: Theme.of(context).textTheme.headline4.copyWith(
-                          fontSize: 25,
-                          color: kPurpleColor,
-                        ),
-                  ),
+    return BlocListener<AuthenticationBloc, AuthenticationState>(
+      listener: (BuildContext context, state) {
+        if (state is AuthenticationError) {
+          setState(() {
+            isSubmitError = true;
+            serverErrorMessage = state.errorMessage;
+          });
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(
+            vertical: defaultSpacing, horizontal: defaultSpacing),
+        child: Form(
+          key: _formkey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                child: Text(
+                  "Log in to your account",
+                  style: Theme.of(context).textTheme.headline4.copyWith(
+                        fontSize: 25,
+                        color: kPurpleColor,
+                      ),
                 ),
-                if (isSubmitError) errorAlert(),
-                emailField(),
-                passwordField(),
-                loginButton(),
-              ],
-            ),
+              ),
+              if (isSubmitError) ErrorAlertWidget(message: serverErrorMessage),
+              LoginTextField(
+                title: "Email address",
+                icon: Icons.person,
+                isPassword: false,
+                validator: validateEmail,
+                editingController: _emailEditingController,
+              ),
+              LoginTextField(
+                isObscure: isObscure,
+                toggleObscurity: toggleObscurity,
+                title: "Password",
+                icon: Icons.lock,
+                validator: validatePassword,
+                isPassword: true,
+                editingController: _passwordEditingController,
+              ),
+              LoginButton(
+                onSubmit: submit,
+              ),
+            ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget errorAlert() {
-    return Container(
-      height: 40,
-      decoration: BoxDecoration(
-        color: kerrorBgColor,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: kerrorBorderColor),
-      ),
-      child: Center(
-        child: Text(
-          serverErrorMessage,
-          style: Theme.of(context).textTheme.headline2,
-        ),
-      ),
-    );
-  }
-
-  Widget emailField() {
-    return LoginTextField(
-      title: "Email address",
-      icon: Icons.person,
-      isPassword: false,
-      validator: validateEmail,
-      editingController: _emailEditingController,
-    );
-  }
-
-  Widget passwordField() {
-    return LoginTextField(
-      isObscure: isObscure,
-      toggleObscurity: toggleObscurity,
-
-      title: "Password",
-      icon: Icons.lock,
-      validator: validatePassword,
-      isPassword: true,
-      editingController: _passwordEditingController,
-    );
-  }
-
-  Widget loginButton() {
-    return Container(
-      height: 50,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: MaterialButton(
-        onPressed: submit,
-        color: kPurpleColor,
-        textColor: kWhiteColor,
-        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-            builder: (context, state) {
-          if (state is Authenticating) {
-            return CircularProgress(
-              color: kWhiteColor,
-            );
-          }
-          return Text(
-            "Log In",
-            style: TextStyle(fontSize: 20),
-          );
-        }),
       ),
     );
   }
@@ -252,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
     }
   }
 
-  void toggleObscurity(){
+  void toggleObscurity() {
     setState(() {
       isObscure = !isObscure;
     });
