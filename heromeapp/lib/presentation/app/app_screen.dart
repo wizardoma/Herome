@@ -30,6 +30,7 @@ class _AppScreenState extends State<AppScreen> {
   @override
   void initState() {
     _app = context.read<AppsCubit>().getCurrentApp();
+    print(_app);
     _children = [
       AppDashboardScreen(_app),
       AppResourcesScreen(_app),
@@ -78,6 +79,7 @@ class _AppScreenState extends State<AppScreen> {
   }
 
   void _openApp() async {
+    // Todo: delete and commit
     if (await canLaunch(_app.webUrl)) {
       await launch(
         _app.webUrl,

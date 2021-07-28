@@ -43,6 +43,8 @@ class AppServiceImpl extends AppService {
 
   @override
   Future<void> deleteStoredApps() async{
+    var pref = await SharedPreferences.getInstance();
+    pref.remove(prefName);
    await appRepository.deleteStoredApps();
   }
 }

@@ -117,7 +117,7 @@ class IOC {
     _accountCubit = AccountCubit(
         authenticationBloc: _authenticationBloc,
         accountService: _accountService);
-    _appsCubit = AppsCubit(_appService);
+    _appsCubit = AppsCubit(_appService, _authenticationBloc);
     _dynoCubit = DynoCubit(dynoService: _dynoService, appsCubit: _appsCubit);
     _collaboratorCubit = CollaboratorCubit(_collaboratorService);
     _addonCubit = AddonCubit(_addonService);

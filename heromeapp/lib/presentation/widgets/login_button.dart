@@ -21,15 +21,14 @@ class LoginButton extends StatelessWidget {
         height: 50,
         width: double.infinity,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
           color: kPurpleColor,
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Center(
 
           child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
               builder: (context, state) {
-            if (state is Authenticating) {
+            if (state is AuthenticatingState) {
               return CircularProgress(
                 color: kWhiteColor,
               );

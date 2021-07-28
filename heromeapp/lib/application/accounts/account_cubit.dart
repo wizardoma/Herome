@@ -16,7 +16,7 @@ class AccountCubit extends Cubit<AccountState> {
   AccountCubit({AuthenticationBloc authenticationBloc, this.accountService})
       : super(AccountUnInitializedState()) {
     _streamSubscription = authenticationBloc.stream.listen((state) {
-      if (state is Authenticated) {
+      if (state is AuthenticatedState) {
         this.fetchAccount();
       }
     });

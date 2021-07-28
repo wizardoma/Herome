@@ -57,10 +57,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<bool> checkAuth() async {
     var authBloc = context.read<AuthenticationBloc>();
     var isAuth = await authBloc.tryAuthentication();
-    if (isAuth is Authenticated) {
+    if (isAuth is AuthenticatedState) {
       return true;
     }
-    else if (isAuth is NotAuthenticated) {
+    else if (isAuth is NotAuthenticatedState) {
       return false;
     }
   }

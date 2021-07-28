@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
       body: SingleChildScrollView(
         child: BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (ctx, state) async {
-            if (state is Authenticated) {
+            if (state is AuthenticatedState) {
               var list = await context.read<AppsCubit>().fetchApps();
               var screenName = list.isEmpty
                   ? DashboardScreen.routeName
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
   Widget LoginFormSection() {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (BuildContext context, state) {
-        if (state is AuthenticationError) {
+        if (state is AuthenticationErrorState) {
           setState(() {
             isSubmitError = true;
             serverErrorMessage = state.errorMessage;
