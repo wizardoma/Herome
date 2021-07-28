@@ -10,10 +10,12 @@ import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
 import 'package:heromeapp/application/authentication/auth_event.dart';
 import 'package:heromeapp/application/dyno/dyno_cubit.dart';
+import 'package:heromeapp/application/settings/onboarding_sharedpref.dart';
 import 'package:heromeapp/commons/app/routes.dart';
 import 'package:heromeapp/commons/app/themes.dart';
 import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/ioc.dart';
+import 'package:heromeapp/presentation/onboarding/onboarding_screen.dart';
 import 'package:heromeapp/presentation/splash/splash_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,21 +31,26 @@ void main() async {
   IOC ioc = IOC();
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
-  runApp(MyApp(ioc));
+  var isOnboarded = await OnboardingSharedPref.getState() ?? false;
+  runApp(MyApp(ioc: ioc, isOnboarded: isOnboarded,));
 }
 
 class MyApp extends StatefulWidget {
+  final bool isOnboarded;
+
   final IOC ioc;
 
-  MyApp(this.ioc);
+  MyApp({this.ioc, this.isOnboarded});
 
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+
   @override
   void initState() {
+
     super.initState();
   }
 
@@ -73,7 +80,9 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           routes: appRoutes,
           title: "Herome",
-          home: SplashScreen(),
+          home: (widget.isOnboarded == null || !widget.isOnboarded)
+              ? OnboardingScreen()
+              : SplashScreen(),
           theme: kMainTheme,
         ),
       ),

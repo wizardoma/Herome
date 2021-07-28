@@ -74,6 +74,10 @@ flutter:
 
     #logo
     - assets/logos/logo.jpg
+    - assets/logos/billing.png
+    - assets/logos/mobile.png
+    - assets/logos/monitor.png
+
     # icons
     - assets/icons/go.png
     - assets/icons/java.png
