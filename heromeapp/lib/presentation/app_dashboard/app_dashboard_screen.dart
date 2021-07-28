@@ -54,7 +54,7 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
       body: BlocBuilder<DynoCubit, DynoState>(
           // ignore: missing_return
           builder: (BuildContext context, state) {
-        if (state is DynosFetchingState) {
+        if (state is DynosFetchingState || state is DynosUninitializedState) {
           return Center(child: CircularProgress());
         }
         if (state is DynosFetchedState) {

@@ -32,7 +32,7 @@ class DynoCubit extends Cubit<DynoState> {
     var response = await dynoService.fetchAllAppsDynos(appIds);
     if (!response.isError) {
       _allAppDynos = response.data;
-      emit(DynosFetchedState(_allAppDynos));
+      emit(DynosFetchedState(response.data));
       return _allAppDynos;
     }
 
@@ -43,9 +43,12 @@ class DynoCubit extends Cubit<DynoState> {
   }
 
   Future<List<Dyno>> fetchAppDynos(String appId) async {
+    print("fetching app dynos");
     emit(DynosFetchingState());
     var response = await dynoService.fetchAppDyno(appId);
     if (!response.isError) {
+      print("fetched app dynos ${response.data}");
+
       _appDynos = response.data;
       emit(DynosFetchedState(null));
       return _appDynos;
