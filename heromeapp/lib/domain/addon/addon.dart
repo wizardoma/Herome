@@ -57,7 +57,6 @@ class Addon {
         webUrl: data["webUrl"],
         billing: billing,
         actions: actions);
-    print("addon class: $addon");
     return addon;
   }
 

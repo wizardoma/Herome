@@ -8,7 +8,4 @@ abstract class AuthenticationService extends Service {
   void logout();
   Future<bool> isAuthenticated();
 
-
-
-
 }

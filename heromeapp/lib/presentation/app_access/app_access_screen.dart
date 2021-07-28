@@ -35,7 +35,6 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
   void initState() {
     hasFetchedCollabs = false;
     _collaboratorCubit = context.read<CollaboratorCubit>();
-    print("init access ${_collaboratorCubit.collabs}");
     var hasFetched = _collaboratorCubit.collabs.length > 0;
     _refreshController = RefreshController(initialRefresh: false);
 
@@ -59,7 +58,6 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
       onRefresh: onRefresh,
       body: BlocConsumer<CollaboratorCubit, CollaboratorState>(
         listener: (context, state) {
-
           if (state is CollaboratorAddFailureState) {
             _showErrorSnackbar(state.error);
           }
@@ -80,28 +78,25 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
         builder: (BuildContext context, state) {
           if (state is CollaboratorFetchingState) {
             return Center(child: CircularProgress());
-          }
-          else if (state is CollaboratorFetchError) {
+          } else if (state is CollaboratorFetchError) {
             return Center(
               child: Text(state.error == null
                   ? "An Error Occurred. Please try again"
                   : state.error),
             );
-          }
-          else {
+          } else {
             var collabs = context.read<CollaboratorCubit>().collabs;
-            print("else collabs : $collabs");
 
             return SmartRefresher(
               controller: _refreshController,
               onRefresh: onRefresh,
               enablePullDown: true,
               child: ListView.separated(
-                separatorBuilder:  (context, index) => Divider(
-                  color: kLightGrey,
-                  height: 0.5,
-                  thickness: 0.5,
-                ),
+                  separatorBuilder: (context, index) => Divider(
+                        color: kLightGrey,
+                        height: 0.5,
+                        thickness: 0.5,
+                      ),
                   itemCount: collabs.length,
                   itemBuilder: (context, index) {
                     return ListTile(
@@ -151,7 +146,7 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
         showDialog(
             context: context,
             builder: (context) => RemoveCollabDialog(
-              onRemoveCollab: _onRemoveCollaborator,
+                  onRemoveCollab: _onRemoveCollaborator,
                   userEmail: collab.userEmail,
                   appName: widget.app.name,
                 ));
@@ -171,7 +166,7 @@ class _AppAccessScreenState extends State<AppAccessScreen> {
     showDialog(
         context: context,
         builder: (cont) => AddCollaboratorDialog(
-          accessContext: context,
+              accessContext: context,
               onAdd: _onAddCollaborator,
             ));
   }

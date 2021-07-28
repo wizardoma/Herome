@@ -30,7 +30,6 @@ class AccountCubit extends Cubit<AccountState> {
       emit(AccountFetchedState(account));
     }
     else {
-      print("An error occurred fetching accounts");
     }
   }
 

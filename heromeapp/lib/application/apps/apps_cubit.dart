@@ -24,7 +24,6 @@ class AppsCubit extends Cubit<AppsState> {
   }
 
   Future<List<App>> fetchApps() async {
-    print("fetching apps");
     emit(AppsFetchingState());
 
     var response = await appService.fetchApps();
@@ -41,7 +40,6 @@ class AppsCubit extends Cubit<AppsState> {
 
       return _apps;
     } else {
-      print("Apps fetching not successful");
     }
   }
 
@@ -70,7 +68,6 @@ class AppsCubit extends Cubit<AppsState> {
   }
 
   List<App> getApps() {
-    print("getter for apps: $_apps");
     return _apps;
   }
 

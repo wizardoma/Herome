@@ -21,7 +21,6 @@ class DynoClient {
 
       return ResponseEntity(false, dynos, null);
     } on DioError catch (e) {
-      print("Error in dynos fetching: ${e.response}");
       var errorResponse = ErrorResponse.fromResponse(e.response.data);
       return ResponseEntity(true, null, errorResponse);
     }
@@ -43,7 +42,6 @@ class DynoClient {
         });
         dynos.putIfAbsent(appID, () => dynoList);
       } on DioError catch (e) {
-        print("Error in dyno fetching: ${e.response}");
       }
     });
 

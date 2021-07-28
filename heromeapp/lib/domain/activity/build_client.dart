@@ -17,10 +17,8 @@ class BuildClient {
       // filter only builds with valid release id to remove unnecessary data
       List<dynamic> filteredData = response.data.where((e) => e["release"] !=null
       ).toList();
-      print("fetched builds: $filteredData");
       return ResponseEntity(false, filteredData, null);
     } on DioError catch (e) {
-      print("Error in builds fetching: ${e.response}");
       var errorResponse = e.response == null ? ErrorResponse() :ErrorResponse.fromResponse(e.response.data);
       return ResponseEntity(true, null, errorResponse);
     }

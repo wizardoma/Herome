@@ -16,7 +16,6 @@ class CollaboratorClient {
     }
 
     on DioError catch (e) {
-      print("Error in collabs adding: ${e.response}");
       var errorResponse = e.response == null ? ErrorResponse() :ErrorResponse.fromResponse(e.response.data);
       return ResponseEntity(true, null, errorResponse);
     }
@@ -29,7 +28,6 @@ class CollaboratorClient {
     }
 
     on DioError catch (e) {
-      print("Error in collabs deleting: ${e.response}");
       var errorResponse = e.response == null ? ErrorResponse() :ErrorResponse.fromResponse(e.response.data);
       return ResponseEntity(true, null, errorResponse);
     }
@@ -38,7 +36,6 @@ class CollaboratorClient {
 Future<ResponseEntity> fetchCollaborators(String appId) async{
   try {
     var response = await _dio.get("$AppsUrl/$appId/collaborators");
-    print("Response from collabs ${response.data}");
     List<Collaborator> collabs = [];
     response.data.forEach((e) {
       Collaborator collab = Collaborator.fromResponse(e);
@@ -48,7 +45,6 @@ Future<ResponseEntity> fetchCollaborators(String appId) async{
 
     return ResponseEntity(false, collabs, null);
   } on DioError catch (e) {
-    print("Error in collabs fetching: ${e.response}");
     var errorResponse = e.response == null ? ErrorResponse() :ErrorResponse.fromResponse(e.response.data);
     return ResponseEntity(true, null, errorResponse);
   }

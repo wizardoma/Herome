@@ -28,7 +28,6 @@ void main() async {
     ..registerAdapter(AppAdapter());
   var pref = await SharedPreferences.getInstance();
   bool isBiometrics = pref.getBool(BiometricsCubit.sharedPrefName) ?? false;
-  print("Is biometrics: $isBiometrics");
   IOC ioc = IOC();
   runApp(MyApp(ioc,isBiometrics));
 }

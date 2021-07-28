@@ -23,7 +23,6 @@ class AppClient {
 
       return ResponseEntity(false, apps, null);
     } on DioError catch (e) {
-      print("Error in apps fetching: ${e.response}");
       var errorResponse = e.response == null ? ErrorResponse() :ErrorResponse.fromResponse(e.response.data);
       return ResponseEntity(true, null, errorResponse);
     }

@@ -59,7 +59,6 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
         }
         if (state is DynosFetchedState) {
           var dynos = context.read<DynoCubit>().appDynos;
-          print("dyno $dynos");
           var account = context.read<AccountCubit>().getAccount();
 
           return Container(
@@ -165,7 +164,6 @@ class _AppDashboardScreenState extends State<AppDashboardScreen> {
   }
 
   String calculateBill(List<Addon> addons) {
-    print(addons);
     String amount = (addons.map((e) => e.billing.cents)
         .reduce((value, element) => value + element)
         .toDouble() / 100)

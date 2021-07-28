@@ -6,7 +6,6 @@ class BiometricsCubit extends Cubit<bool> {
   static const sharedPrefName = "biometrics";
 
   void setState(bool state) {
-    print("saving to pref $state");
     saveToPref(state);
     emit(state);
   }

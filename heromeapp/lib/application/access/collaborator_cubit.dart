@@ -11,7 +11,6 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
       : super(CollaboratorUninitialized());
 
   Future<List<Collaborator>> fetchCollaborators(String appId) async {
-    print("fetching collabs");
     emit(CollaboratorFetchingState());
     var response = await collaboratorService.fetchCollaborators(appId);
     if (response.isError) {
@@ -19,7 +18,6 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
       return null;
     } else {
       _collabs = response.data;
-      print("fetched collabs $_collabs");
       emit(CollaboratorFetchedState(_collabs));
       return _collabs;
     }

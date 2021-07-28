@@ -10,12 +10,10 @@ class BuildServiceImpl extends BuildService {
 
   @override
   Future<ResponseEntity> fetchBuilds(String appId) async {
-    print("fetching builds");
     var response = await buildClient.fetchBuilds(appId);
     if (!response.isError) {
       List<Build> builds = [];
       response.data.forEach((e) {
-        print("each build: $e");
         if (e["status"] == "succeeded"){
           builds.add(Build(
             id: e["id"],
@@ -52,7 +50,6 @@ class BuildServiceImpl extends BuildService {
           ),);
         }
       });
-      print("fetched builds: $builds");
       return ResponseEntity(response.isError, builds, null);
     }
 

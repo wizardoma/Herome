@@ -253,7 +253,6 @@ class _LoginScreenState extends State<LoginScreen> with InputValidator {
   }
 
   void toggleObscurity(){
-    print("clicked obscure");
     setState(() {
       isObscure = !isObscure;
     });
