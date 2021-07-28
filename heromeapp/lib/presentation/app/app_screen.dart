@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/accounts/account_cubit.dart';
 import 'package:heromeapp/application/apps/apps_cubit.dart';
 import 'package:heromeapp/application/authentication/auth_bloc.dart';
@@ -8,10 +9,8 @@ import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/presentation/app_access/app_access_screen.dart';
 import 'package:heromeapp/presentation/app_activity/app_activity_screen.dart';
 import 'package:heromeapp/presentation/app_dashboard/app_dashboard_screen.dart';
-import 'package:heromeapp/presentation/app_monitoring/app_monitoring_screen.dart';
 import 'package:heromeapp/presentation/app_resources/app_resources_screen.dart';
 import 'package:heromeapp/presentation/dashboard/dashboard_appbar.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/presentation/settings/settings_screen.dart';
 import 'package:heromeapp/presentation/splash/splash_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -34,7 +33,7 @@ class _AppScreenState extends State<AppScreen> {
     _children = [
       AppDashboardScreen(_app),
       AppResourcesScreen(_app),
-      AppMonitoringScreen(_app),
+//      AppMonitoringScreen(_app),
       AppActivityScreen(_app),
       AppAccessScreen(_app),
     ];
@@ -70,8 +69,8 @@ class _AppScreenState extends State<AppScreen> {
               icon: Icon(Icons.dashboard_outlined), label: "Dashboard"),
           BottomNavigationBarItem(
               icon: Icon(Icons.cloud_outlined), label: "Resources"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.insert_chart_outlined), label: "Monitoring"),
+//          BottomNavigationBarItem(
+//              icon: Icon(Icons.insert_chart_outlined), label: "Monitoring"),
           BottomNavigationBarItem(
               icon: Icon(Icons.multiline_chart), label: "Activity"),
           BottomNavigationBarItem(icon: Icon(Icons.security), label: "Access"),
@@ -115,12 +114,14 @@ class _AppScreenState extends State<AppScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Flexible(
-                                child: IconButton(
-                                    icon: Icon(
-                                      Icons.close,
-                                      color: Colors.black87,
-                                    ),
-                                    onPressed: () => Navigator.pop(context))),
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.close,
+                                  color: Colors.black87,
+                                ),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                            ),
                             Flexible(
                                 child: Text(
                               "Herome",
