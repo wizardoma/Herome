@@ -1,14 +1,26 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heromeapp/application/apps/app_state.dart';
+import 'package:heromeapp/application/authentication/auth_bloc.dart';
+import 'package:heromeapp/application/authentication/auth_state.dart';
 import 'package:heromeapp/domain/apps/app.dart';
 import 'package:heromeapp/domain/apps/app_service.dart';
 
 class AppsCubit extends Cubit<AppsState> {
   final AppService appService;
+  final AuthenticationBloc authenticationBloc;
   List<App> _apps;
   App _currentApp;
+  StreamSubscription _streamSubscription;
 
-  AppsCubit(this.appService) : super(AppsNotInitialized());
+  AppsCubit(this.appService, this.authenticationBloc) : super(AppsNotInitialized()){
+    _streamSubscription = authenticationBloc.stream.listen((event) {
+      if (event is SignOutState){
+        appService.deleteStoredApps();
+      }
+    });
+  }
 
   Future<bool> areAppsCached() async {
     var apps = await appService.fetchStoredApps();
@@ -74,5 +86,11 @@ class AppsCubit extends Cubit<AppsState> {
   Future<String> _getCurrentAppId() async {
     var appId = await appService.fetchCurrentAppId();
     return appId;
+  }
+
+  @override
+  Future<void> close() {
+    _streamSubscription.cancel();
+    return super.close();
   }
 }

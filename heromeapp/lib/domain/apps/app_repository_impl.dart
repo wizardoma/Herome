@@ -15,4 +15,10 @@ class AppRepositoryImpl extends AppRepository {
     var appsBox = await Hive.openBox(_boxName);
     return appsBox.values.map((e) => e as App).toList();
   }
+
+  @override
+  Future<void> deleteStoredApps()async {
+    var appsBox = await Hive.openBox(_boxName);
+    appsBox.clear();
+  }
 }

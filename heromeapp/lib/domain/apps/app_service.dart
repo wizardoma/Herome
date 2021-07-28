@@ -6,6 +6,7 @@ abstract class AppService extends Service {
 
   Future<ResponseEntity> fetchApps();
   Future<List<App>> fetchStoredApps();
+  Future<void> deleteStoredApps();
   Future<String> fetchCurrentAppId();
   void storeCurrentAppId(String id);
 }

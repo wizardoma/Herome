@@ -40,4 +40,9 @@ class AppServiceImpl extends AppService {
     var apps = await appRepository.fetchAllApps();
     return apps;
   }
+
+  @override
+  Future<void> deleteStoredApps() async{
+   await appRepository.deleteStoredApps();
+  }
 }

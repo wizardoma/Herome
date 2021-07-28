@@ -11,7 +11,7 @@ class AuthenticationBloc
   final AuthenticationService authenticationService;
 
   AuthenticationBloc(this.authenticationService)
-      : super(AuthenticationUnInitialized());
+      : super(AuthenticationUnInitializedState());
 
   @override
   Stream<AuthenticationState> mapEventToState(
@@ -20,7 +20,7 @@ class AuthenticationBloc
       yield await tryAuthentication();
     }
     if (event is LoginEvent) {
-      yield Authenticating();
+      yield AuthenticatingState();
       yield await login(event.loginRequest);
     }
 
@@ -31,25 +31,25 @@ class AuthenticationBloc
 
   AuthenticationState logout() {
     authenticationService.logout();
-    return NotAuthenticated();
+    return NotAuthenticatedState();
   }
 
   Future<AuthenticationState> tryAuthentication() async {
     var authenticated = await isAuthenticated();
 
     if (!authenticated) {
-      return NotAuthenticated();
+      return NotAuthenticatedState();
     } else {
-      return Authenticated();
+      return AuthenticatedState();
     }
   }
 
   Future<AuthenticationState> login(LoginRequest loginRequest) async {
     var response = await authenticationService.authenticate(loginRequest);
     if (!response.isError) {
-      return Authenticated();
+      return AuthenticatedState();
     } else {
-      return AuthenticationError(response.errors.message);
+      return AuthenticationErrorState(response.errors.message);
     }
   }
 
