@@ -65,6 +65,7 @@ class _AppScreenState extends State<AppScreen> {
         },
         type: BottomNavigationBarType.fixed,
         selectedFontSize: 11,
+
         unselectedFontSize: 11,
         items: [
           BottomNavigationBarItem(
@@ -76,7 +77,9 @@ class _AppScreenState extends State<AppScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.multiline_chart), label: "Activity"),
           BottomNavigationBarItem(icon: Icon(Icons.security), label: "Access"),
-        ]);
+        ],
+      selectedItemColor: kPurpleColor,
+    );
   }
 
   void _openApp() async {

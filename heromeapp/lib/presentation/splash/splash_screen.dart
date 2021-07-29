@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
           // Check if user has biometric check before loading resources
           var isCheckBiometrics = await BiometricsSharedPref.getState();
           print("isCheckBiometrics $isCheckBiometrics");
-          if (isCheckBiometrics) {
+          if (isCheckBiometrics != null && isCheckBiometrics) {
             var isBiometricsAuthenticated = await authenticateWithBiometrics();
             if (isBiometricsAuthenticated) {
               destinationScreenName = await bootStrapApp();
