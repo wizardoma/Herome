@@ -29,7 +29,7 @@ void main() async {
     ..init(directory.path)
     ..registerAdapter(AppAdapter());
   IOC ioc = IOC();
-  await SystemChrome.setPreferredOrientations(
+  await SystemChrome.setPreferredHiveOrientations(
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
   var isOnboarded = await OnboardingSharedPref.getState() ?? false;
   runApp(MyApp(ioc: ioc, isOnboarded: isOnboarded,));
