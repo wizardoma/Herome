@@ -29,7 +29,7 @@ void main() async {
     ..init(directory.path)
     ..registerAdapter(AppAdapter());
   IOC ioc = IOC();
-  await SystemChrome.setPreferredHiveOrientations(
+  await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
   var isOnboarded = await OnboardingSharedPref.getState() ?? false;
   runApp(MyApp(ioc: ioc, isOnboarded: isOnboarded,));
@@ -50,7 +50,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -60,8 +59,8 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider.value(
             value:
-                (widget.ioc.getBloc(Blocs.Authentication) as AuthenticationBloc)
-                  ..add(InitializeAuthEvent())),
+            (widget.ioc.getBloc(Blocs.Authentication) as AuthenticationBloc)
+              ..add(InitializeAuthEvent())),
         BlocProvider.value(
             value: (widget.ioc.getCubit(Cubits.Account) as AccountCubit)),
         BlocProvider.value(
