@@ -68,7 +68,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<bool> authenticateWithBiometrics() async {
     var authenticated = await localAuth.authenticate(
-     biometricOnly: false, stickyAuth: true, localizedReason: 'Unlock');
+        options: AuthenticationOptions(
+          biometricOnly: false,
+          stickyAuth: true,
+        ),
+        localizedReason: 'Unlock');
     return authenticated ? authenticated : authenticateWithBiometrics();
   }
 

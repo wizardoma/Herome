@@ -41,7 +41,6 @@ class AccountCubit extends Cubit<AccountState> {
     return _account;
   }
 
-
   @override
   Future<void> close() {
     _streamSubscription.cancel();
